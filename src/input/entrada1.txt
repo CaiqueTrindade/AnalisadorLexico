@@ -1,0 +1,8 @@
+variavel1
+variavel2 variavel3
+variavel4variavel5
+variavel_5
+6variavel
+_variavel7
+variavel_8;
+variável9
