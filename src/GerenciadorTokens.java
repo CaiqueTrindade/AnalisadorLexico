@@ -39,12 +39,31 @@ public enum GerenciadorTokens {
         return this.tokens;
 
     }
+
+    public List<Erro> getErros(){
+
+        return this.erros;
+    }
+
     public void limparLista(){
 
         this.tokens.clear();
         this.erros.clear();
 
     }
+
+    public boolean tokensIsVazio(){
+
+        return this.tokens.isEmpty();
+
+    }
+
+    public boolean errosIsVazio(){
+
+        return this.erros.isEmpty();
+
+    }
+
 
     public void escreverEmArquivo(String caminho){
 
@@ -57,8 +76,21 @@ public enum GerenciadorTokens {
             arquivoEscrita = new OutputStreamWriter(arquivo);
             Iterator it = getTokens().iterator();
 
+            if(! this.tokensIsVazio())
+                arquivoEscrita.write("Lista de Tokens\n");
+
             while(it.hasNext()){
                 arquivoEscrita.write(it.next().toString());
+            }
+
+            it = getErros().iterator();
+
+            if(! this.errosIsVazio())
+                arquivoEscrita.write("Lista de Erros\n");
+
+            while (it.hasNext()){
+                arquivoEscrita.write(it.next().toString());
+
             }
 
             arquivoEscrita.flush();
@@ -67,9 +99,6 @@ public enum GerenciadorTokens {
         catch (IOException e){
 
         }
-
-
-
 
 
     }
