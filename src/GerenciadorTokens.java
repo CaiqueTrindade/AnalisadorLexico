@@ -19,7 +19,7 @@ public enum GerenciadorTokens {
         this.tokens.add(token);
     }
 
-    public void inserirToken(Erro erro){
+    public void inserirErro(Erro erro){
 
         this.erros.add(erro);
     }
@@ -31,7 +31,9 @@ public enum GerenciadorTokens {
 
     public void limparLista(){
 
-        tokens.clear();
+        this.tokens.clear();
+        this.erros.clear();
+
     }
 
     public void escreverEmArquivo(String caminho){

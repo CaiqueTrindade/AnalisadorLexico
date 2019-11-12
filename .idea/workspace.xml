@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a57f40b3-314a-4407-9652-3e6d56ddb821" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/src/GerenciadorTokens.java" afterPath="$PROJECT_DIR$/src/GerenciadorTokens.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -47,7 +47,7 @@
         <entry file="file://$PROJECT_DIR$/src/GerenciadorTokens.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="547">
-              <caret line="46" column="0" lean-forward="true" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+              <caret line="34" column="27" lean-forward="false" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -330,7 +330,7 @@
     <entry file="file://$PROJECT_DIR$/src/GerenciadorTokens.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="547">
-          <caret line="46" column="0" lean-forward="true" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <caret line="34" column="27" lean-forward="false" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
