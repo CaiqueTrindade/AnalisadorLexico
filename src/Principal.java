@@ -17,6 +17,7 @@ public class Principal {
 
             boolean repete = true;
 
+
             while (repete) {
 
                 // Verdadeiro quando o caractere atual é diferente de um caractere de retorno ao início da linha \r

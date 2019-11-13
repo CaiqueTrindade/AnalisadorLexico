@@ -88,12 +88,46 @@ public class AnalisadorLexico {
         Character caractere = null;
         int estado_atual = 0;
         int linha_atual = 1;
+        String lexema = "";
 
-        while(caractere != -1){
+        while(caractere != null){
 
             caractere = this.obterCaractere();
 
             switch (estado_atual){
+
+                case 0:
+
+                    if ((int)caractere == 47){
+                        lexema = lexema + caractere;
+                        caractere = this.obterCaractere();
+
+                        if ((int)caractere == 47)
+                            estado_atual = 1;
+
+                        else if ((int)caractere == 42)
+                                estado_atual = 2;
+                        else {
+                            estado_atual = 3;
+                        }
+                        this.devolverCaractere(caractere);
+
+                    }
+
+                case 1:
+
+                    if ((int) caractere != 10 )
+                        lexema = lexema + caractere;
+                    else{
+                        this.inserirToken(new Token(lexema,linha_atual,10));
+                        lexema = "";
+                        estado_atual = 0;
+                    }
+
+                case 2:
+
+                case 3:
+
 
             }
 
