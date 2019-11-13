@@ -86,7 +86,7 @@ public class AnalisadorLexico {
     public void executarAnalise() throws IOException{
 
         Character caractere = null;
-        int estado_atual = 0;
+        String estado_atual = "inicio";
         int linha_atual = 1;
         String lexema = "";
 
@@ -99,19 +99,19 @@ public class AnalisadorLexico {
 
             switch (estado_atual){
 
-                case 0:
+                case "inicio":
 
                     if ((int)caractere == 47){
                         lexema = lexema + caractere;
                         caractere = this.obterCaractere();
 
                         if ((int)caractere == 47)
-                            estado_atual = 1;
+                            estado_atual = "comentario_linha";
 
                         else if ((int)caractere == 42)
-                                estado_atual = 2;
+                                estado_atual = "comentario_bloco";
                         else {
-                            estado_atual = 3;
+                            estado_atual = "operador_aritmetico";
                             lexema = "";
                             this.devolverCaractere(caractere);
                         }
@@ -119,23 +119,34 @@ public class AnalisadorLexico {
 
                     }
 
-                case 1:
+                    if ((int)caractere == 43){
+                        lexema = lexema + caractere;
+                        caractere = this.obterCaractere();
+
+                    }
+
+                    if ((int)caractere == 42){
+                        estado_atual = "operador_aritmetico";
+
+                }
+
+                case "comentario_linha":
 
                     if ((int) caractere != 10 )
                         lexema = lexema + caractere;
                     else{
                         this.inserirToken(new Token(lexema,linha_atual,10));
                         lexema = "";
-                        estado_atual = 0;
+                        estado_atual = "inicio";
                     }
 
-                case 2:
+                case "comentario_bloco":
 
 
-                case 3:
+                case "operador_aritmetico":
                     lexema = lexema + caractere;
                     this.inserirToken(new Token(lexema, linha_atual, 8));
-                    estado_atual = 0;
+                    estado_atual = "inicio";
 
 
             }
