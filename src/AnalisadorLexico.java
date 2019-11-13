@@ -226,8 +226,8 @@ public class AnalisadorLexico {
 }
 
 
-/*
-try { Exemplo inicial do autômato de identificadores e palavras reservadas
+/* Exemplo inicial do autômato de identificadores e palavras reservadas
+try {
 InputStream entrada = new FileInputStream("input\\entrada1.txt");
 
 int c, estado_atual, linha_atual;
@@ -324,5 +324,5 @@ e.printStackTrace();
 } catch (IOException e) {
 e.printStackTrace();
 }
- */
+*/
 
