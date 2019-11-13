@@ -94,6 +94,9 @@ public class AnalisadorLexico {
 
             caractere = this.obterCaractere();
 
+            if ((int)caractere == 10)
+                linha_atual++;
+
             switch (estado_atual){
 
                 case 0:
@@ -109,6 +112,8 @@ public class AnalisadorLexico {
                                 estado_atual = 2;
                         else {
                             estado_atual = 3;
+                            lexema = "";
+                            this.devolverCaractere(caractere);
                         }
                         this.devolverCaractere(caractere);
 
@@ -126,7 +131,11 @@ public class AnalisadorLexico {
 
                 case 2:
 
+
                 case 3:
+                    lexema = lexema + caractere;
+                    this.inserirToken(new Token(lexema, linha_atual, 8));
+                    estado_atual = 0;
 
 
             }
