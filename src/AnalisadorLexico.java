@@ -100,7 +100,8 @@ public class AnalisadorLexico {
             switch (estado_atual){
 
                 case "inicio":
-
+                    lexema = "";
+                    
                     if ((int)caractere == 47){
                         lexema = lexema + caractere;
                         caractere = this.obterCaractere();
@@ -119,13 +120,43 @@ public class AnalisadorLexico {
 
                     }
 
-                    if ((int)caractere == 43){
+                   else if ((int)caractere == 43){
+
                         lexema = lexema + caractere;
                         caractere = this.obterCaractere();
 
+                        if((int)caractere == 43){
+                            estado_atual = "operador_incremento";
+                        }
+                        else{
+                            estado_atual = "operador_aritmetico";
+                            lexema = "";
+                            this.devolverCaractere(caractere);
+
+                        }
+                        this.devolverCaractere(caractere);
+
+
                     }
 
-                    if ((int)caractere == 42){
+                    else if ((int)caractere == 45){
+                        lexema = lexema + caractere;
+                        caractere = this.obterCaractere();
+
+                        if((int)caractere == 45){
+                            estado_atual = "operador_incremento";
+                        }
+                        else{
+                            estado_atual = "operador_aritmetico";
+                            lexema = "";
+                            this.devolverCaractere(caractere);
+
+                        }
+                        this.devolverCaractere(caractere);
+
+                    }
+
+                   else if ((int)caractere == 42){
                         estado_atual = "operador_aritmetico";
 
                 }
@@ -136,7 +167,6 @@ public class AnalisadorLexico {
                         lexema = lexema + caractere;
                     else{
                         this.inserirToken(new Token(lexema,linha_atual,10));
-                        lexema = "";
                         estado_atual = "inicio";
                     }
 
@@ -148,6 +178,11 @@ public class AnalisadorLexico {
                     this.inserirToken(new Token(lexema, linha_atual, 8));
                     estado_atual = "inicio";
 
+
+                case "operador_incremento":
+                    lexema = lexema + caractere;
+                    this.inserirToken(new Token(lexema, linha_atual, 9));
+                    estado_atual = "inicio";
 
             }
 
