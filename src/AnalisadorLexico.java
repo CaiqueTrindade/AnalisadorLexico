@@ -101,7 +101,7 @@ public class AnalisadorLexico {
 
                 case "inicio":
                     lexema = "";
-                    
+
                     if ((int)caractere == 47){
                         lexema = lexema + caractere;
                         caractere = this.obterCaractere();
