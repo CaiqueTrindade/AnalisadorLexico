@@ -184,6 +184,7 @@ public class AnalisadorLexico {
 
 
                     break;
+
                 case "comentario_bloco_s3":
 
                     if (caractere != null){
@@ -200,6 +201,7 @@ public class AnalisadorLexico {
 
 
                     break;
+
                 case "estado_final_comentario_bloco":
                     this.inserirToken(new Token(lexema,linha_atual,10));
                     estado_atual = "inicio";
@@ -220,19 +222,26 @@ public class AnalisadorLexico {
                 case "cadeia_caractere_s1":
 
                    if ((int)caractere != 10){
+                       lexema = lexema + caractere;
 
                        if ((int)caractere == 92 )
                            estado_atual = "cadeia_caractere_s2";
                        else if ((int)caractere == 34  )
                                 estado_atual = "estado_final_cadeia_caractere";
+                       else if (Character.toString(caractere).matches("^([a-z]|[A-Z]|[0-9])$") ||  (int)caractere >= 32 && (int)caractere <= 126) {
+                           estado_atual = "cadeia_caractere_s1";
+                       }
+                       else
+                           estado_atual = "cadeia_caractere_erro";
 
                    } else
                        estado_atual = "cadeia_caractere_erro";
-
+                break;
 
                 case "cadeia_caractere_s2":
 
                     if ((int)caractere != 10){
+                        lexema = lexema + caractere;
 
                         if (Character.toString(caractere).matches("^([a-z]|[A-Z]|[0-9]|\")$") ||  (int)caractere >= 32 && (int)caractere <= 126) {
                                 estado_atual = "cadeia_caractere_s1";
@@ -243,6 +252,7 @@ public class AnalisadorLexico {
                     else
                         estado_atual = "cadeia_caractere_erro";
 
+                break;
 
                 case "estado_final_cadeia_caractere":
 
@@ -250,8 +260,8 @@ public class AnalisadorLexico {
                     estado_atual = "inicio";
 
                 case "cadeia_caractere_erro":
-
-
+                    this.inserirErro(new Erro(lexema,linha_atual,11));
+                    estado_atual = "inicio";
 
                 break;
             }
