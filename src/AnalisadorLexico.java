@@ -149,9 +149,13 @@ public class AnalisadorLexico {
                         this.devolverCaractere(caractere);
 
                     } else if ((int) caractere == 42) {
-                        estado_atual = "operador_aritmetico";
+                                estado_atual = "operador_aritmetico";
+
+                    } else if ((int)caractere == 34){
+                                estado_atual = "cadeia_caractere_s1";
 
                     }
+
 
                 case "comentario_linha":
 
@@ -211,6 +215,51 @@ public class AnalisadorLexico {
                     lexema = lexema + caractere;
                     this.inserirToken(new Token(lexema, linha_atual, 9));
                     estado_atual = "inicio";
+
+                case "cadeia_caractere_s1":
+
+                   if ((int)caractere != 10){
+
+                       if ((int)caractere == 92 )
+                           estado_atual = "cadeia_caractere_s2";
+                       else if ((int)caractere == 34  )
+                                estado_atual = "estado_final_cadeia_caractere";
+
+                   } else
+                       estado_atual = "cadeia_caractere_erro";
+
+
+                case "cadeia_caractere_s2":
+
+                    if ((int)caractere != 10){
+
+                        if (Character.toString(caractere).matches("^([a-z]|[A-Z]|[0-9]|\")$") ||  (int)caractere >= 32 && (int)caractere <= 126) {
+                                estado_atual = "cadeia_caractere_s1";
+                        }
+                        else
+                            estado_atual = "cadeia_caractere_erro";
+                    }
+                    else
+                        estado_atual = "cadeia_caractere_erro";
+
+
+                case "estado_final_cadeia_caractere":
+
+                    this.inserirToken(new Token(lexema,linha_atual,11));
+                    estado_atual = "inicio";
+
+                case "cadeia_caractere_erro":
+
+
+
+
+
+
+
+
+
+
+
 
 
 
