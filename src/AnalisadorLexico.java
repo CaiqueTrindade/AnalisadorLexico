@@ -365,11 +365,9 @@ public class AnalisadorLexico {
                 }
 
 
-            }else
-                System.out.println("Leitura finalizada!");
-
-
+            }
         }
+        System.out.println("Leitura finalizada!");
     }
 
 
