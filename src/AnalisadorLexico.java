@@ -152,7 +152,7 @@ public class AnalisadorLexico {
                         estado_atual = "operador_aritmetico";
 
                     }
-
+                    break;
                 case "comentario_linha":
 
                     if ((int) caractere != 10)
@@ -161,11 +161,11 @@ public class AnalisadorLexico {
                         this.inserirToken(new Token(lexema, linha_atual, 10));
                         estado_atual = "inicio";
                     }
-
+                    break;
                 case "comentario_bloco_s1":
                     lexema = lexema + caractere;
                     estado_atual = "comentario_bloco_s2";
-
+                    break;
                 case "comentario_bloco_s2":
 
                     if (caractere != null) {
@@ -178,7 +178,7 @@ public class AnalisadorLexico {
                         estado_atual = "erro_comentario_bloco"; //Falta criar o erro do comentario
 
 
-
+                    break;
                 case "comentario_bloco_s3":
 
                     if (caractere != null){
@@ -194,19 +194,19 @@ public class AnalisadorLexico {
                         estado_atual = "erro_comentario_bloco"; //Falta criar o erro do comentario
 
 
-
+                    break;
                 case "estado_final_comentario_bloco":
                     this.inserirToken(new Token(lexema,linha_atual,10));
                     estado_atual = "inicio";
 
 
-
+                    break;
                 case "operador_aritmetico":
                     lexema = lexema + caractere;
                     this.inserirToken(new Token(lexema, linha_atual, 8));
                     estado_atual = "inicio";
 
-
+                    break;
                 case "operador_incremento":
                     lexema = lexema + caractere;
                     this.inserirToken(new Token(lexema, linha_atual, 9));
@@ -214,7 +214,7 @@ public class AnalisadorLexico {
 
 
 
-
+                    break;
             }
 
         }
