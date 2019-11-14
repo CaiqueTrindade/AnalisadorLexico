@@ -154,6 +154,24 @@ public class AnalisadorLexico {
                     } else if ((int)caractere == 34){
                                 estado_atual = "cadeia_caractere_s1";
 
+                    } else if ((int) caractere == 59) {
+                        this.inserirToken(new Token(caractere.toString(), linha_atual, 12));
+                    } else if ((int) caractere == 44) {
+                        this.inserirToken(new Token(caractere.toString(), linha_atual, 13));
+                    } else if ((int) caractere == 40) {
+                        this.inserirToken(new Token(caractere.toString(), linha_atual, 14));
+                    } else if ((int) caractere == 41) {
+                        this.inserirToken(new Token(caractere.toString(), linha_atual, 15));
+                    } else if ((int) caractere == 91) {
+                        this.inserirToken(new Token(caractere.toString(), linha_atual, 16));
+                    } else if ((int) caractere == 93) {
+                        this.inserirToken(new Token(caractere.toString(), linha_atual, 17));
+                    } else if ((int) caractere == 123) {
+                        this.inserirToken(new Token(caractere.toString(), linha_atual, 18));
+                    } else if ((int) caractere == 126) {
+                        this.inserirToken(new Token(caractere.toString(), linha_atual, 19));
+                    } else if ((int) caractere == 46) {
+                        this.inserirToken(new Token(caractere.toString(), linha_atual, 20));
                     }
 
                     break;
