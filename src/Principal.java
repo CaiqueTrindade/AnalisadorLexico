@@ -9,7 +9,7 @@ public class Principal {
 
     public static void main(String[] args) {
 
-        File input_diretorio = new File("\\input");
+        File input_diretorio = new File("src\\input");
 
         // Verifica se a pasta "input" existe no diretório do projeto
         if (input_diretorio.exists()) {

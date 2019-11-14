@@ -85,195 +85,205 @@ public class AnalisadorLexico {
 
     public void executarAnalise() throws IOException{
 
-        Character caractere = null;
+        Character caractere = ' ';
         String estado_atual = "inicio";
         int linha_atual = 1;
         String lexema = "";
+
 
         while(caractere != null){
 
             caractere = this.obterCaractere();
 
-            if ((int)caractere == 10)
-                linha_atual++;
+            if (caractere != null){
 
-            switch (estado_atual) {
+                if ((int)caractere == 10)
+                    linha_atual++;
 
-                case "inicio":
-                    lexema = "";
+                switch (estado_atual) {
 
-                    if ((int)caractere == 47){
-                        lexema = lexema + caractere;
-                        caractere = this.obterCaractere();
+                    case "inicio":
+                        lexema = "";
 
-                        if ((int) caractere == 47)
-                            estado_atual = "comentario_linha";
+                        if ((int)caractere == 47){
+                            lexema = lexema + caractere;
+                            caractere = this.obterCaractere();
 
-                        else if ((int) caractere == 42)
-                            estado_atual = "comentario_bloco";
-                        else {
-                            estado_atual = "operador_aritmetico";
-                            lexema = "";
-                            this.devolverCaractere(caractere);
-                        }
-                        this.devolverCaractere(caractere);
+                            if ((int) caractere == 47)
+                                estado_atual = "comentario_linha";
 
-                    } else if ((int) caractere == 43) {
-
-                        lexema = lexema + caractere;
-                        caractere = this.obterCaractere();
-
-                        if ((int) caractere == 43) {
-                            estado_atual = "operador_incremento";
-                        } else {
-                            estado_atual = "operador_aritmetico";
-                            lexema = "";
-                            this.devolverCaractere(caractere);
-
-                        }
-                        this.devolverCaractere(caractere);
-
-
-                    } else if ((int) caractere == 45) {
-                        lexema = lexema + caractere;
-                        caractere = this.obterCaractere();
-
-                        if ((int) caractere == 45) {
-                            estado_atual = "operador_incremento";
-                        } else {
-                            estado_atual = "operador_aritmetico";
-                            lexema = "";
-                            this.devolverCaractere(caractere);
-
-                        }
-                        this.devolverCaractere(caractere);
-
-                    } else if ((int) caractere == 42) {
+                            else if ((int) caractere == 42)
+                                estado_atual = "comentario_bloco";
+                            else {
                                 estado_atual = "operador_aritmetico";
+                                lexema = "";
+                                this.devolverCaractere(caractere);
+                            }
+                            this.devolverCaractere(caractere);
 
-                    } else if ((int)caractere == 34){
-                                estado_atual = "cadeia_caractere_s1";
+                        } else if ((int) caractere == 43) {
 
-                    }
+                            lexema = lexema + caractere;
+                            caractere = this.obterCaractere();
 
-                    break;
+                            if ((int) caractere == 43) {
+                                estado_atual = "operador_incremento";
+                            } else {
+                                estado_atual = "operador_aritmetico";
+                                lexema = "";
+                                this.devolverCaractere(caractere);
 
-                case "comentario_linha":
-
-                    if ((int) caractere != 10)
-                        lexema = lexema + caractere;
-                    else {
-                        this.inserirToken(new Token(lexema, linha_atual, 10));
-                        estado_atual = "inicio";
-                    }
-                    break;
-
-                case "comentario_bloco_s1":
-                    lexema = lexema + caractere;
-                    estado_atual = "comentario_bloco_s2";
-                    break;
-
-                case "comentario_bloco_s2":
-
-                    if (caractere != null) {
-                        lexema = lexema + caractere;
-
-                        if ((int) caractere == 42)
-                            estado_atual = "comentario_bloco_s3";
-                    }
-                    else
-                        estado_atual = "erro_comentario_bloco"; //Falta criar o erro do comentario
+                            }
+                            this.devolverCaractere(caractere);
 
 
-                    break;
+                        } else if ((int) caractere == 45) {
+                            lexema = lexema + caractere;
+                            caractere = this.obterCaractere();
 
-                case "comentario_bloco_s3":
+                            if ((int) caractere == 45) {
+                                estado_atual = "operador_incremento";
+                            } else {
+                                estado_atual = "operador_aritmetico";
+                                lexema = "";
+                                this.devolverCaractere(caractere);
 
-                    if (caractere != null){
-                        lexema = lexema + caractere;
+                            }
+                            this.devolverCaractere(caractere);
 
-                        if((int)caractere != 42)
-                            estado_atual = "comentario_bloco_s2";
-                        else if ((int)caractere == 47) {
-                            estado_atual = "estado_final_comentario_bloco";
+                        } else if ((int) caractere == 42) {
+                            estado_atual = "operador_aritmetico";
+
+                        } else if ((int)caractere == 34){
+                            estado_atual = "cadeia_caractere_s1";
+
                         }
-                    }
-                    else
-                        estado_atual = "erro_comentario_bloco"; //Falta criar o erro do comentario
 
-                    break;
+                        break;
 
-                case "erro_comentario_bloco":
+                    case "comentario_linha":
 
-                    this.inserirErro(new Erro(lexema,linha_atual,10));
-                    estado_atual = "inicio";
+                        if ((int) caractere != 10)
+                            lexema = lexema + caractere;
+                        else {
+                            this.inserirToken(new Token(lexema, linha_atual, 10));
+                            estado_atual = "inicio";
+                        }
+                        break;
 
-                    break;
-
-                case "estado_final_comentario_bloco":
-                    this.inserirToken(new Token(lexema,linha_atual,10));
-                    estado_atual = "inicio";
-
-                    break;
-
-                case "operador_aritmetico":
-                    lexema = lexema + caractere;
-                    this.inserirToken(new Token(lexema, linha_atual, 8));
-                    estado_atual = "inicio";
-
-                    break;
-
-                case "operador_incremento":
-                    lexema = lexema + caractere;
-                    this.inserirToken(new Token(lexema, linha_atual, 9));
-                    estado_atual = "inicio";
-
-                case "cadeia_caractere_s1":
-
-                   if ((int)caractere != 10){
-                       lexema = lexema + caractere;
-
-                       if ((int)caractere == 92 )
-                           estado_atual = "cadeia_caractere_s2";
-                       else if ((int)caractere == 34  )
-                                estado_atual = "estado_final_cadeia_caractere";
-                       else if (Character.toString(caractere).matches("^([a-z]|[A-Z]|[0-9])$") ||  (int)caractere >= 32 && (int)caractere <= 126) {
-                           estado_atual = "cadeia_caractere_s1";
-                       }
-                       else
-                           estado_atual = "cadeia_caractere_erro";
-
-                   } else
-                       estado_atual = "cadeia_caractere_erro";
-                   break;
-
-                case "cadeia_caractere_s2":
-
-                    if ((int)caractere != 10){
+                    case "comentario_bloco_s1":
                         lexema = lexema + caractere;
+                        estado_atual = "comentario_bloco_s2";
+                        break;
 
-                        if (Character.toString(caractere).matches("^([a-z]|[A-Z]|[0-9]|\")$") ||  (int)caractere >= 32 && (int)caractere <= 126) {
+                    case "comentario_bloco_s2":
+
+                        if (caractere != null) {
+                            lexema = lexema + caractere;
+
+                            if ((int) caractere == 42)
+                                estado_atual = "comentario_bloco_s3";
+                        }
+                        else
+                            estado_atual = "erro_comentario_bloco"; //Falta criar o erro do comentario
+
+
+                        break;
+
+                    case "comentario_bloco_s3":
+
+                        if (caractere != null){
+                            lexema = lexema + caractere;
+
+                            if((int)caractere != 42)
+                                estado_atual = "comentario_bloco_s2";
+                            else if ((int)caractere == 47) {
+                                estado_atual = "estado_final_comentario_bloco";
+                            }
+                        }
+                        else
+                            estado_atual = "erro_comentario_bloco"; //Falta criar o erro do comentario
+
+                        break;
+
+                    case "erro_comentario_bloco":
+
+                        this.inserirErro(new Erro(lexema,linha_atual,10));
+                        estado_atual = "inicio";
+
+                        break;
+
+                    case "estado_final_comentario_bloco":
+                        this.inserirToken(new Token(lexema,linha_atual,10));
+                        estado_atual = "inicio";
+
+                        break;
+
+                    case "operador_aritmetico":
+                        lexema = lexema + caractere;
+                        this.inserirToken(new Token(lexema, linha_atual, 8));
+                        estado_atual = "inicio";
+
+                        break;
+
+                    case "operador_incremento":
+                        lexema = lexema + caractere;
+                        this.inserirToken(new Token(lexema, linha_atual, 9));
+                        estado_atual = "inicio";
+
+                    case "cadeia_caractere_s1":
+
+                        if ((int)caractere != 10){
+                            lexema = lexema + caractere;
+
+                            if ((int)caractere == 92 )
+                                estado_atual = "cadeia_caractere_s2";
+                            else if ((int)caractere == 34  )
+                                estado_atual = "estado_final_cadeia_caractere";
+                            else if (Character.toString(caractere).matches("^([a-z]|[A-Z]|[0-9])$") ||  (int)caractere >= 32 && (int)caractere <= 126) {
                                 estado_atual = "cadeia_caractere_s1";
+                            }
+                            else
+                                estado_atual = "cadeia_caractere_erro";
+
+                        } else
+                            estado_atual = "cadeia_caractere_erro";
+                        break;
+
+                    case "cadeia_caractere_s2":
+
+                        if ((int)caractere != 10){
+                            lexema = lexema + caractere;
+
+                            if (Character.toString(caractere).matches("^([a-z]|[A-Z]|[0-9]|\")$") ||  (int)caractere >= 32 && (int)caractere <= 126) {
+                                estado_atual = "cadeia_caractere_s1";
+                            }
+                            else
+                                estado_atual = "cadeia_caractere_erro";
                         }
                         else
                             estado_atual = "cadeia_caractere_erro";
-                    }
-                    else
-                        estado_atual = "cadeia_caractere_erro";
 
-                    break;
+                        break;
 
-                case "estado_final_cadeia_caractere":
+                    case "estado_final_cadeia_caractere":
 
-                    this.inserirToken(new Token(lexema,linha_atual,11));
-                    estado_atual = "inicio";
+                        this.inserirToken(new Token(lexema,linha_atual,11));
+                        estado_atual = "inicio";
 
-                case "cadeia_caractere_erro":
-                    this.inserirErro(new Erro(lexema,linha_atual,11));
-                    estado_atual = "inicio";
+                    case "cadeia_caractere_erro":
+                        this.inserirErro(new Erro(lexema,linha_atual,11));
+                        estado_atual = "inicio";
 
-                break;
-            }
+                        break;
+                }
+
+            }else
+                System.out.println("Leitura Finalizada!");
+
+
+
+
 
         }
     }

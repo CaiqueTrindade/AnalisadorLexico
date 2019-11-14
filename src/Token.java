@@ -54,7 +54,7 @@ public class Token {
     }
 
     public String toString(){
-        return nLinha + " " + lexema + " " + this.idToToken(tipo) + ";";
+        return nLinha + " " + lexema + " " + this.idToToken(tipo) + ";\n";
     }
 
     public static String idToToken(int id){
