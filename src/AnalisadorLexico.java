@@ -376,7 +376,8 @@ public class AnalisadorLexico {
         OutputStream arquivo;
         OutputStreamWriter arquivoEscrita;
 
-        arquivo = new FileOutputStream(this.file);
+        File fileSaida= new File("\\src\\out\\"+"saida"+this.file.getName().replaceAll("[^0-9]","")+".txt");
+        arquivo = new FileOutputStream(fileSaida);
         arquivoEscrita = new OutputStreamWriter(arquivo);
         Iterator it = getTokens().iterator();
 
