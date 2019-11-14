@@ -90,15 +90,14 @@ public class AnalisadorLexico {
         int linha_atual = 1;
         String lexema = "";
 
-
         while(caractere != null){
 
             caractere = this.obterCaractere();
 
-            if (caractere != null){
+            if ((int)caractere == 10)
+                linha_atual++;
 
-                if ((int)caractere == 10)
-                    linha_atual++;
+            if (caractere != null){
 
                 switch (estado_atual) {
 
@@ -106,68 +105,67 @@ public class AnalisadorLexico {
                         lexema = "";
 
                         if (((int) caractere >= 65 && (int) caractere <= 90) || ((int) caractere >= 97 && (int) caractere <= 122)) {
-
                             lexema = lexema + caractere;
                             estado_atual = "identificador";
-
-                        }else if ((int)caractere == 47){
+                        } else if ((int) caractere >= 48 && (int) caractere <= 57) {
+                            lexema = lexema + caractere;
+                            estado_atual = "digito_s1";
+                        } else if ((int)caractere == 47){
                             lexema = lexema + caractere;
                             caractere = this.obterCaractere();
-                            if ((int)caractere == 47){
-                                lexema = lexema + caractere;
-                                caractere = this.obterCaractere();
 
-                                if ((int) caractere == 47)
-                                    estado_atual = "comentario_linha";
+                            if ((int) caractere == 47)
+                                estado_atual = "comentario_linha";
 
-                                else if ((int) caractere == 42)
-                                    estado_atual = "comentario_bloco";
-                                else {
-                                    estado_atual = "operador_aritmetico";
-                                    lexema = "";
-                                    this.devolverCaractere(caractere);
-                                }
-                                this.devolverCaractere(caractere);
-
-                          }else if ((int) caractere == 43) {
-
-                                lexema = lexema + caractere;
-                                caractere = this.obterCaractere();
-
-                                if ((int) caractere == 43) {
-                                    estado_atual = "operador_incremento";
-                                } else {
-                                    estado_atual = "operador_aritmetico";
-                                    lexema = "";
-                                    this.devolverCaractere(caractere);
-
-                                }
-                                this.devolverCaractere(caractere);
-
-
-                            } else if ((int) caractere == 45) {
-                                lexema = lexema + caractere;
-                                caractere = this.obterCaractere();
-
-                                if ((int) caractere == 45) {
-                                    estado_atual = "operador_incremento";
-                                } else {
-                                    estado_atual = "operador_aritmetico";
-                                    lexema = "";
-                                    this.devolverCaractere(caractere);
-
-                                }
-                                this.devolverCaractere(caractere);
-
-                            }else if ((int) caractere == 42) {
+                            else if ((int) caractere == 42)
+                                estado_atual = "comentario_bloco";
+                            else {
                                 estado_atual = "operador_aritmetico";
+                                lexema = "";
+                                this.devolverCaractere(caractere);
+                            }
+                            this.devolverCaractere(caractere);
 
-                            }else if ((int)caractere == 34){
-                                estado_atual = "cadeia_caractere_s1";
+                        } else if ((int) caractere == 43) {
+
+                            lexema = lexema + caractere;
+                            caractere = this.obterCaractere();
+
+                            if ((int) caractere == 43) {
+                                estado_atual = "operador_incremento";
+                            } else {
+                                estado_atual = "operador_aritmetico";
+                                lexema = "";
+                                this.devolverCaractere(caractere);
+
+                            }
+                            this.devolverCaractere(caractere);
+
+
+                        } else if ((int) caractere == 45) {
+                            lexema = lexema + caractere;
+                            caractere = this.obterCaractere();
+
+                            if ((int) caractere == 45) {
+                                estado_atual = "operador_incremento";
+                            } else if ((int) caractere == 9 || (int) caractere == 32 || ((int) caractere >= 48 && (int) caractere <= 57)) {
+                                estado_atual = "operador_ou_digito";
+                                this.devolverCaractere(caractere);
+                            }
+                            else {
+                                estado_atual = "operador_aritmetico";
+                                lexema = "";
+                                this.devolverCaractere(caractere);
 
                             }
 
-                            break;
+                            this.devolverCaractere(caractere);
+
+                        } else if ((int) caractere == 42) {
+                            estado_atual = "operador_aritmetico";
+
+                        } else if ((int)caractere == 34){
+                            estado_atual = "cadeia_caractere_s1";
 
                         } else if ((int) caractere == 59) {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 12));
@@ -189,7 +187,7 @@ public class AnalisadorLexico {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 20));
                         }
 
-
+                        break;
 
                     case "comentario_linha":
 
@@ -200,12 +198,10 @@ public class AnalisadorLexico {
                             estado_atual = "inicio";
                         }
                         break;
-
                     case "comentario_bloco_s1":
                         lexema = lexema + caractere;
                         estado_atual = "comentario_bloco_s2";
                         break;
-
                     case "comentario_bloco_s2":
 
                         if (caractere != null) {
@@ -234,12 +230,6 @@ public class AnalisadorLexico {
                         else
                             estado_atual = "erro_comentario_bloco"; //Falta criar o erro do comentario
 
-                        break;
-
-                    case "erro_comentario_bloco":
-
-                        this.inserirErro(new Erro(lexema,linha_atual,10));
-                        estado_atual = "inicio";
 
                         break;
 
@@ -247,23 +237,20 @@ public class AnalisadorLexico {
                         this.inserirToken(new Token(lexema,linha_atual,10));
                         estado_atual = "inicio";
 
-                        break;
 
+                        break;
                     case "operador_aritmetico":
                         lexema = lexema + caractere;
                         this.inserirToken(new Token(lexema, linha_atual, 8));
                         estado_atual = "inicio";
 
                         break;
-
-
                     case "operador_incremento":
                         lexema = lexema + caractere;
                         this.inserirToken(new Token(lexema, linha_atual, 9));
                         estado_atual = "inicio";
-                    break;
-
-                     case "cadeia_caractere_s1":
+                        break;
+                    case "cadeia_caractere_s1":
 
                         if ((int)caractere != 10){
                             lexema = lexema + caractere;
@@ -272,17 +259,15 @@ public class AnalisadorLexico {
                                 estado_atual = "cadeia_caractere_s2";
                             else if ((int)caractere == 34  )
                                 estado_atual = "estado_final_cadeia_caractere";
-
                             else if (Character.toString(caractere).matches("^([a-z]|[A-Z]|[0-9])$") ||  (int)caractere >= 32 && (int)caractere <= 126) {
                                 estado_atual = "cadeia_caractere_s1";
                             }
                             else
                                 estado_atual = "cadeia_caractere_erro";
-                       }
-                       else
-                           estado_atual = "cadeia_caractere_erro";
 
-                       break;
+                        } else
+                            estado_atual = "cadeia_caractere_erro";
+                        break;
 
                     case "cadeia_caractere_s2":
 
@@ -310,9 +295,6 @@ public class AnalisadorLexico {
                         estado_atual = "inicio";
 
                         break;
-
-
-
                     case "identificador":
                         if (((int) caractere >= 65 && (int) caractere <= 90) || ((int) caractere >= 97 && (int) caractere <= 122) || ((int) caractere >= 48 && (int) caractere <= 57) || (int) caractere == 95)
                             lexema = lexema + caractere;
@@ -338,14 +320,53 @@ public class AnalisadorLexico {
                         else
                             lexema = lexema + caractere;
                         break;
-
-                              
+                    case "operador_ou_digito":
+                        if ((int) caractere >= 48 && (int) caractere <= 57) {
+                            estado_atual = "digito_s1";
+                            lexema = lexema + caractere;
+                        } else if ((int) caractere != 9 && (int) caractere != 32) {
+                            lexema = "-";
+                            this.inserirToken(new Token(lexema, linha_atual, 8));
+                            this.devolverCaractere(caractere);
+                            estado_atual = "inicio";
+                        }
+                        break;
+                    case "digito_s1":
+                        if ((int) caractere >= 48 && (int) caractere <= 57) {
+                            lexema = lexema + caractere;
+                        } else if ((int) caractere == 46) {
+                            caractere = this.obterCaractere();
+                            if ((int) caractere >= 48 && (int) caractere <= 57) {
+                                lexema = lexema + ".";
+                                estado_atual = "digito_s2";
+                            }
+                            else {
+                                this.inserirToken(new Token(lexema, linha_atual, 2));
+                                estado_atual = "inicio";
+                            }
+                            this.devolverCaractere(caractere);
+                        }
+                        else {
+                            this.inserirToken(new Token(lexema, linha_atual, 2));
+                            estado_atual = "inicio";
+                            this.devolverCaractere(caractere);
+                        }
+                        break;
+                    case "digito_s2":
+                        if (((int) caractere >= 48 && (int) caractere <= 57)) {
+                            lexema = lexema + caractere;
+                        }
+                        else {
+                            this.inserirToken(new Token(lexema, linha_atual, 1));
+                            estado_atual = "inicio";
+                            this.devolverCaractere(caractere);
+                        }
+                        break;
                 }
 
+
             }else
-                System.out.println("Leitura Finalizada!");
-
-
+                System.out.println("Leitura finalizada!");
 
 
         }
@@ -362,10 +383,10 @@ public class AnalisadorLexico {
         Iterator it = getTokens().iterator();
 
         if(! this.tokensIsVazio())
-           arquivoEscrita.write("Lista de Tokens\n");
+            arquivoEscrita.write("Lista de Tokens\n");
 
         while(it.hasNext()){
-             arquivoEscrita.write(it.next().toString());
+            arquivoEscrita.write(it.next().toString());
         }
 
         it = getErros().iterator();
@@ -390,27 +411,18 @@ public class AnalisadorLexico {
 /* Exemplo inicial do autômato de identificadores e palavras reservadas
 try {
 InputStream entrada = new FileInputStream("input\\entrada1.txt");
-
 int c, estado_atual, linha_atual;
 String lista_tokens = "", caractere_atual;
-
 estado_atual = 0;
 linha_atual = 0;
-
 // Lê o próximo caractere em ASCII
 c = entrada.read();
-
 boolean repete = true;
-
-
 while (repete) {
-
     // Verdadeiro quando o caractere atual é diferente de um caractere de retorno ao início da linha \r
     if (c != 13) {
-
         // Transforma o ASCII em seu respectivo caractere e o armazena em uma String
         caractere_atual = Character.toString((char) c);
-
         // Simulação do autômato
         switch (estado_atual) {
             case 0:
@@ -426,7 +438,6 @@ while (repete) {
                     estado_atual = -1;
                     lista_tokens += "" + linha_atual + " " + caractere_atual;
                 }
-
                 if (c != -1)
                     c = entrada.read();
                 else
@@ -441,14 +452,11 @@ while (repete) {
                 else  if (c == 9 || c == 32 || c == 10 || c == -1) {
                     String tabela_aux[] = lista_tokens.split("\n");
                     String ultima_linha = tabela_aux[tabela_aux.length - 1];
-
                     if (ultima_linha.split(" ")[1].matches("^(var|const|typedef|struct|extends|procedure|function|start|return|if|else|then|while|read|print|int|real|boolean|string|true|false|global|local)$"))
                         lista_tokens += " " + ultima_linha.split(" ")[1] + " (palavra reservada)\n";
                     else
                         lista_tokens += " identificador\n";
-
                     estado_atual = 0;
-
                     if (c == 9 || c == 32)
                         c = entrada.read();
                 }
@@ -463,7 +471,6 @@ while (repete) {
                 if (c == 9 || c == 32 || c == 10 || c == -1){
                     lista_tokens += " ???\n";
                     estado_atual = 0;
-
                     if (c == 9 || c == 32)
                         c = entrada.read();
                 }
@@ -477,7 +484,6 @@ while (repete) {
         c = entrada.read();
     }
 }
-
 System.out.print(lista_tokens);
 entrada.close();
 } catch (FileNotFoundException e) {
@@ -486,4 +492,3 @@ e.printStackTrace();
 e.printStackTrace();
 }
 */
-
