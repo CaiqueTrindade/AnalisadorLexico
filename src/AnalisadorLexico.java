@@ -102,7 +102,12 @@ public class AnalisadorLexico {
                 case "inicio":
                     lexema = "";
 
-                    if ((int)caractere == 47){
+                    if (((int) caractere >= 65 && (int) caractere <= 90) || ((int) caractere >= 97 && (int) caractere <= 122)) {
+
+                        lexema = lexema + caractere;
+                        estado_atual = "identificador";
+
+                    } else if ((int)caractere == 47){
                         lexema = lexema + caractere;
                         caractere = this.obterCaractere();
 
@@ -236,7 +241,7 @@ public class AnalisadorLexico {
                     lexema = lexema + caractere;
                     this.inserirToken(new Token(lexema, linha_atual, 9));
                     estado_atual = "inicio";
-
+                    break;
                 case "cadeia_caractere_s1":
 
                    if ((int)caractere != 10){
@@ -254,7 +259,7 @@ public class AnalisadorLexico {
 
                    } else
                        estado_atual = "cadeia_caractere_erro";
-                break;
+                    break;
 
                 case "cadeia_caractere_s2":
 
@@ -270,7 +275,7 @@ public class AnalisadorLexico {
                     else
                         estado_atual = "cadeia_caractere_erro";
 
-                break;
+                    break;
 
                 case "estado_final_cadeia_caractere":
 
@@ -281,7 +286,32 @@ public class AnalisadorLexico {
                     this.inserirErro(new Erro(lexema,linha_atual,11));
                     estado_atual = "inicio";
 
-                break;
+                    break;
+                case "identificador":
+                    if (((int) caractere >= 65 && (int) caractere <= 90) || ((int) caractere >= 97 && (int) caractere <= 122) || ((int) caractere >= 48 && (int) caractere <= 57) || (int) caractere == 95)
+                        lexema = lexema + caractere;
+                    else {
+                        if ((caractere.toString()).matches("[+*/!=<>|&;,(){}. \n\t]") || (int) caractere == 45 || (int) caractere == 91 || (int) caractere == 93) {
+                            if (lexema.matches("^(var|const|typedef|struct|extends|procedure|function|start|return|if|else|then|while|read|print|int|real|boolean|string|true|false|global|local)$"))
+                                this.inserirToken(new Token(lexema, linha_atual, 0));
+                            else
+                                this.inserirToken(new Token(lexema, linha_atual, 3));
+                            this.devolverCaractere(caractere);
+                            estado_atual = "inicio";
+                        }
+                        else
+                            estado_atual = "identificador_error";
+                    }
+                    break;
+                case "identificador_erro":
+                    if ((caractere.toString()).matches("[+*/!=<>|&;,(){}. \n\t]") || (int) caractere == 45 || (int) caractere == 91 || (int) caractere == 93) {
+                        this.inserirErro(new Erro(lexema, linha_atual, 3));
+                        estado_atual = "inicio";
+                        this.devolverCaractere(caractere);
+                    }
+                    else
+                        lexema = lexema + caractere;
+                    break;
             }
 
         }
