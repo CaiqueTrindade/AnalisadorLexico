@@ -21,7 +21,8 @@ public class Principal {
 
                 // Varre a lista de arquivos da pasta "input" em busca de arquivos de entrada válidos, isto é, que estejam dentro do padrão de entrada
                 for (File input: input_diretorio.listFiles())
-                    if (input.isFile() && input.getName().matches("^(entrada)\\d+(.txt)$"))
+
+                    if (input.isFile() && input.getName().matches("^entrada[0-9]+\\.txt$"))
                         entradas_validas.add(input);
 
                 // Se houver arquivos válidos
