@@ -9,7 +9,7 @@ public class Principal {
 
     public static void main(String[] args) {
 
-        File input_diretorio = new File("src\\input");
+        File input_diretorio = new File("input");
 
         // Verifica se a pasta "input" existe no diretório do projeto
         if (input_diretorio.exists()) {
@@ -21,7 +21,7 @@ public class Principal {
 
                 // Varre a lista de arquivos da pasta "input" em busca de arquivos de entrada válidos, isto é, que estejam dentro do padrão de entrada
                 for (File input: input_diretorio.listFiles())
-                    if (input.isFile() && input.getName().matches("^(input)\\d+(.txt)$"))
+                    if (input.isFile() && input.getName().matches("^(entrada)\\d+(.txt)$"))
                         entradas_validas.add(input);
 
                 // Se houver arquivos válidos
