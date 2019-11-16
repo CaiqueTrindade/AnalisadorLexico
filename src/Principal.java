@@ -43,6 +43,9 @@ public class Principal {
                             al.executarAnalise();
                             // Solicita que o AnalisadorLexico faça a escrita do arquivo de saída com os tokens e os erros encontrados
                             al.escreverEmArquivo();
+
+                            if(al.errosIsVazio())
+                                System.out.println("O arquivo "+ input.getName() +" não possui erro!\n Análise feita com sucesso!");
                         } catch (FileNotFoundException e) {
                             System.err.println("Arquivo de entrada não encontrado.");
                             e.printStackTrace();

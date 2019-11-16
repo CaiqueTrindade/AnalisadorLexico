@@ -299,6 +299,8 @@ public class AnalisadorLexico {
                             estado_atual = "erro_comentario_bloco"; //Falta criar o erro do comentario
 
 
+
+
                         break;
 
                     case "estado_final_comentario_bloco":
@@ -458,7 +460,7 @@ public class AnalisadorLexico {
 
         it = getErros().iterator();
 
-        if(! this.errosIsVazio())
+        if(!this.errosIsVazio())
             arquivoEscrita.write("Lista de Erros\n");
 
         while (it.hasNext()){
