@@ -94,6 +94,7 @@ public class AnalisadorLexico {
 
             caractere = this.obterCaractere();
 
+
             if (caractere != null){
                 int ascii = (int)caractere;
 
@@ -101,10 +102,7 @@ public class AnalisadorLexico {
 
                     case "inicio":
 
-                        if (ascii == 10) {
-                            linha_atual++;
-                            System.out.println("Linha: "+linha_atual);
-                        }
+
 
                         lexema = "";
 
@@ -116,19 +114,17 @@ public class AnalisadorLexico {
                             estado_atual = "digito_s1";
                         } else if (ascii == 47){
                             lexema = lexema + caractere;
-                            caractere = this.obterCaractere();
+                            ascii =  (int) this.obterCaractere();
 
                             if (ascii == 47)
                                 estado_atual = "comentario_linha";
-
                             else if (ascii == 42)
                                 estado_atual = "comentario_bloco";
                             else {
                                 estado_atual = "operador_aritmetico";
-                                lexema = "";
-                                this.devolverCaractere(caractere);
                             }
-                            this.devolverCaractere(caractere);
+
+                            this.devolverCaractere((char)ascii);
 
                         } else if (ascii == 43) {
 
@@ -266,6 +262,7 @@ public class AnalisadorLexico {
                             estado_atual = "inicio";
                         }
                         break;
+
                     case "comentario_bloco_s1":
                         lexema = lexema + caractere;
                         estado_atual = "comentario_bloco_s2";
@@ -310,7 +307,7 @@ public class AnalisadorLexico {
 
                         break;
                     case "operador_aritmetico":
-                        lexema = lexema + caractere;
+                        this.devolverCaractere(caractere);
                         this.inserirToken(new Token(lexema, linha_atual, 8));
                         estado_atual = "inicio";
 
@@ -435,6 +432,11 @@ public class AnalisadorLexico {
                 }
 
 
+                if (ascii == 10) {
+                    linha_atual++;
+                    System.out.println("Linha: "+linha_atual);
+                }
+                System.out.println("O estado atual equivale a "+ estado_atual);
             }
         }
         System.out.println("Leitura finalizada!");
@@ -452,16 +454,18 @@ public class AnalisadorLexico {
         Iterator it = getTokens().iterator();
 
         if(! this.tokensIsVazio())
-            arquivoEscrita.write("Lista de Tokens\n");
+            arquivoEscrita.write("Lista de Tokens\n\n");
 
+        int i = 0;
         while(it.hasNext()){
+            //System.out.println("Hello " + it.next().toString());
             arquivoEscrita.write(it.next().toString());
         }
 
         it = getErros().iterator();
 
         if(!this.errosIsVazio())
-            arquivoEscrita.write("Lista de Erros\n");
+            arquivoEscrita.write("Lista de Erros\n\n");
 
         while (it.hasNext()){
             arquivoEscrita.write(it.next().toString());

@@ -1,3 +1,2 @@
-\\comentario
-\\comentario
-
+//comentario
+///comentario
