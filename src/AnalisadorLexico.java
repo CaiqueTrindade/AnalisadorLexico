@@ -89,15 +89,18 @@ public class AnalisadorLexico {
         String estado_atual = "inicio";
         int linha_atual = 1;
         String lexema = "";
+        int ascii = 0;
 
         while(caractere != null){
 
             caractere = this.obterCaractere();
 
 
-            if (caractere != null){
-                int ascii = (int)caractere;
+            if (caractere != null) {
+                ascii = (int) caractere;
+            }
 
+            System.out.println("Ascii "+ ascii +" "+ estado_atual);
                 switch (estado_atual) {
 
                     case "inicio":
@@ -119,7 +122,7 @@ public class AnalisadorLexico {
                             if (ascii == 47)
                                 estado_atual = "comentario_linha";
                             else if (ascii == 42)
-                                estado_atual = "comentario_bloco";
+                                estado_atual = "comentario_bloco_s1";
                             else {
                                 estado_atual = "operador_aritmetico";
                             }
@@ -264,6 +267,7 @@ public class AnalisadorLexico {
                         break;
 
                     case "comentario_bloco_s1":
+
                         lexema = lexema + caractere;
                         estado_atual = "comentario_bloco_s2";
                         break;
@@ -271,7 +275,6 @@ public class AnalisadorLexico {
 
                         if (caractere != null) {
                             lexema = lexema + caractere;
-
                             if (ascii == 42)
                                 estado_atual = "comentario_bloco_s3";
                         }
@@ -285,12 +288,17 @@ public class AnalisadorLexico {
 
                         if (caractere != null){
                             lexema = lexema + caractere;
+                            ascii = (int)caractere;
 
-                            if((int)caractere != 42)
-                                estado_atual = "comentario_bloco_s2";
-                            else if ((int)caractere == 47) {
+                            if (ascii == 47) {
                                 estado_atual = "estado_final_comentario_bloco";
+                                this.devolverCaractere(caractere);
                             }
+                            else
+                                estado_atual = "comentario_bloco_s2";
+
+
+
                         }
                         else
                             estado_atual = "erro_comentario_bloco"; //Falta criar o erro do comentario
@@ -301,9 +309,9 @@ public class AnalisadorLexico {
                         break;
 
                     case "estado_final_comentario_bloco":
+                        System.out.println("Chegou sim");
                         this.inserirToken(new Token(lexema,linha_atual,10));
                         estado_atual = "inicio";
-
 
                         break;
                     case "operador_aritmetico":
@@ -437,7 +445,7 @@ public class AnalisadorLexico {
                     System.out.println("Linha: "+linha_atual);
                 }
                 System.out.println("O estado atual equivale a "+ estado_atual);
-            }
+
         }
         System.out.println("Leitura finalizada!");
     }
