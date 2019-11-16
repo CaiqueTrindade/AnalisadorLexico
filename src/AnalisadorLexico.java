@@ -87,17 +87,12 @@ public class AnalisadorLexico {
 
         Character caractere = ' ';
         String estado_atual = "inicio";
-        int linha_atual = 0;
+        int linha_atual = 1;
         String lexema = "";
 
         while(caractere != null){
 
             caractere = this.obterCaractere();
-
-            if (caractere != null && (int)caractere == 10) {
-                linha_atual++;
-                System.out.println("Linha: "+linha_atual);
-            }
 
             if (caractere != null){
                 int ascii = (int)caractere;
@@ -105,6 +100,12 @@ public class AnalisadorLexico {
                 switch (estado_atual) {
 
                     case "inicio":
+
+                        if (ascii == 10) {
+                            linha_atual++;
+                            System.out.println("Linha: "+linha_atual);
+                        }
+
                         lexema = "";
 
                         if ((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122)) {

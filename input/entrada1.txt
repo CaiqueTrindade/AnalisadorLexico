@@ -1,15 +1,3 @@
 \\comentario
 \\comentario
-=
-!
-==
-!=
-&&
-||
-<
->
-<= fim
->=
-|v
-&u
 

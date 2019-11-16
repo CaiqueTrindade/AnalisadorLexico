@@ -1,16 +1,3 @@
 Lista de Tokens
 1 comentario Identificador;
-3 comentario Identificador;
-5 = Operador Relacional de Atribuição;
-7 ! Operador Lógico de Negação;
-8 == Operador Relacional;
-9 != Operador Relacional;
-10 && Operador Lógico;
-11 || Operador Lógico;
-13 < Operador Relacional;
-15 > Operador Relacional;
-16 <= Operador Relacional;
-17 fim Identificador;
-18 >= Operador Relacional;
-20 v Identificador;
-22 u Identificador;
+2 comentario Identificador;
