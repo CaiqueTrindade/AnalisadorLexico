@@ -38,7 +38,7 @@ public class Erro {
     }
 
     public String toString(){
-        return nLinha + " " + lexema + " " + "Malformação de " +this.idToToken(tipo) + ";";
+        return nLinha + " " + lexema + " " + "Mal formação de " +this.idToToken(tipo) + ";";
     }
 
     public static String idToToken(int id){

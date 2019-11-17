@@ -19,7 +19,7 @@ public class Token {
         temp.put(6, "Operador Relacional");
         temp.put(7, "Operador Relacional de Atribuição");
         temp.put(8, "Operador Aritmético");
-        temp.put(9, "Operador Aritmético de incremento");
+        temp.put(9, "Operador Aritmético de incremento/decremento");
         temp.put(10, "Delimitador de Comentário");
         temp.put(11, "Cadeia de Caracteres");
         temp.put(12, ";");

@@ -96,15 +96,15 @@ public class AnalisadorLexico {
             caractere = this.obterCaractere();
 
 
-            if (caractere != null) {
-                ascii = (int) caractere;
-            }
 
-            System.out.println("Ascii "+ ascii +" "+ estado_atual);
+            if (caractere != null)
+                ascii = (int) caractere;
+            else
+                estado_atual = "";
+
                 switch (estado_atual) {
 
                     case "inicio":
-
 
 
                         lexema = "";
@@ -117,33 +117,46 @@ public class AnalisadorLexico {
                             estado_atual = "digito_s1";
                         } else if (ascii == 47){
                             lexema = lexema + caractere;
-                            ascii =  (int) this.obterCaractere();
 
-                            if (ascii == 47)
-                                estado_atual = "comentario_linha";
-                            else if (ascii == 42)
-                                estado_atual = "comentario_bloco_s1";
-                            else {
-                                estado_atual = "operador_aritmetico";
-                            }
+                            caractere =  this.obterCaractere();
 
-                            this.devolverCaractere((char)ascii);
+                            if (caractere != null){
 
-                        } else if (ascii == 43) {
+                                ascii = (int) caractere;
 
-                            lexema = lexema + caractere;
-                            caractere = this.obterCaractere();
+                                if (ascii == 47)
+                                    estado_atual = "comentario_linha";
+                                else if (ascii == 42)
+                                    estado_atual = "comentario_bloco_s1";
+                                else {
+                                    this.inserirToken(new Token(lexema, linha_atual, 8));
+                                }
 
-                            if (ascii == 43) {
-                                estado_atual = "operador_incremento";
-                            } else {
-                                estado_atual = "operador_aritmetico";
-                                lexema = "";
                                 this.devolverCaractere(caractere);
 
                             }
-                            this.devolverCaractere(caractere);
+                            else
+                                this.inserirToken(new Token(lexema, linha_atual, 8));
 
+
+                        } else if (ascii == 43 || ascii == 45) {
+
+                            lexema = lexema + caractere;
+                            caractere =  this.obterCaractere();
+
+                            if (caractere != null){
+                                ascii = (int) caractere;
+
+                                if (ascii == 43 || ascii == 45)
+                                    estado_atual = "operador_incremento";
+                                else {
+                                    this.inserirToken(new Token(lexema, linha_atual, 9));
+                                }
+                                this.devolverCaractere(caractere);
+
+                            }
+                            else
+                                this.inserirToken(new Token(lexema, linha_atual, 8));
 
                         } else if (ascii == 45) {
                             lexema = lexema + caractere;
@@ -165,10 +178,11 @@ public class AnalisadorLexico {
                             this.devolverCaractere(caractere);
 
                         } else if (ascii == 42) {
-                            estado_atual = "operador_aritmetico";
+                            this.inserirToken(new Token(caractere+"", linha_atual, 8));
 
-                        } else if ((int)caractere == 34){
+                        } else if (ascii == 34){
                             estado_atual = "cadeia_caractere_s1";
+
 
                         } else if (ascii == 59) {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 12));
@@ -258,7 +272,7 @@ public class AnalisadorLexico {
                         break;
                     case "comentario_linha":
 
-                        if (ascii != 10)
+                        if (ascii != 10 && caractere != null)
                             lexema = lexema + caractere;
                         else {
                             this.inserirToken(new Token(lexema, linha_atual, 10));
@@ -273,13 +287,17 @@ public class AnalisadorLexico {
                         break;
                     case "comentario_bloco_s2":
 
+
                         if (caractere != null) {
                             lexema = lexema + caractere;
                             if (ascii == 42)
                                 estado_atual = "comentario_bloco_s3";
                         }
-                        else
-                            estado_atual = "erro_comentario_bloco"; //Falta criar o erro do comentario
+                        else{
+                            this.inserirErro(new Erro(lexema, linha_atual, 10));
+                            estado_atual = "inicio";
+                        }
+
 
 
                         break;
@@ -290,33 +308,30 @@ public class AnalisadorLexico {
                             lexema = lexema + caractere;
                             ascii = (int)caractere;
 
-                            if (ascii == 47) {
-                                estado_atual = "estado_final_comentario_bloco";
-                                this.devolverCaractere(caractere);
-                            }
-                            else
+                            if (ascii != 42 && ascii != 47) {
                                 estado_atual = "comentario_bloco_s2";
-
-
+                            }
+                            else if (ascii == 47){
+                                this.inserirToken(new Token(lexema,linha_atual,10));
+                                estado_atual = "inicio";
+                            }
 
                         }
-                        else
-                            estado_atual = "erro_comentario_bloco"; //Falta criar o erro do comentario
+                        else {
+                            this.inserirErro(new Erro(lexema, linha_atual, 10));
+                            estado_atual = "inicio";
 
-
-
-
-                        break;
-
-                    case "estado_final_comentario_bloco":
-                        System.out.println("Chegou sim");
-                        this.inserirToken(new Token(lexema,linha_atual,10));
-                        estado_atual = "inicio";
+                        }
 
                         break;
+
                     case "operador_aritmetico":
-                        this.devolverCaractere(caractere);
-                        this.inserirToken(new Token(lexema, linha_atual, 8));
+                        if(caractere != null){
+                            this.devolverCaractere(caractere);
+                            this.inserirToken(new Token(lexema, linha_atual, 8));
+                        }
+                        else
+                            this.inserirToken(new Token(lexema, linha_atual, 8));
                         estado_atual = "inicio";
 
                         break;
@@ -325,51 +340,48 @@ public class AnalisadorLexico {
                         this.inserirToken(new Token(lexema, linha_atual, 9));
                         estado_atual = "inicio";
                         break;
+
                     case "cadeia_caractere_s1":
 
-                        if ((int)caractere != 10){
+                        if (ascii != 10){
                             lexema = lexema + caractere;
 
-                            if ((int)caractere == 92 )
+                            if (ascii == 92 )
                                 estado_atual = "cadeia_caractere_s2";
-                            else if ((int)caractere == 34  )
-                                estado_atual = "estado_final_cadeia_caractere";
-                            else if (Character.toString(caractere).matches("^([a-z]|[A-Z]|[0-9])$") ||  (int)caractere >= 32 && (int)caractere <= 126) {
-                                estado_atual = "cadeia_caractere_s1";
+                            else if (ascii == 34  ){
+                                this.inserirToken(new Token(lexema,linha_atual,11));
+                                estado_atual = "inicio";
                             }
-                            else
-                                estado_atual = "cadeia_caractere_erro";
+                            else if (ascii < 32 || ascii > 126) {
+                                this.inserirErro(new Erro(lexema,linha_atual,11));
+                                estado_atual = "inicio";
+                            }
 
-                        } else
-                            estado_atual = "cadeia_caractere_erro";
+                        } else{
+                            this.inserirErro(new Erro(lexema,linha_atual,11));
+                            estado_atual = "inicio";
+                        }
                         break;
 
                     case "cadeia_caractere_s2":
 
-                        if ((int)caractere != 10){
+                        if (ascii != 10){
                             lexema = lexema + caractere;
 
-                            if (Character.toString(caractere).matches("^([a-z]|[A-Z]|[0-9]|\")$") ||  (int)caractere >= 32 && (int)caractere <= 126) {
+                            if (ascii >= 32 || ascii <= 126) {
                                 estado_atual = "cadeia_caractere_s1";
                             }
-                            else
-                                estado_atual = "cadeia_caractere_erro";
+                            else {
+                                this.inserirErro(new Erro(lexema, linha_atual, 11));
+                                estado_atual = "inicio";
+                            }
                         }
-                        else
-                            estado_atual = "cadeia_caractere_erro";
-
+                        else {
+                            this.inserirErro(new Erro(lexema, linha_atual, 11));
+                            estado_atual = "inicio";
+                        }
                         break;
 
-                    case "estado_final_cadeia_caractere":
-
-                        this.inserirToken(new Token(lexema,linha_atual,11));
-                        estado_atual = "inicio";
-
-                    case "cadeia_caractere_erro":
-                        this.inserirErro(new Erro(lexema,linha_atual,11));
-                        estado_atual = "inicio";
-
-                        break;
                     case "identificador":
                         if ((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || (ascii >= 48 && ascii <= 57) || ascii == 95)
                             lexema = lexema + caractere;
@@ -444,7 +456,6 @@ public class AnalisadorLexico {
                     linha_atual++;
                     System.out.println("Linha: "+linha_atual);
                 }
-                System.out.println("O estado atual equivale a "+ estado_atual);
 
         }
         System.out.println("Leitura finalizada!");
@@ -473,7 +484,7 @@ public class AnalisadorLexico {
         it = getErros().iterator();
 
         if(!this.errosIsVazio())
-            arquivoEscrita.write("Lista de Erros\n\n");
+            arquivoEscrita.write("\n\nLista de Erros\n\n");
 
         while (it.hasNext()){
             arquivoEscrita.write(it.next().toString());
