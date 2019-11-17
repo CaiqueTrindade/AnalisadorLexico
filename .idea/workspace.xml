@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="61ce5812-d912-407c-9e79-79001d730e6b" name="Default" comment="">
+    <list default="true" id="8ec9cbba-1ae9-461a-ab23-1b336d27a14b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/entrada2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input/entrada2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/entrada1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input/entrada1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/entrada2.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorLexico.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorLexico.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Erro.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/Erro.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Principal.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/Principal.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Token.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/Token.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/saida1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida1.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/saida2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AnalisadorLexico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorLexico.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Erro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Erro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Principal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Principal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Token.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,7 +25,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1ThXKgKBpXfvuk7ucDBv7yiB9nc" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-65" />
+    <option name="y" value="139" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -75,26 +86,16 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="ServiceViewManager">
-    <option name="allServicesViewState">
-      <serviceView>
-        <treeState>
-          <expand />
-          <select />
-        </treeState>
-      </serviceView>
-    </option>
-  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="61ce5812-d912-407c-9e79-79001d730e6b" name="Default" comment="" />
-      <created>1573685937079</created>
+      <changelist id="8ec9cbba-1ae9-461a-ab23-1b336d27a14b" name="Default" comment="" />
+      <created>1573921729976</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1573685937079</updated>
+      <updated>1573921729976</updated>
     </task>
     <servers />
   </component>

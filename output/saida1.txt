@@ -1,3 +1,4 @@
 Lista de Tokens
-1 comentario Identificador;
-2 comentario Identificador;
+
+1 * Operador Aritmético;
+1 * Operador Aritmético;
