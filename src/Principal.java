@@ -46,6 +46,8 @@ public class Principal {
 
                             if(al.errosIsVazio())
                                 System.out.println("O arquivo "+ input.getName() +" não possui erro! Análise feita com sucesso!");
+
+                            System.out.println("Leitura do arquivo " + input.getName() + " finalizada!");
                         } catch (FileNotFoundException e) {
                             System.err.println("Arquivo de entrada não encontrado.");
                             e.printStackTrace();
