@@ -103,7 +103,6 @@ public class AnalisadorLexico {
 
                         if (ascii == 10) {
                             linha_atual++;
-                            System.out.println("Linha: "+linha_atual);
                         }
 
                         lexema = "";
@@ -242,7 +241,7 @@ public class AnalisadorLexico {
                             lexema = lexema + caractere;
                             this.inserirToken(new Token(lexema, linha_atual, 4));
                         }else{
-                            System.out.println("erro de eComercial mal formado, tratar e colocar na classe depois");
+                            this.inserirErro(new Erro(lexema, linha_atual,4));
                             this.devolverCaractere(caractere);
                         }
                         estado_atual = "inicio";
@@ -252,7 +251,7 @@ public class AnalisadorLexico {
                             lexema = lexema + caractere;
                             this.inserirToken(new Token(lexema, linha_atual, 4));
                         }else{
-                            System.out.println("erro de mal formado o or, tratar e colocar na classe depois");
+                            this.inserirErro(new Erro(lexema, linha_atual,4));
                             this.devolverCaractere(caractere);
                         }
                         estado_atual = "inicio";
@@ -459,7 +458,7 @@ public class AnalisadorLexico {
         it = getErros().iterator();
 
         if(! this.errosIsVazio())
-            arquivoEscrita.write("Lista de Erros\n");
+            arquivoEscrita.write("\nLista de Erros\n");
 
         while (it.hasNext()){
             arquivoEscrita.write(it.next().toString());

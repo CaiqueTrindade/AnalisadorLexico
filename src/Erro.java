@@ -13,6 +13,7 @@ public class Erro {
         temp.put(1, "Número Real");
         temp.put(2, "Número Inteiro");
         temp.put(3, "Identificador");
+        temp.put(4, "Operador lógico");
         temp.put(10, "Delimitador de Comentário");
         temp.put(11, "Cadeia de Caracteres");
         idTokens = Collections.unmodifiableMap(temp);
@@ -38,7 +39,7 @@ public class Erro {
     }
 
     public String toString(){
-        return nLinha + " " + lexema + " " + "Malformação de " +this.idToToken(tipo) + ";";
+        return nLinha + " " + lexema + " " + "Malformação de " +this.idToToken(tipo) + ";\n";
     }
 
     public static String idToToken(int id){
