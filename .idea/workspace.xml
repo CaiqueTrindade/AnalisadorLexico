@@ -3,18 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="8ec9cbba-1ae9-461a-ab23-1b336d27a14b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/entrada1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input/entrada1.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/entrada2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorLexico.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorLexico.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Erro.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/Erro.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Principal.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/Principal.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Token.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/Token.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/saida1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/entrada2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input/entrada2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/saida2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AnalisadorLexico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorLexico.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Erro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Erro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Principal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Principal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Token.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -98,16 +89,5 @@
       <updated>1573921729976</updated>
     </task>
     <servers />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
 </project>

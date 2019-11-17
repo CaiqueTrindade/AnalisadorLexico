@@ -113,6 +113,9 @@ public class AnalisadorLexico {
                         } else if (ascii >= 48 && ascii <= 57) {
                             lexema = lexema + caractere;
                             estado_atual = "digito_s1";
+                        } else if (ascii == 10) {
+                            linha_atual++;
+                            System.out.println("Linha: " + linha_atual);
                         } else if (ascii == 47) {
                             lexema = lexema + caractere;
 
@@ -136,7 +139,7 @@ public class AnalisadorLexico {
                                 this.inserirToken(new Token(lexema, linha_atual, 8));
 
 
-                        } else if (ascii == 43 || ascii == 45) {
+                        } else if (ascii == 43) {
 
                             lexema = lexema + caractere;
                             caractere = this.obterCaractere();
@@ -144,7 +147,7 @@ public class AnalisadorLexico {
                             if (caractere != null) {
                                 ascii = (int) caractere;
 
-                                if (ascii == 43 || ascii == 45)
+                                if (ascii == 43)
                                     estado_atual = "operador_incremento";
                                 else {
                                     this.inserirToken(new Token(lexema, linha_atual, 9));
@@ -158,19 +161,23 @@ public class AnalisadorLexico {
                             lexema = lexema + caractere;
                             caractere = this.obterCaractere();
 
+                            if (caractere != null)
+                                ascii = (int) caractere;
+                            else
+                                ascii = -1;
+
+                            System.out.println(ascii);
+
                             if (ascii == 45) {
                                 estado_atual = "operador_incremento";
                             } else if (ascii == 9 || ascii == 32 || (ascii >= 48 && ascii <= 57)) {
                                 estado_atual = "operador_ou_digito";
-                                this.devolverCaractere(caractere);
                             } else {
-                                estado_atual = "operador_aritmetico";
-                                lexema = "";
-                                this.devolverCaractere(caractere);
-
+                                this.inserirToken(new Token(lexema, linha_atual, 8));
                             }
 
-                            this.devolverCaractere(caractere);
+                            if (caractere != null)
+                                this.devolverCaractere(caractere);
 
                         } else if (ascii == 42) {
                             this.inserirToken(new Token(caractere + "", linha_atual, 8));
@@ -413,19 +420,31 @@ public class AnalisadorLexico {
                                 this.devolverCaractere(caractere);
                             estado_atual = "inicio";
                         }
+                        else {
+                            lexema = lexema + caractere;
+                        }
                         break;
                     case "digito_s1":
                         if (ascii >= 48 && ascii <= 57) {
                             lexema = lexema + caractere;
                         } else if (ascii == 46) {
                             caractere = this.obterCaractere();
+
+                            if (caractere != null)
+                                ascii = (int) caractere;
+                            else
+                                ascii = -1;
+
                             if (ascii >= 48 && ascii <= 57) {
                                 lexema = lexema + ".";
                                 estado_atual = "digito_s2";
-                            } else {
+                            }
+                            else {
                                 this.inserirToken(new Token(lexema, linha_atual, 2));
+                                this.inserirToken(new Token(".", linha_atual, 20));
                                 estado_atual = "inicio";
                             }
+
                             if (caractere != null)
                                 this.devolverCaractere(caractere);
                         } else {
@@ -436,20 +455,15 @@ public class AnalisadorLexico {
                         }
                         break;
                     case "digito_s2":
-                        if ((ascii >= 48 && ascii <= 57)) {
+                        if ((ascii >= 48 && ascii <= 57))
                             lexema = lexema + caractere;
-                        } else {
+                        else {
                             this.inserirToken(new Token(lexema, linha_atual, 1));
                             estado_atual = "inicio";
                             if (caractere != null)
                                 this.devolverCaractere(caractere);
                         }
                         break;
-                }
-
-                if (ascii == 10) {
-                    linha_atual++;
-                    System.out.println("Linha: " + linha_atual);
                 }
             }
         }
@@ -488,93 +502,4 @@ public class AnalisadorLexico {
         arquivoEscrita.flush();
         arquivoEscrita.close();
     }
-
-
-
 }
-
-
-/* Exemplo inicial do autômato de identificadores e palavras reservadas
-try {
-InputStream entrada = new FileInputStream("input\\entrada1.txt");
-int c, estado_atual, linha_atual;
-String lista_tokens = "", caractere_atual;
-estado_atual = 0;
-linha_atual = 0;
-// Lê o próximo caractere em ASCII
-c = entrada.read();
-boolean repete = true;
-while (repete) {
-    // Verdadeiro quando o caractere atual é diferente de um caractere de retorno ao início da linha \r
-    if (c != 13) {
-        // Transforma o ASCII em seu respectivo caractere e o armazena em uma String
-        caractere_atual = Character.toString((char) c);
-        // Simulação do autômato
-        switch (estado_atual) {
-            case 0:
-                if (caractere_atual.matches("^([a-z]|[A-Z])$")) {
-                    estado_atual = 1;
-                    lista_tokens += "" + linha_atual + " " + caractere_atual;
-                }
-                else if (c == 10) {
-                    linha_atual ++;
-                }
-                // Caso de erro (quando o caractere não faz parte da gramática)
-                else if (c != 9 && c != 32 && c != -1) {
-                    estado_atual = -1;
-                    lista_tokens += "" + linha_atual + " " + caractere_atual;
-                }
-                if (c != -1)
-                    c = entrada.read();
-                else
-                    repete = false;
-                break;
-            case 1:
-                if (caractere_atual.matches("^([a-z]|[A-Z]|[0-9]|_)$")) {
-                    lista_tokens += caractere_atual;
-                    c = entrada.read();
-                }
-                // Verdadeiro quando o caractere atual é algum delimitador (incompleto e provavelmente sofrerá mudanças significativas)
-                else  if (c == 9 || c == 32 || c == 10 || c == -1) {
-                    String tabela_aux[] = lista_tokens.split("\n");
-                    String ultima_linha = tabela_aux[tabela_aux.length - 1];
-                    if (ultima_linha.split(" ")[1].matches("^(var|const|typedef|struct|extends|procedure|function|start|return|if|else|then|while|read|print|int|real|boolean|string|true|false|global|local)$"))
-                        lista_tokens += " " + ultima_linha.split(" ")[1] + " (palavra reservada)\n";
-                    else
-                        lista_tokens += " identificador\n";
-                    estado_atual = 0;
-                    if (c == 9 || c == 32)
-                        c = entrada.read();
-                }
-                // Caso de erro
-                else {
-                    lista_tokens += caractere_atual;
-                    estado_atual = -1;
-                    c = entrada.read();
-                }
-                break;
-            case -1:
-                if (c == 9 || c == 32 || c == 10 || c == -1){
-                    lista_tokens += " ???\n";
-                    estado_atual = 0;
-                    if (c == 9 || c == 32)
-                        c = entrada.read();
-                }
-                else {
-                    lista_tokens += caractere_atual;
-                    c = entrada.read();
-                }
-        }
-    }
-    else {
-        c = entrada.read();
-    }
-}
-System.out.print(lista_tokens);
-entrada.close();
-} catch (FileNotFoundException e) {
-e.printStackTrace();
-} catch (IOException e) {
-e.printStackTrace();
-}
-*/
