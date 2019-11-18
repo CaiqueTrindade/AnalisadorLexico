@@ -100,6 +100,7 @@ public class AnalisadorLexico {
             else
                 ascii = -1;
 
+
             if (ascii != 13) {
 
                 switch (estado_atual) {
@@ -182,6 +183,7 @@ public class AnalisadorLexico {
                             this.inserirToken(new Token(caractere + "", linha_atual, 8));
 
                         } else if (ascii == 34) {
+                            lexema = lexema + caractere;
                             estado_atual = "cadeia_caractere_s1";
 
 
@@ -278,6 +280,8 @@ public class AnalisadorLexico {
                         else {
                             this.inserirToken(new Token(lexema, linha_atual, 10));
                             estado_atual = "inicio";
+                            if (ascii == 10)
+                                this.devolverCaractere(caractere);
                         }
                         break;
 
@@ -354,6 +358,7 @@ public class AnalisadorLexico {
 
                         } else {
                             this.inserirErro(new Erro(lexema, linha_atual, 11));
+                            this.devolverCaractere(caractere);
                             estado_atual = "inicio";
                         }
                         break;
