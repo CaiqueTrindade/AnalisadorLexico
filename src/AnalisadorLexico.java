@@ -172,13 +172,10 @@ public class AnalisadorLexico {
                             estado_atual = "digito_s1";
                         // Verifica se o caractere é uma quebra de linha (\n)
                         } else if (ascii == 10) {
-<<<<<<< HEAD
-                            linha_atual++;
 
-=======
-                            linha_atual++; //  Autoincremento na contagem de linhas
+                        linha_atual++; //  Autoincremento na contagem de linhas
                         //Condição para quando o caractere lido é uma / (barra)
->>>>>>> 4f40046f8767b79fc50f3c8c6012ecb613465c7d
+
                         } else if (ascii == 47) {
                             lexema = lexema + caractere; //Concatena a barra
                             caractere = this.obterCaractere(); //Faz o look a head
@@ -240,7 +237,7 @@ public class AnalisadorLexico {
                             else
                                 ascii = -1;
 
-                            System.out.println(ascii);
+
 
                             if (ascii == 45) {
                                 estado_atual = "operador_incremento";
