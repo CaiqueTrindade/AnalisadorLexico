@@ -5,8 +5,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Classe principal do projeto do Analisador Léxico.
+ * @author Caique Trindade, Felipe Damasceno e Solenir Figuerêdo
+ */
 public class Principal {
 
+    /**
+     * Método principal (main) do programa. É responsável por buscar entradas válidas na pasta "input" do projeto,
+     * arquivos que estejam dentro do padrão de entrada especificado pelo problema (entrada[0-9]+.txt), e submetê-las
+     * ao processo de análise léxica realizado pela classe "AnalisadorLexico". Além disso, ao longo da execução, informa
+     * pelo terminal da aplicação os processos que estão sendo realizados.
+     */
     public static void main(String[] args) {
 
         File input_diretorio = new File("input");
@@ -19,15 +29,13 @@ public class Principal {
 
                 List<File> entradas_validas = new ArrayList();
 
-                // Varre a lista de arquivos da pasta "input" em busca de arquivos de entrada válidos, isto é, que estejam dentro do padrão de entrada
+                // Varre a lista de arquivos da pasta "input" em busca de arquivos de entrada válidos, isto é, que estejam dentro do padrão de entrada, e os armaezena em uma estrutura de dados
                 for (File input: input_diretorio.listFiles())
-
                     if (input.isFile() && input.getName().matches("^entrada[0-9]+\\.txt$"))
                         entradas_validas.add(input);
 
                 // Se houver arquivos válidos
                 if (entradas_validas.size() > 0) {
-
                     System.out.println("Arquivos válidos de entrada encontrados: " + entradas_validas.size());
 
                     // Percorre a lista das entradas válidas

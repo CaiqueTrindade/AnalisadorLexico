@@ -3,6 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="8ec9cbba-1ae9-461a-ab23-1b336d27a14b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/saida1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AnalisadorLexico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorLexico.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Erro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Erro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Principal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Principal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Token.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -10,10 +15,43 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>operad</find>
+      <find>comentario_bloco</find>
+      <find>erro_comentario_bloco</find>
+      <find>operador_arit</find>
+      <find>operador_a</find>
+      <find>operador</find>
+      <find>opera</find>
+      <find>estado_final_comentario_bloco</find>
+      <find>comentario_linha</find>
+      <find>cadeia_caractere_erro</find>
+      <find>cadeia_caractere</find>
+      <find>operador_incre</find>
+      <find>operador_ari</find>
+      <find>13</find>
+      <find>linha_atual</find>
+      <find>linha_atual =</find>
+      <find>linha_atual++</find>
+      <find>comentario</find>
+      <find>comentario_bloco_s2</find>
+      <find>comentario_bloco_s3</find>
+      <find>cadeia</find>
+      <find>operador_incremento</find>
+      <find>cadeia_caractere_s1</find>
+      <find>operador_aritmetico</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1TlM4QyWFUk9aSpki1UJQ6frawI" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-65" />
+    <option name="y" value="139" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -28,7 +66,9 @@
   </component>
   <component name="RunManager">
     <configuration default="true" type="Applet">
+      <option name="HEIGHT" value="0" />
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="WIDTH" value="0" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -68,6 +108,16 @@
         <item itemvalue="Application.Principal" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="allServicesViewState">
+      <serviceView>
+        <treeState>
+          <expand />
+          <select />
+        </treeState>
+      </serviceView>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />

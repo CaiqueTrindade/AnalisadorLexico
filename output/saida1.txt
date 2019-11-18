@@ -1,4 +1,3 @@
 Lista de Tokens
 
-1 * Operador Aritmético;
-1 * Operador Aritmético;
+1 "" Cadeia de Caracteres;
