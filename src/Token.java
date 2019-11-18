@@ -22,15 +22,15 @@ public class Token {
         temp.put(9, "Operador Aritmético de incremento/decremento");
         temp.put(10, "Delimitador de Comentário");
         temp.put(11, "Cadeia de Caracteres");
-        temp.put(12, ";");
-        temp.put(13, ",");
-        temp.put(14, "(");
-        temp.put(15, ")");
-        temp.put(16, "[");
-        temp.put(17, "]");
-        temp.put(18, "{");
-        temp.put(19, "}");
-        temp.put(20, ".");
+        temp.put(12, "Delimitador ;");
+        temp.put(13, "Delimitador ,");
+        temp.put(14, "Delimitador (");
+        temp.put(15, "Delimitador )");
+        temp.put(16, "Delimitador [");
+        temp.put(17, "Delimitador ]");
+        temp.put(18, "Delimitador {");
+        temp.put(19, "Delimitador }");
+        temp.put(20, "Delimitador .");
         idTokens = Collections.unmodifiableMap(temp);
     }
 
