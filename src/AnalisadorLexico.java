@@ -3,17 +3,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Classe responsável por realizar a análise léxica
+ * @author Caique Trindade, Felipe Damasceno e Solenir Figuerêdo
+ */
 
 public class AnalisadorLexico {
 
-    private FileInputStream fileInputStream;
-    private InputStreamReader inputStreamReader;
-    private PushbackReader pushbackReader;
+    private FileInputStream fileInputStream;  //Atributo que representa o inputStream
+    private InputStreamReader inputStreamReader; //Atributo que representa o leitor do arquivo
+    private PushbackReader pushbackReader; //Atributo que auxilia na etapa de leitura e look a head
     private File file;
 
-    List<Token> tokens = new ArrayList<>();
-    List<Erro> erros = new ArrayList<>();
+    List<Token> tokens = new ArrayList<>(); //Atributo que armazena a lista de tokens
+    List<Erro> erros = new ArrayList<>(); //Atributo que armazena a lista de erros
 
+    /**
+     * Construtor da classe do Analisador Léxico
+     * @param file recebe o arquivo atual que será submetido a análise léxica
+     * @throws FileNotFoundException lança essa exceção, caso o arquivo não exista
+     */
 
     public AnalisadorLexico(File file) throws FileNotFoundException{
 
@@ -26,20 +35,39 @@ public class AnalisadorLexico {
     }
 
 
+    /**
+     * Insere token na lista de tokens
+     * @param token token atual a ser inserido
+     */
     public void inserirToken(Token token){
 
         this.tokens.add(token);
     }
 
+
+    /**
+     * Insere erro na lista erros
+     * @param erro erro atual a ser inserido
+     */
     public void inserirErro(Erro erro){
 
         this.erros.add(erro);
     }
 
+    /**
+     * Recupera um token baseado no indice dele na lista
+     * @param indice indice do token a ser recuperado
+     * @return
+     */
     public Token recuperaToken(int indice){
 
         return this.tokens.get(indice);
     }
+
+    /**
+     * Recupera a lista de tokens
+     * @return a lista atual de tokens
+     */
 
     public List<Token> getTokens(){
 
@@ -47,23 +75,40 @@ public class AnalisadorLexico {
 
     }
 
+    /**
+     * Recupera a lista de erros
+     * @return a lista atual de erros
+     */
     public List<Erro> getErros(){
 
         return this.erros;
     }
 
+    /**
+     * Verifica se a lista de tokens está vazia
+     * @return true se estiver vazia ou false caso contrário
+     */
     public boolean tokensIsVazio(){
 
         return this.tokens.isEmpty();
 
     }
 
+    /**
+     * Verifica se alista de erros está vazia
+     * @return true se estiver vazia ou false caso contrário
+     */
     public boolean errosIsVazio(){
 
         return this.erros.isEmpty();
 
     }
 
+    /**
+     * Realiza a leitura do caractere
+     * @return o caractere lido, ou null caso seja final de arquivo
+     * @throws IOException  exceção caso ocorra algum erro no processo de obtenção do caractere
+     */
     public Character obterCaractere() throws  IOException{
 
         Character c = null;
