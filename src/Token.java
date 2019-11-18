@@ -2,12 +2,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe que representa um token proveniente da análise léxica realizada pela classe AnalisadorLexico.
+ * @author Caique Trindade, Felipe Damasceno e Solenir Figuerêdo
+ */
 public class Token {
 
     private String lexema;
     private int nLinha;
-    private int tipo;
-    private static final Map<Integer, String> idTokens;
+    private int tipo;                                  // tipo de token
+    private static final Map<Integer, String> idTokens;// Hashmap estatico dos tipos de token
     static {
         Map<Integer, String> temp = new HashMap<Integer, String>();;
         temp.put(0, "Palavra Reservada");
@@ -34,6 +38,12 @@ public class Token {
         idTokens = Collections.unmodifiableMap(temp);
     }
 
+    /**
+     * Construtor da classe
+     * @param lexema
+     * @param nLinha
+     * @param tipo tipo de token
+     */
     public Token(String lexema, int nLinha, int tipo) {
         this.lexema = lexema;
         this.nLinha = nLinha;
@@ -41,22 +51,42 @@ public class Token {
 
     }
 
+    /**
+     * retorna lexema
+     * @return lexema
+     */
     public String getLexema() {
         return lexema;
     }
 
+    /**
+     * retorna numero da linha atual
+     * @return linha atual
+     */
     public int getnLinha() {
         return nLinha;
     }
 
+    /**
+     * retorna tipo do token
+     * @return tipo de token
+     */
     public int getTipo() {
         return tipo;
     }
-
+    /**
+     * Método toString da classe.
+     * @return String no padrão de saída da lista de tokens usado pelo Analisador Léxico.
+     */
     public String toString(){
         return nLinha + " " + lexema + " " + this.idToToken(tipo) + ";\n";
     }
 
+    /**
+     * Método responsável por retornar o tipo do token de forma nominal.
+     * @param id numero do tipo de token
+     * @return token de forma nominal
+     */
     public static String idToToken(int id){
         return idTokens.get(id);
     }
