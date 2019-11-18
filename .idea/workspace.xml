@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="8ec9cbba-1ae9-461a-ab23-1b336d27a14b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/entrada2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input/entrada2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/saida2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AnalisadorLexico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorLexico.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,12 +13,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-65" />
-    <option name="y" value="139" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
-  </component>
+  <component name="ProjectId" id="1TlM4QyWFUk9aSpki1UJQ6frawI" />
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -89,5 +81,16 @@
       <updated>1573921729976</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
