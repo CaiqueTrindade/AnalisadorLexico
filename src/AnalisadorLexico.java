@@ -121,13 +121,21 @@ public class AnalisadorLexico {
         return c;
     }
 
+    /**
+     * Devolve o caractere lido atualmente. Esse método é responável por auxiliar no processo de look a head
+     * @param c o caracatere a ser devolvido
+     * @throws IOException
+     */
     public void devolverCaractere(Character c) throws IOException{
 
         this.pushbackReader.unread(c);
     }
 
 
-
+    /**
+     * Método responsável por fazer a análise léxica propriamente dita.
+     * @throws IOException exceção caso ocorra algum problema no processo de análise léxica
+     */
     public void executarAnalise() throws IOException{
 
         Character caractere = ' ';
@@ -415,7 +423,7 @@ public class AnalisadorLexico {
                         if (ascii != 10 && ascii != -1 ) {
                             lexema = lexema + caractere;
 
-                            if (ascii >= 32 || ascii <= 126) {
+                            if (ascii >= 32 && ascii <= 126) {
                                 estado_atual = "cadeia_caractere_s1";
                             } else {
                                 this.inserirErro(new Erro(lexema, linha_atual, 11));
@@ -519,6 +527,10 @@ public class AnalisadorLexico {
     }
 
 
+    /**
+     * Método responsável por escrever os tokens, bem como os erros no arquivo de saída
+     * @throws IOException exceção caso ocorra algum erro no processo de escrita do arquivo
+     */
     public void escreverEmArquivo() throws IOException {
 
         OutputStream arquivo;
@@ -529,12 +541,12 @@ public class AnalisadorLexico {
         arquivoEscrita = new OutputStreamWriter(arquivo);
         Iterator it = getTokens().iterator();
 
-        if(! this.tokensIsVazio())
+        if(!this.tokensIsVazio())
             arquivoEscrita.write("Lista de Tokens\n\n");
 
-        int i = 0;
+       
         while(it.hasNext()){
-            //System.out.println("Hello " + it.next().toString());
+
             arquivoEscrita.write(it.next().toString());
         }
 
