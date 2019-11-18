@@ -343,7 +343,7 @@ public class AnalisadorLexico {
 
                     case "cadeia_caractere_s1":
 
-                        if (ascii != 10) {
+                        if (ascii != 10 && ascii != -1) {
                             lexema = lexema + caractere;
 
                             if (ascii == 92)
@@ -358,14 +358,16 @@ public class AnalisadorLexico {
 
                         } else {
                             this.inserirErro(new Erro(lexema, linha_atual, 11));
-                            this.devolverCaractere(caractere);
+
+                            if(ascii != -1)
+                                this.devolverCaractere(caractere);
                             estado_atual = "inicio";
                         }
                         break;
 
                     case "cadeia_caractere_s2":
 
-                        if (ascii != 10) {
+                        if (ascii != 10 && ascii != -1 ) {
                             lexema = lexema + caractere;
 
                             if (ascii >= 32 || ascii <= 126) {
