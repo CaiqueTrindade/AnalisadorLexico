@@ -115,7 +115,7 @@ public class AnalisadorLexico {
                             estado_atual = "digito_s1";
                         } else if (ascii == 10) {
                             linha_atual++;
-                            System.out.println("Linha: " + linha_atual);
+
                         } else if (ascii == 47) {
                             lexema = lexema + caractere;
 
