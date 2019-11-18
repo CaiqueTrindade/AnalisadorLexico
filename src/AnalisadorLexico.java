@@ -153,21 +153,25 @@ public class AnalisadorLexico {
             else
                 ascii = -1;
 
-
+            // Verifica se o caractere lido não é um caractere de retorno de linha (\r), ignorando-o na análise
             if (ascii != 13) {
 
+                // Switch que “simula” um autômato para reconhecer os padrões léxicos da linguagem
                 switch (estado_atual) {
                     case "inicio":
                         lexema = "";
 
+                        // Verifica se o caractere lido é uma letra do alfabeto (em regex: [a-zA-Z])
                         if ((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122)) {
                             lexema = lexema + caractere;
                             estado_atual = "identificador";
+                        // Verifica se o caractere é um dígito numérico (em regex: [0-9]
                         } else if (ascii >= 48 && ascii <= 57) {
                             lexema = lexema + caractere;
                             estado_atual = "digito_s1";
+                        // Verifica se o caractere é uma quebra de linha (\n)
                         } else if (ascii == 10) {
-                            linha_atual++;
+                            linha_atual++; //  Autoincremento na contagem de linhas
                         //Condição para quando o caractere lido é uma / (barra)
                         } else if (ascii == 47) {
                             lexema = lexema + caractere; //Concatena a barra
@@ -251,23 +255,31 @@ public class AnalisadorLexico {
                             lexema = lexema + caractere;
                             estado_atual = "cadeia_caractere_s1";
 
-
+                        // Condição para quando o caractere lido é um ; (ponto-e-vírgula)
                         } else if (ascii == 59) {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 12));
+                        // Condição para quando o caractere lido é uma , (vírgula)
                         } else if (ascii == 44) {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 13));
+                        // Condição para quando o caractere lido é um ( (abertura de parêntese)
                         } else if (ascii == 40) {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 14));
+                        // Condição para quando o caractere lido é um ) (fechamento de parêntese)
                         } else if (ascii == 41) {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 15));
+                        // Condição para quando o caractere lido é um [ (abertura de colchete)
                         } else if (ascii == 91) {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 16));
+                        // Condição para quando o caractere lido é um ] (fechamento de colchete)
                         } else if (ascii == 93) {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 17));
+                        // Condição para quando o caractere lido é uma { (abertura de chave)
                         } else if (ascii == 123) {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 18));
+                        // Condição para quando o caractere lido é uma } (fechamento de chave)
                         } else if (ascii == 126) {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 19));
+                        // Condição para quando o caractere lido é um . (ponto)
                         } else if (ascii == 46) {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 20));
                         } else if (ascii == 61) {
@@ -462,19 +474,26 @@ public class AnalisadorLexico {
                         break;
 
                     case "identificador":
+                        // Verifica se o caractere lido é alfanumérico ou _ (underline) (em regex: [a-zA-Z0-9_])
                         if ((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || (ascii >= 48 && ascii <= 57) || ascii == 95)
                             lexema = lexema + caractere;
                         else {
                             String aux = "" + caractere;
+                            // Verifica se o caractere lido é um caractere de sincronização, além do regex apresentado, os caracteres "-" "[" "]" ou final de arquivo
                             if (aux.matches("[+*/!=<>|&;,(){}. \n\t]") || ascii == 45 || ascii == 91 || ascii == 93 || ascii == -1) {
+                                // Verifica se o lexema lido é uma palvra reservada
                                 if (lexema.matches("^(var|const|typedef|struct|extends|procedure|function|start|return|if|else|then|while|read|print|int|real|boolean|string|true|false|global|local)$"))
                                     this.inserirToken(new Token(lexema, linha_atual, 0));
+                                // Se não, reconhece o token como identificador
                                 else
                                     this.inserirToken(new Token(lexema, linha_atual, 3));
+
                                 if (caractere != null)
                                     this.devolverCaractere(caractere);
+
                                 estado_atual = "inicio";
                             }
+                            // Se não, entende que se trata de um identificador malformado
                             else {
                                 lexema = lexema + caractere;
                                 estado_atual = "identificador_error";
@@ -483,9 +502,11 @@ public class AnalisadorLexico {
                         break;
                     case "identificador_error":
                         String aux = "" + caractere;
+                        // Verifica se o caractere lido é um caractere de sincronização, mesma verificação comentada um pouco acima
                         if (aux.matches("[+*/!=<>|&;,(){}. \n\t]") || ascii == 45 || ascii == 91 || ascii == 93 || ascii == -1) {
                             this.inserirErro(new Erro(lexema, linha_atual, 3));
                             estado_atual = "inicio";
+
                             if (caractere != null)
                                 this.devolverCaractere(caractere);
                         }
@@ -493,24 +514,33 @@ public class AnalisadorLexico {
                             lexema = lexema + caractere;
                         break;
                     case "operador_ou_digito":
+                        // Verifica se o caractere lido é um dígito numérico (em regex [0-9])
                         if (ascii >= 48 && ascii <= 57) {
+                            // Reconhece a ocorrência do "-" como parte de um número negativo (real ou inteiro)
                             estado_atual = "digito_s1";
                             lexema = lexema + caractere;
+                        // Se não for um espaço ou caractere de tabulação, entende que a ocorrência do "-" se trata de um operador aritmético
                         } else if (ascii != 9 && ascii != 32) {
                             lexema = "-";
                             this.inserirToken(new Token(lexema, linha_atual, 8));
+
                             if (caractere != null)
                                 this.devolverCaractere(caractere);
+
                             estado_atual = "inicio";
                         }
+                        // Else que entrará apenas quando for um espaço ou caractere de tabulação (ainda indeciso se é um número negativo ou operador aritmético)
                         else {
                             lexema = lexema + caractere;
                         }
                         break;
                     case "digito_s1":
+                        // Verifica se o caractere lido é um dígito numérico (em regex [0-9])
                         if (ascii >= 48 && ascii <= 57) {
                             lexema = lexema + caractere;
+                        // Se não, verifica se é um . (ponto)
                         } else if (ascii == 46) {
+                            // Realiza um “look-ahead”
                             caractere = this.obterCaractere();
 
                             if (caractere != null)
@@ -518,10 +548,12 @@ public class AnalisadorLexico {
                             else
                                 ascii = -1;
 
+                            // Verifica se o caractere seguinte é um dígito numérico
                             if (ascii >= 48 && ascii <= 57) {
                                 lexema = lexema + ".";
                                 estado_atual = "digito_s2";
                             }
+                            // Se não, entende que o número é formado até o caractere antecessor ao ponto e o ponto é um delimitador
                             else {
                                 this.inserirToken(new Token(lexema, linha_atual, 2));
                                 this.inserirToken(new Token(".", linha_atual, 20));
@@ -530,19 +562,26 @@ public class AnalisadorLexico {
 
                             if (caractere != null)
                                 this.devolverCaractere(caractere);
+                        // Em último caso, reconhece o lexema lido até então como um número e retoma ao estado inicial da máquina
                         } else {
                             this.inserirToken(new Token(lexema, linha_atual, 2));
+
                             estado_atual = "inicio";
+
                             if (caractere != null)
                                 this.devolverCaractere(caractere);
                         }
                         break;
                     case "digito_s2":
+                        // Verifica se o caractere lido é um dígito numérico
                         if ((ascii >= 48 && ascii <= 57))
                             lexema = lexema + caractere;
+                        // Caso contrário, reconhece o lexema lido até então como um número e retoma ao estado inicial da máquina
                         else {
                             this.inserirToken(new Token(lexema, linha_atual, 1));
+
                             estado_atual = "inicio";
+
                             if (caractere != null)
                                 this.devolverCaractere(caractere);
                         }
