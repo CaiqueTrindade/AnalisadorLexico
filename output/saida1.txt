@@ -1,0 +1,3 @@
+Lista de Tokens
+
+1 "" Cadeia de Caracteres;

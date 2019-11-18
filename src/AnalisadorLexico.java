@@ -168,47 +168,58 @@ public class AnalisadorLexico {
                             estado_atual = "digito_s1";
                         } else if (ascii == 10) {
                             linha_atual++;
-                            System.out.println("Linha: " + linha_atual);
+                        //Condição para quando o caractere lido é uma / (barra)
                         } else if (ascii == 47) {
-                            lexema = lexema + caractere;
+                            lexema = lexema + caractere; //Concatena a barra
+                            caractere = this.obterCaractere(); //Faz o look a head
 
-                            caractere = this.obterCaractere();
-
+                            //Verifica se o caractere lido é o final do arquivo
                             if (caractere != null) {
 
                                 ascii = (int) caractere;
 
+                                //Caso o caractere do look a head seja outra barra, entra nessa condição
                                 if (ascii == 47)
                                     estado_atual = "comentario_linha";
+                                //Caso o caractere do look a head seja o *, entra nessa condição
                                 else if (ascii == 42)
                                     estado_atual = "comentario_bloco_s1";
                                 else {
+                                    //Insere o Token de operador aritmético na lista de tokens
                                     this.inserirToken(new Token(lexema, linha_atual, 8));
                                 }
 
+                                //Devolve o caractere lido pelo look a head
                                 this.devolverCaractere(caractere);
 
                             } else
+                                //Insere o Token de operador aritmético na lista de tokens
                                 this.inserirToken(new Token(lexema, linha_atual, 8));
 
-
+                        //Condicional para o caractere +
                         } else if (ascii == 43) {
 
                             lexema = lexema + caractere;
+                            //Faz o look a head
                             caractere = this.obterCaractere();
-
+                            //Verifica se o caractere lido é o final do arquivo
                             if (caractere != null) {
                                 ascii = (int) caractere;
 
+                                //Caso o caractere do look a head seja outro +, entra nessa condição
                                 if (ascii == 43)
                                     estado_atual = "operador_incremento";
                                 else {
-                                    this.inserirToken(new Token(lexema, linha_atual, 9));
+                                    //Insere o Token de operador aritmético na lista de tokens
+                                    this.inserirToken(new Token(lexema, linha_atual, 8));
                                 }
+                                //Devolve o caractere lido pelo look a head
                                 this.devolverCaractere(caractere);
 
                             } else
+                                //Insere o Token de operador aritmético na lista de tokens
                                 this.inserirToken(new Token(lexema, linha_atual, 8));
+
 
                         } else if (ascii == 45) {
                             lexema = lexema + caractere;
@@ -231,10 +242,11 @@ public class AnalisadorLexico {
 
                             if (caractere != null)
                                 this.devolverCaractere(caractere);
-
+                        //Condicional para quando o caractere lido é um *
                         } else if (ascii == 42) {
                             this.inserirToken(new Token(caractere + "", linha_atual, 8));
 
+                        //Condição para quando o caractere lido é uma " (aspas)
                         } else if (ascii == 34) {
                             lexema = lexema + caractere;
                             estado_atual = "cadeia_caractere_s1";
@@ -327,30 +339,36 @@ public class AnalisadorLexico {
                         estado_atual = "inicio";
                         break;
                     case "comentario_linha":
-
+                        //Verifica se não é final de linha enm final de arquivo
                         if (ascii != 10 && caractere != null)
                             lexema = lexema + caractere;
                         else {
+                            //Insere token de Delimitador de Comentário na lista de tokens
                             this.inserirToken(new Token(lexema, linha_atual, 10));
                             estado_atual = "inicio";
+                            //verifica se chegou ao fim da linha
                             if (ascii == 10)
+                                //Devolve o caractere de final de linha
                                 this.devolverCaractere(caractere);
                         }
                         break;
 
                     case "comentario_bloco_s1":
-
+                        //Concatena o caractere lido
                         lexema = lexema + caractere;
                         estado_atual = "comentario_bloco_s2";
                         break;
+
                     case "comentario_bloco_s2":
 
-
+                        //Verifica se o caractere lido é o final de arquivo
                         if (caractere != null) {
                             lexema = lexema + caractere;
+                            //Verifica se o caractere lido é o *
                             if (ascii == 42)
                                 estado_atual = "comentario_bloco_s3";
                         } else {
+                            //Insere erro de mal formação de Delmitador de comentários na lista de erros
                             this.inserirErro(new Erro(lexema, linha_atual, 10));
                             estado_atual = "inicio";
                         }
@@ -360,18 +378,22 @@ public class AnalisadorLexico {
 
                     case "comentario_bloco_s3":
 
+                        //Verifica se ainda não chegou no final do arquivo
                         if (caractere != null) {
                             lexema = lexema + caractere;
                             ascii = (int) caractere;
 
+                            //Verifica se o caracctere lido é diferente de * e também di
                             if (ascii != 42 && ascii != 47) {
                                 estado_atual = "comentario_bloco_s2";
                             } else if (ascii == 47) {
+                                //Insere o token de Delimitador de Comentário na lista de tokens
                                 this.inserirToken(new Token(lexema, linha_atual, 10));
                                 estado_atual = "inicio";
                             }
 
                         } else {
+                            //Insere o token de mal formação de Delimitador de Comentário na lista de erros
                             this.inserirErro(new Erro(lexema, linha_atual, 10));
                             estado_atual = "inicio";
 
@@ -379,40 +401,41 @@ public class AnalisadorLexico {
 
                         break;
 
-                    case "operador_aritmetico":
-                        if (caractere != null) {
-                            this.devolverCaractere(caractere);
-                            this.inserirToken(new Token(lexema, linha_atual, 8));
-                        } else
-                            this.inserirToken(new Token(lexema, linha_atual, 8));
-                        estado_atual = "inicio";
-
-                        break;
                     case "operador_incremento":
+                        //Faz a concatenação
                         lexema = lexema + caractere;
+                        //Insere o token de operador de incremento/decremento
                         this.inserirToken(new Token(lexema, linha_atual, 9));
                         estado_atual = "inicio";
                         break;
 
                     case "cadeia_caractere_s1":
 
+                        //Verifica se não chegou no final de linha nem no final de arquivo
                         if (ascii != 10 && ascii != -1) {
                             lexema = lexema + caractere;
 
+                            //Verifica se o caractere lido é uma / (barra)
                             if (ascii == 92)
                                 estado_atual = "cadeia_caractere_s2";
+                            //Verifica se o caractere lido é uma " (aspas)
                             else if (ascii == 34) {
                                 this.inserirToken(new Token(lexema, linha_atual, 11));
                                 estado_atual = "inicio";
+                            //Verifica se o caractere lido não faz parte da gramática
                             } else if (ascii < 32 || ascii > 126) {
+                                //Insere erro de mal formação de cadeia de caracteres
                                 this.inserirErro(new Erro(lexema, linha_atual, 11));
                                 estado_atual = "inicio";
                             }
 
                         } else {
+                            //Insere erro de mal formação de cadeia de caracteres
                             this.inserirErro(new Erro(lexema, linha_atual, 11));
 
+                            //Verifica se chegou ao final do arquivo
                             if(ascii != -1)
+                                // Devolve o caractere
                                 this.devolverCaractere(caractere);
                             estado_atual = "inicio";
                         }
@@ -420,16 +443,19 @@ public class AnalisadorLexico {
 
                     case "cadeia_caractere_s2":
 
+                        //Verifica se não chegou no final de linha nem se chegou no final do arquivo
                         if (ascii != 10 && ascii != -1 ) {
                             lexema = lexema + caractere;
-
+                            //Verifica se o caractere lido está no intervalo 32-126
                             if (ascii >= 32 && ascii <= 126) {
                                 estado_atual = "cadeia_caractere_s1";
                             } else {
+                                //Insere erro de mal formação de cadeia de caracteres
                                 this.inserirErro(new Erro(lexema, linha_atual, 11));
                                 estado_atual = "inicio";
                             }
                         } else {
+                            //Insere erro de mal formação de cadeia de caracteres
                             this.inserirErro(new Erro(lexema, linha_atual, 11));
                             estado_atual = "inicio";
                         }
@@ -532,34 +558,42 @@ public class AnalisadorLexico {
      * @throws IOException exceção caso ocorra algum erro no processo de escrita do arquivo
      */
     public void escreverEmArquivo() throws IOException {
-
+        //Estabelece as variáveis de referências dos output de escrita
         OutputStream arquivo;
         OutputStreamWriter arquivoEscrita;
 
-        File fileSaida= new File("output/"+"saida"+this.file.getName().replaceAll("[^0-9]","")+".txt");
+        //Instancia um objeto file, criando o arquivo de saída correpondente
+        File fileSaida = new File("output/"+"saida"+this.file.getName().replaceAll("[^0-9]","")+".txt");
+        //Instancia o stream de saída
         arquivo = new FileOutputStream(fileSaida);
         arquivoEscrita = new OutputStreamWriter(arquivo);
+        //Recupera o Iterado da lista de tokens
         Iterator it = getTokens().iterator();
 
+        //Verifica se a lista de tokens não está vazia
         if(!this.tokensIsVazio())
             arquivoEscrita.write("Lista de Tokens\n\n");
 
-       
+        //Varre a lista de tokens
         while(it.hasNext()){
-
+            //Escreve no arquivo de saída correpondente
             arquivoEscrita.write(it.next().toString());
         }
 
+        //Recupera o iterador para a lista de erros
         it = getErros().iterator();
 
+        //Verifica se a lista de erros não está vazia
         if(!this.errosIsVazio())
             arquivoEscrita.write("\n\nLista de Erros\n\n");
 
+        //Varre a lista de erros
         while (it.hasNext()){
+            //Escreve no arquivo de saída correspondente
             arquivoEscrita.write(it.next().toString());
-
         }
 
+        //Obriga que os dados que estão no buffer sejam escritos imediatamente
         arquivoEscrita.flush();
         arquivoEscrita.close();
     }
