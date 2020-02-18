@@ -1,7 +1,12 @@
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 public class ConstrutorConjunto {
     private Map<String,ArrayList<String>> conjuntos = new HashMap<String, ArrayList<String>>();
+    private Map<String,LinkedHashSet<String>> conjuntoFinal = new HashMap<String, LinkedHashSet<String>>();
 
     public ConstrutorConjunto(){
         conjuntos.put("PStruct", new ArrayList<String>(Arrays.asList("typedef", "E")));
@@ -23,6 +28,8 @@ public class ConstrutorConjunto {
         conjunto = nTerminalToTerminal(conjunto);
         LinkedHashSet conjuntoSemRepeticao = new LinkedHashSet<>(conjunto);
         System.out.println(conjuntoSemRepeticao);
+        conjuntoFinal.put(nTerminal, conjuntoSemRepeticao);
+
     }
 
     public void seguinte(String nTerminal){
@@ -33,6 +40,7 @@ public class ConstrutorConjunto {
         conjunto = nTerminalToTerminal(conjunto);
         LinkedHashSet conjuntoSemRepeticao = new LinkedHashSet<>(conjunto);
         System.out.println(conjuntoSemRepeticao);
+        conjuntoFinal.put(nTerminal, conjuntoSemRepeticao);
     }
 
     public ArrayList<String> nTerminalToTerminal(ArrayList<String> conjunto){
@@ -47,9 +55,30 @@ public class ConstrutorConjunto {
         }
         return resultado;
     }
+
+    public void save(String nomeArq) {
+        File arq = new File(nomeArq);
+        try {
+            arq.delete();
+            arq.createNewFile();
+
+            ObjectOutputStream objOutput = new ObjectOutputStream(new FileOutputStream(arq));
+            objOutput.writeObject(conjuntoFinal);
+            objOutput.close();
+
+        } catch(IOException erro) {
+            System.out.printf("Erro: %s", erro.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         ConstrutorConjunto c = new ConstrutorConjunto();
         c.seguinte("Struct");
         c.primeiro("Algo");
+        c.save("teste");
+
+        Conjunto conj = new Conjunto("teste");
+        conj.seguinte("Struct");
+        conj.primeiro("Algo");
     }
 }
