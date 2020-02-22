@@ -8,6 +8,7 @@ public class AnalisadorSintatico {
     public AnalisadorSintatico(List<Token> tokens) {
 
         this.tokens = tokens;
+        this.token = tokens.size()>0?tokens.get(0):null;
     }
 
     private void nextToken() {
