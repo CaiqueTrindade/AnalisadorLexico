@@ -51,6 +51,8 @@ public class AnalisadorSintatico {
                 } else if (token.getTipo() == 2 && Integer.parseInt(token.getLexema()) >= 0) {
                     if (tokens_sincronizacao.contains("IntPos"))
                         encontrou = true;
+                    else if (tokens_sincronizacao.contains("Numero"))
+                        encontrou = true;
                 } else if (token.getTipo() == 0 && token.getLexema().matches("^(true|false)$")) {
                     if (tokens_sincronizacao.contains("Boolean"))
                         encontrou = true;
@@ -63,10 +65,11 @@ public class AnalisadorSintatico {
                 } else if (tokens_sincronizacao.contains(token.getLexema())) {
                     encontrou = true;
                 }
-            }
-            if (!encontrou) {
-                nextToken();
-                if (token == null) eof = true;
+                
+                if (!encontrou) {
+                    nextToken();
+                    if (token == null) eof = true;
+                }
             }
         }
     }
