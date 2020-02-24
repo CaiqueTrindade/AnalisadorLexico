@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="39ab9ca6-bff4-40ef-be53-bff73e582c6c" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorLexico.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorLexico.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorSintatico.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Conjunto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/ConstrutorConjunto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Erro.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/Erro.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/GerenciadorTokens.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Principal.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Token.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/Token.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Conjunto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Conjunto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ConstrutorConjunto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ConstrutorConjunto.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

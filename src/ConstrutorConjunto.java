@@ -55,6 +55,7 @@ public class ConstrutorConjunto {
         conjuntos.put("PIdentificador4", new ArrayList<String>(Arrays.asList(".")));
         conjuntos.put("PVetor", new ArrayList<String>(Arrays.asList("[","PIdentificador4")));
         conjuntos.put("PVetor2", new ArrayList<String>(Arrays.asList("[")));
+        conjuntos.put("PCorpo2", new ArrayList<String>(Arrays.asList("PComandos")));
 
 
 
@@ -118,6 +119,7 @@ public class ConstrutorConjunto {
         conjuntos.put("SIdentificador4", new ArrayList<String>(Arrays.asList("SVetor")));
         conjuntos.put("SVetor", new ArrayList<String>(Arrays.asList("SIdentificador2","SIdentificador4")));
         conjuntos.put("SVetor2", new ArrayList<String>(Arrays.asList("PIdentificador4","SVetor")));
+        conjuntos.put("Corpo2", new ArrayList<String>(Arrays.asList("{")));
 
     }
 
