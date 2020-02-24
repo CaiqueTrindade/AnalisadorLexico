@@ -4,13 +4,11 @@ public class AnalisadorSintatico {
 
     private List<Token> tokens; // Lista de tokens
     private Token token; // Token atual
-    private Conjunto c;
 
     public AnalisadorSintatico(List<Token> tokens) {
 
         this.tokens = tokens;
         this.token = tokens.size()>0?tokens.get(0):null;
-        this.c = new Conjunto("conjunto");
     }
 
     private void nextToken() {
@@ -19,86 +17,61 @@ public class AnalisadorSintatico {
             token = tokens.get(0);
             tokens.remove(0);
         }
-        else
-            token = null;
+        else token = null;
     }
 
-    public void extends(){
-        if(token.getLexema() == "extends"){
-            nextToken();
-            if (token.getTipo() == 3){
-                nextToken();
-                if (token.getLexema() == "{"){
-                    nextToken();
-                } else{
-                    erro(c.seguinte("extends") + ";");
-                    if(token.getLexema() == ";"){
-                        nextToken();
-                        struct3();
-                    }
-                }
-            }else{
-                erro("{" + c.seguinte("extends") + ";");
-                if(token.getLexema() == "{"){
-                    nextToken();
-                }else if(token.getLexema() == ";"){
-                    nextToken();
-                    struct3();
-                }
-            }
-        } else if(token.getLexema() == "{"){
-            nextToken();
-        }else{
-            erro("{" + c.seguinte("extends") + ";");
-            if(token.getLexema() == "{"){
-                nextToken();
-            }else if(token.getLexema() == ";"){
-                nextToken();
-                struct3();
-            }
+    private void sincronizar(String conjuntos_primeiro, String conjuntos_seguinte, String lexemas) {
+
+        ArrayList<String> tokens_sincronizacao = new ArrayList<>();
+
+        if (conjuntos_primeiro != null) {
+            String aux[] = conjuntos_primeiro.split("#");
+            for (int i = 0; i < aux.length; i++) tokens_sincronizacao.addAll(conjuntos_P_S.primeiro(aux[i]));
         }
 
-    }
+        if (conjuntos_seguinte != null) {
+            String aux[] = conjuntos_seguinte.split("#");
+            for (int i = 0; i < aux.length; i++) tokens_sincronizacao.addAll(conjuntos_P_S.seguinte(aux[i]));
+        }
 
-    private void sincronizar(List<LinkedHashSet> tokens_sincronizacao) {
+        if(lexemas != null) {
+            String aux[] = conjuntos_seguinte.split("#");
+            for (int i = 0; i < aux.length; i++) if (!tokens_sincronizacao.contains(aux[i])) tokens_sincronizacao.add(aux[i]);
+        }
 
-        boolean encontrou = false;
-        boolean eof = (token == null);
+        if (tokens_sincronizacao.size() > 0) {
 
-        while (!encontrou && !eof) {
-            Iterator it = tokens_sincronizacao.iterator();
-            while(it.hasNext() && !encontrou) {
-                LinkedHashSet conjunto = (LinkedHashSet) it.next();
+            boolean encontrou = false;
+            boolean eof = (token == null);
+
+            while (!encontrou && !eof) {
                 if (token.getTipo() == 3) {
-                    if (conjunto.contains("Id"))
+                    if (tokens_sincronizacao.contains("Id"))
                         encontrou = true;
-                }
-                else if (token.getTipo() == 2 && Integer.parseInt(token.getLexema()) >= 0) {
-                    if (conjunto.contains("IntPos"))
+                } else if (token.getTipo() == 2 && Integer.parseInt(token.getLexema()) >= 0) {
+                    if (tokens_sincronizacao.contains("IntPos"))
                         encontrou = true;
-                }
-                else if(token.getTipo() == 0 && token.getLexema().matches("^(true|false)$")) {
-                    if (conjunto.contains("Boolean"))
+                    else if (tokens_sincronizacao.contains("Numero"))
                         encontrou = true;
-                }
-                else if(token.getTipo() == 11) {
-                    if (conjunto.contains("String"))
+                } else if (token.getTipo() == 0 && token.getLexema().matches("^(true|false)$")) {
+                    if (tokens_sincronizacao.contains("Boolean"))
                         encontrou = true;
-                }
-                else if(token.getTipo() == 1 || token.getTipo() == 2) {
-                    if (conjunto.contains("Numero"))
+                } else if (token.getTipo() == 11) {
+                    if (tokens_sincronizacao.contains("String"))
                         encontrou = true;
-                }
-                else if (conjunto.contains(token.getLexema())) {
+                } else if (token.getTipo() == 1 || token.getTipo() == 2) {
+                    if (tokens_sincronizacao.contains("Numero"))
+                        encontrou = true;
+                } else if (tokens_sincronizacao.contains(token.getLexema())) {
                     encontrou = true;
                 }
-            }
-            if (!encontrou) {
-                nextToken();
-                if (token == null) eof = true;
+
+                if (!encontrou) {
+                    nextToken();
+                    if (token == null) eof = true;
+                }
             }
         }
-
     }
 
     public void executarAnalise() {

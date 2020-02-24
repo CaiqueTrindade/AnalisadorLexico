@@ -4,8 +4,6 @@
     <list default="true" id="39ab9ca6-bff4-40ef-be53-bff73e582c6c" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AnalisadorSintatico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorSintatico.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Conjunto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Conjunto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ConstrutorConjunto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ConstrutorConjunto.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,6 +102,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="429" y="201" width="565" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1582511780154">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="429" y="201" width="565" height="390" key="#com.intellij.fileTypes.FileTypeChooser/67.27.1299.741@67.27.1299.741" timestamp="1582511780154" />
     <state width="1253" height="175" key="GridCell.Tab.0.bottom" timestamp="1582424040017">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
@@ -120,9 +122,9 @@
       <screen x="67" y="27" width="1299" height="741" />
     </state>
     <state width="1253" height="175" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1582424040016" />
-    <state x="372" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1582420308927">
+    <state x="372" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1582511910866">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state x="372" y="225" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1582420308927" />
+    <state x="372" y="225" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1582511910866" />
   </component>
 </project>
