@@ -1,14 +1,18 @@
+import java.io.*;
 import java.util.*;
 
 public class AnalisadorSintatico {
 
     private List<Token> tokens; // Lista de tokens
+    private List<ErroSintatico> errosSintaticos; // Lista de erros sintáticos
     private Token token; // Token atual
+    private static int FLAGERRO = 0;
 
     public AnalisadorSintatico(List<Token> tokens) {
 
         this.tokens = tokens;
         this.token = tokens.size()>0?tokens.get(0):null;
+        this.errosSintaticos = new ArrayList<>();
     }
 
     private void nextToken() {
@@ -18,6 +22,19 @@ public class AnalisadorSintatico {
             tokens.remove(0);
         }
         else token = null;
+    }
+
+    private void addErroSintatico(ErroSintatico erro){
+        if (erro.getnTerminal().equals("EOF")){
+             if (FLAGERRO !=1 ){
+                FLAGERRO = 1;
+                this.errosSintaticos.add(erro);
+            }
+        }
+        else
+            this.errosSintaticos.add(erro);
+
+
     }
 
     private void sincronizar(String conjuntos_primeiro, String conjuntos_seguinte, String lexemas) {
@@ -74,12 +91,48 @@ public class AnalisadorSintatico {
         }
     }
 
+    public List<ErroSintatico> getListaErrosSintaticos(){
+        return this.errosSintaticos;
+
+    }
+
+
     public void executarAnalise() {
 
     }
 
-    public void escreverEmArquivo() {
+    /**
+     * Método responsável por escrever os tokens, bem como os erros no arquivo de saída
+     * @throws IOException exceção caso ocorra algum erro no processo de escrita do arquivo
+     */
+    public void escreverEmArquivo(String nameArquivo) throws IOException {
+        //Estabelece as variáveis de referências dos output de escrita
+        OutputStream arquivo;
+        OutputStreamWriter arquivoEscrita;
 
+        //Instancia um objeto file, criando o arquivo de saída correpondente
+        File fileSaida = new File("output/"+"saida"+nameArquivo.replaceAll("[^0-9]","")+".txt");
+        //Instancia o stream de saída
+        arquivo = new FileOutputStream(fileSaida);
+        arquivoEscrita = new OutputStreamWriter(arquivo);
+        //Recupera o Iterado da lista de tokens
+        Iterator it = getListaErrosSintaticos().iterator();
+
+        //Verifica se a lista de tokens não está vazia
+        if(!this.getListaErrosSintaticos().isEmpty()){
+            //Varre a lista de tokens
+            while(it.hasNext()){
+                //Escreve no arquivo de saída correpondente
+                arquivoEscrita.write(it.next().toString());
+            }
+        }
+        else{
+            arquivoEscrita.write("Análise Sintática realizada com Sucesso");
+        }
+
+        //Obriga que os dados que estão no buffer sejam escritos imediatamente
+        arquivoEscrita.flush();
+        arquivoEscrita.close();
     }
 
 }
