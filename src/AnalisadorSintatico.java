@@ -4,11 +4,13 @@ public class AnalisadorSintatico {
 
     private List<Token> tokens; // Lista de tokens
     private Token token; // Token atual
+    private Conjunto c;
 
     public AnalisadorSintatico(List<Token> tokens) {
 
         this.tokens = tokens;
         this.token = tokens.size()>0?tokens.get(0):null;
+        this.c = new Conjunto("conjunto");
     }
 
     private void nextToken() {
@@ -19,6 +21,43 @@ public class AnalisadorSintatico {
         }
         else
             token = null;
+    }
+
+    public void extends(){
+        if(token.getLexema() == "extends"){
+            nextToken();
+            if (token.getTipo() == 3){
+                nextToken();
+                if (token.getLexema() == "{"){
+                    nextToken();
+                } else{
+                    erro(c.seguinte("extends") + ";");
+                    if(token.getLexema() == ";"){
+                        nextToken();
+                        struct3();
+                    }
+                }
+            }else{
+                erro("{" + c.seguinte("extends") + ";");
+                if(token.getLexema() == "{"){
+                    nextToken();
+                }else if(token.getLexema() == ";"){
+                    nextToken();
+                    struct3();
+                }
+            }
+        } else if(token.getLexema() == "{"){
+            nextToken();
+        }else{
+            erro("{" + c.seguinte("extends") + ";");
+            if(token.getLexema() == "{"){
+                nextToken();
+            }else if(token.getLexema() == ";"){
+                nextToken();
+                struct3();
+            }
+        }
+
     }
 
     private void sincronizar(List<LinkedHashSet> tokens_sincronizacao) {

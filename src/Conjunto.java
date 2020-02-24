@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -14,20 +15,20 @@ public class Conjunto {
     public Conjunto(String nomeArq){
         conjuntos = open(nomeArq);
     }
-    public LinkedHashSet primeiro(String nTerminal) {
+    public ArrayList<String> primeiro(String nTerminal) {
         nTerminal = "P".concat(nTerminal);
         System.out.println(nTerminal);
         LinkedHashSet<String> conjunto = conjuntos.get(nTerminal);
         System.out.println(conjunto);
-        return conjunto;
+        return new ArrayList<String>(conjunto);
     }
 
-    public LinkedHashSet seguinte(String nTerminal) {
+    public ArrayList<String> seguinte(String nTerminal) {
         nTerminal = "S".concat(nTerminal);
         System.out.println(nTerminal);
         LinkedHashSet<String> conjunto = conjuntos.get(nTerminal);
         System.out.println(conjunto);
-        return conjunto;
+        return new ArrayList<>(conjunto);
     }
 
     public Map<String, LinkedHashSet<String>> open(String nomeArq){

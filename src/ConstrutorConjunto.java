@@ -134,9 +134,9 @@ public class ConstrutorConjunto {
             c.conjuntoBuilder(key);
 
         }
-        c.save("teste");
+        c.save("conjunto");
         System.out.println("--------------------------------------");
-        Conjunto conj = new Conjunto("teste");
+        Conjunto conj = new Conjunto("conjunto");
         conj.seguinte("Parametro");
         conj.primeiro("Procedimento");
     }
