@@ -102,7 +102,7 @@ public class AnalisadorSintatico {
     }
 
     /**
-     * Método responsável por escrever os tokens, bem como os erros no arquivo de saída
+     * Método responsável por  os erros no arquivo de saída
      * @throws IOException exceção caso ocorra algum erro no processo de escrita do arquivo
      */
     public void escreverEmArquivo(String nameArquivo) throws IOException {
@@ -127,7 +127,7 @@ public class AnalisadorSintatico {
             }
         }
         else{
-            arquivoEscrita.write("Análise Sintática realizada com Sucesso");
+            arquivoEscrita.write("Análise Sintática realizada com Sucesso!");
         }
 
         //Obriga que os dados que estão no buffer sejam escritos imediatamente
