@@ -2,10 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="39ab9ca6-bff4-40ef-be53-bff73e582c6c" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorLexico.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorLexico.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorSintatico.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Conjunto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/ConstrutorConjunto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Erro.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/Erro.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/GerenciadorTokens.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Principal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Token.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/Token.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Conjunto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Conjunto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ConstrutorConjunto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ConstrutorConjunto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Principal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Principal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/teste" beforeDir="false" afterPath="$PROJECT_DIR$/teste" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,13 +27,6 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>Iterator</find>
-      <find>iterator</find>
-      <find>match</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -38,8 +39,12 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Principal">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
     </configuration>
@@ -47,6 +52,15 @@
       <option name="MAIN_CLASS_NAME" value="ConstrutorConjunto" />
       <module name="Analisador Léxico" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Principal" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="11" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="Principal" />
+      <module name="Analisador Léxico" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -84,8 +98,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.ConstrutorConjunto" />
+      <item itemvalue="Application.Principal" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Principal" />
         <item itemvalue="Application.ConstrutorConjunto" />
       </list>
     </recent_temporary>
@@ -104,6 +123,18 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="275" y="22" key="#Project_Structure" timestamp="1582571936037">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="275" y="22" key="#Project_Structure/0.0.1366.728@0.0.1366.728" timestamp="1582571936037" />
+    <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582572499467">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1582572499467" />
+    <state x="463" y="105" key="FileChooserDialogImpl" timestamp="1582572434894">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1582572434894" />
     <state width="1253" height="175" key="GridCell.Tab.0.bottom" timestamp="1582391259953">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
@@ -120,6 +151,10 @@
       <screen x="67" y="27" width="1299" height="741" />
     </state>
     <state width="1253" height="175" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1582391259953" />
+    <state x="184" y="6" key="SettingsEditor" timestamp="1582572384161">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="184" y="6" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1582572384161" />
     <state x="372" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1582048455652">
       <screen x="67" y="27" width="1299" height="741" />
     </state>

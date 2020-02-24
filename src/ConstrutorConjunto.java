@@ -37,6 +37,38 @@ public class ConstrutorConjunto {
         conjuntos.put("PGeraFuncaoeProcedure", new ArrayList<String>(Arrays.asList("PFuncao", "PProcedimento")));
 
 
+
+        conjuntos.put("PVar", new ArrayList<String>(Arrays.asList("var")));
+        conjuntos.put("PTipoVar", new ArrayList<String>(Arrays.asList("int", "boolean", "string", "real","Id")));
+        conjuntos.put("PIdVar", new ArrayList<String>(Arrays.asList("Id")));
+        conjuntos.put("PVar2", new ArrayList<String>(Arrays.asList(",",";","=","[")));
+        conjuntos.put("PVar3", new ArrayList<String>(Arrays.asList("}","PTipoVar")));
+        conjuntos.put("PVar4", new ArrayList<String>(Arrays.asList(",",";")));
+        conjuntos.put("PVetor3", new ArrayList<String>(Arrays.asList("[")));
+        conjuntos.put("PMatriz", new ArrayList<String>(Arrays.asList("PVetor3","PVar4")));
+        conjuntos.put("PListaParametros", new ArrayList<String>(Arrays.asList("PListaParametros2")));
+        conjuntos.put("PContListaParametros", new ArrayList<String>(Arrays.asList(",")));
+        conjuntos.put("PListaParametros2", new ArrayList<String>(Arrays.asList("PIdentificador","Numero","String")));
+        conjuntos.put("PIdentificador", new ArrayList<String>(Arrays.asList("PEscopo","Id")));
+        conjuntos.put("PIdentificador2", new ArrayList<String>(Arrays.asList(".","PVetor")));
+        conjuntos.put("PIdentificador3", new ArrayList<String>(Arrays.asList("PIdentificador2","(")));
+        conjuntos.put("PIdentificador4", new ArrayList<String>(Arrays.asList(".")));
+        conjuntos.put("PVetor", new ArrayList<String>(Arrays.asList("[","PIdentificador4")));
+        conjuntos.put("PVetor2", new ArrayList<String>(Arrays.asList("[")));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         conjuntos.put("SProcedimento", new ArrayList<String>(Arrays.asList("SGeraFuncaoeProcedure","PGeraFuncaoeProcedure")));
         conjuntos.put("SParametro", new ArrayList<String>(Arrays.asList("PTipo")));
         conjuntos.put("SPara1", new ArrayList<String>(Arrays.asList("SParametro")));
@@ -63,6 +95,29 @@ public class ConstrutorConjunto {
         conjuntos.put("SCondEnd", new ArrayList<String>(Arrays.asList("SCondicional")));
         conjuntos.put("SLaco", new ArrayList<String>(Arrays.asList("SComandos")));
         conjuntos.put("SGeraFuncaoeProcedure", new ArrayList<String>(Arrays.asList("PStart")));
+
+
+
+        //Observação Verificar na gramática se trocou o corpo para corpo2 na condicional
+
+
+        conjuntos.put("SVar", new ArrayList<String>(Arrays.asList("PGerarFuncaoeProcedure","start","PCorpo2", "SCorpo")));
+        conjuntos.put("STipoVar", new ArrayList<String>(Arrays.asList("SVar", "SVar3")));
+        conjuntos.put("SIdVar", new ArrayList<String>(Arrays.asList("STipoVar","SVar2","SVar4")));
+        conjuntos.put("SVar2", new ArrayList<String>(Arrays.asList("SIdVar")));
+        conjuntos.put("SVar3", new ArrayList<String>(Arrays.asList("SVar2","SVar4")));
+        conjuntos.put("SVar4", new ArrayList<String>(Arrays.asList("SVar2","SMatriz")));
+        conjuntos.put("SVetor3", new ArrayList<String>(Arrays.asList("PVar4")));
+        conjuntos.put("SMatriz", new ArrayList<String>(Arrays.asList("SVetor3")));
+        conjuntos.put("SListaParametros", new ArrayList<String>(Arrays.asList("SContListaParametros",")")));
+        conjuntos.put("SContListaParametros", new ArrayList<String>(Arrays.asList("SListaParametros")));
+        conjuntos.put("SListaParametros2", new ArrayList<String>(Arrays.asList("SContListaParametros","SListaParametros")));
+        conjuntos.put("SIdentificador", new ArrayList<String>(Arrays.asList("SListaParametros2","SIndiceVetor","PAuxPrint")));
+        conjuntos.put("SIdentificador2", new ArrayList<String>(Arrays.asList("SIdentificador","SIdentificador3","SIdentificadorSemFuncao","PExpressaoAritmetica2","SIdentificadorAritmetico3","SIdentificadorAritmetico")));
+        conjuntos.put("SIdentificador3", new ArrayList<String>(Arrays.asList("SIdentificador")));
+        conjuntos.put("SIdentificador4", new ArrayList<String>(Arrays.asList("SVetor")));
+        conjuntos.put("SVetor", new ArrayList<String>(Arrays.asList("SIdentificador2","SIdentificador4")));
+        conjuntos.put("SVetor2", new ArrayList<String>(Arrays.asList("PIdentificador4","SVetor")));
 
     }
 
