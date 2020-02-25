@@ -17,13 +17,14 @@ public class AnalisadorSintatico {
         this.conjunto_P_S = new Conjunto();
     }
 
-    private void nextToken() {
+    private Token nextToken() {
 
         if (tokens.size() > 0) {
             token = tokens.get(0);
             tokens.remove(0);
         }
         else token = null;
+        return token;
     }
 
     private void addErroSintatico(ErroSintatico erro){
@@ -101,7 +102,37 @@ public class AnalisadorSintatico {
     }
 
 
+    public void Const(){
+
+    }
+
+    public void Var(){
+
+    }
+    public void Struct(){
+
+    }
+    public void GerarFuncaoeProcedure(){
+
+    }
+
+    public void Start(){
+
+    }
+
     public void executarAnalise() {
+        this.token = nextToken();
+        if (token != null){
+            Const();
+            Struct();
+            Var();
+            GerarFuncaoeProcedure();
+            Start();
+        }
+        else
+             System.out.println("A lista de tokens está vazia!");
+
+
 
     }
 
