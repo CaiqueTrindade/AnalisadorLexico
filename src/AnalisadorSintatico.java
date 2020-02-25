@@ -138,13 +138,72 @@ public class AnalisadorSintatico {
 
     }
 
-
-
-    public void vetor3(){
+    public void Matriz(){
 
         if (token.getLexema().equals("[")){
             nextToken();
-            ValorVetor();
+            //ValorVetor();
+            if (token.getLexema().equals("]")){
+                nextToken();
+                Var4();
+            }
+            else{
+                addErroSintatico(new ErroSintatico("Matriz", "Esperava ] mas encontrou "+token.getLexema(),token.getnLinha()));
+                sincronizar("ValorVetor#Var4#GeraFuncaoeProcedure#Start", null, null);
+
+                if (token != null){
+                    if (conjunto_P_S.primeiro("ValorVetor").contains(token.getLexema())){
+                        //ValorVetor();
+                    }
+                    else if (conjunto_P_S.seguinte("Var4").contains(token.getLexema())){
+                        Var4();
+                    }
+                    else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
+                        GerarFuncaoeProcedure();
+                    }
+                    else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
+                        Start();
+                    }
+                }
+            }
+
+        }
+        else if (conjunto_P_S.primeiro("Var4").contains(token.getLexema())) {
+            Var4();
+        }
+        else {
+            addErroSintatico(new ErroSintatico("Matriz", token.getLexema()+ " não esperado", token.getnLinha()));
+
+            sincronizar("Var2#GeraFuncaoeProcedure#Start", "Vetor3", null);
+
+            if (token != null){
+                if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
+                    Var2();
+                }
+                else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
+                    GerarFuncaoeProcedure();
+                }
+                else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
+                    Start();
+                }
+            }
+        }
+
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Matriz","EOF inesperado", linhaErroEOF));
+        }
+
+
+    }
+
+
+
+    public void Vetor3(){
+
+        if (token.getLexema().equals("[")){
+            nextToken();
+            //ValorVetor();
             if (token.equals("]")){
                 nextToken();
                 Matriz();
@@ -176,7 +235,7 @@ public class AnalisadorSintatico {
 
             if (token != null){
                 if (conjunto_P_S.primeiro("ValorVetor").contains(token.getLexema())){
-                    ValorVetor();
+                    //ValorVetor();
                 }
                 if (conjunto_P_S.primeiro("Matriz").contains(token.getLexema())){
                     Matriz();
@@ -286,7 +345,7 @@ public class AnalisadorSintatico {
             }
             else if (token.getLexema().equals("=")){
                 nextToken();
-                Valor();
+                //Valor();
                 Var4();
             }
             else if (token.getLexema().equals("[")) {
@@ -458,26 +517,6 @@ public class AnalisadorSintatico {
 
 
 //    public static  void valorVetor(){
-//
-//    }
-//    public static void matriz(){
-//
-//        if (token.equals("[")){
-//            token = proximo_token();
-//            valorVetor();
-//            if (token.equals("]")){
-//                token = proximo_token();
-//                var4();
-//            }
-//
-//        }
-//        else if (isPrimeiro("Var4")) {
-//            var4();
-//        }
-//        else {
-//            erro();
-//        }
-//
 //
 //    }
 
