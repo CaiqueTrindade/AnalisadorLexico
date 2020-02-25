@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="39ab9ca6-bff4-40ef-be53-bff73e582c6c" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AnalisadorSintatico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorSintatico.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

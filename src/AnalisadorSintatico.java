@@ -152,7 +152,7 @@ public class AnalisadorSintatico {
             }
             else{
                 addErroSintatico(new ErroSintatico("Var", "Esperava { mas encontrou "+token.getLexema(),token.getnLinha()));
-                sincronizar("TipoVar#GeraFuncaoeProcedure#Start",null, "start");
+                sincronizar("TipoVar#GeraFuncaoeProcedure#Start",null, null);
 
                 if (token != null){
                     if (conjunto_P_S.primeiro("TipoVar").contains(token)){
@@ -161,10 +161,10 @@ public class AnalisadorSintatico {
                     else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token)){
                         GerarFuncaoeProcedure();
                     }
-                    
+                    else if (conjunto_P_S.primeiro("Start").contains(token)){
+                        Start();
+                    }
                 }
-
-
             }
         }
         if (token == null){
