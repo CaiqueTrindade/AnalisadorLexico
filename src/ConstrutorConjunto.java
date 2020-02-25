@@ -59,8 +59,79 @@ public class ConstrutorConjunto {
 
 
 
+        conjuntos.put("PIndiceVetor", new ArrayList<String>(Arrays.asList("IntPos", "PIdentificador")));
+        conjuntos.put("PEscopo", new ArrayList<String>(Arrays.asList("local", "global")));
+        conjuntos.put("PIdentificadorSemFuncao", new ArrayList<String>(Arrays.asList("PEscopo", "Id")));
+        conjuntos.put("PExpressaoAritmetica", new ArrayList<String>(Arrays.asList("PT", "PIdentificadorAritmetico", "++", "--")));
+        conjuntos.put("PE2", new ArrayList<String>(Arrays.asList("+", "-")));
+        conjuntos.put("PT", new ArrayList<String>(Arrays.asList("PF")));
+        conjuntos.put("PT2", new ArrayList<String>(Arrays.asList("*", "/")));
+        conjuntos.put("PF", new ArrayList<String>(Arrays.asList("(", "Numero")));
+        conjuntos.put("PIdentificadorAritmetico", new ArrayList<String>(Arrays.asList("PEscopo", "Id")));
+        conjuntos.put("PExpressaoLogicaRelacional", new ArrayList<String>(Arrays.asList("PExpressaoLR", "(")));
+        conjuntos.put("PExpressaoLR", new ArrayList<String>(Arrays.asList("PArgumentoLR2", "PArgumentoLR3", "POperadorRelacional")));
+        conjuntos.put("PExpressaoLR2", new ArrayList<String>(Arrays.asList("POperadorRelacional", "PExpressaoLR3")));
+        conjuntos.put("PExpressaoLR3", new ArrayList<String>(Arrays.asList("POperadorLogico")));
+        conjuntos.put("PArgumentoLR", new ArrayList<String>(Arrays.asList("PArgumentoLR2", "PArgumentoLR3")));
+        conjuntos.put("PArgumentoLR2", new ArrayList<String>(Arrays.asList("!", "true", "false")));
+        conjuntos.put("PArgumentoLR2_1", new ArrayList<String>(Arrays.asList("Id", "true", "false")));
+        conjuntos.put("PArgumentoLR3", new ArrayList<String>(Arrays.asList("String", "PExpressaoAritmetica")));
+        conjuntos.put("POperadorRelacional", new ArrayList<String>(Arrays.asList("!=", "==", "<", ">", "<=", ">=")));
+        conjuntos.put("POperadorLogico", new ArrayList<String>(Arrays.asList("&&", "||")));
+        conjuntos.put("PPrint", new ArrayList<String>(Arrays.asList("print")));
+        conjuntos.put("PPrint1", new ArrayList<String>(Arrays.asList("String", "Numero", "PIdentificador")));
+        conjuntos.put("PAuxPrint", new ArrayList<String>(Arrays.asList("PPrintFim", ",")));
+        conjuntos.put("PPrintFim", new ArrayList<String>(Arrays.asList(")")));
+        conjuntos.put("PRead", new ArrayList<String>(Arrays.asList("read")));
+        conjuntos.put("PRead1", new ArrayList<String>(Arrays.asList("PIdentificadorSemFuncao"))); 
+        conjuntos.put("PAuxRead", new ArrayList<String>(Arrays.asList(",", "PReadFim")));
+        conjuntos.put("PReadFim", new ArrayList<String>(Arrays.asList(")")));
+        conjuntos.put("PCorpo", new ArrayList<String>(Arrays.asList("}", "PVar")));
+        conjuntos.put("PComandos", new ArrayList<String>(Arrays.asList("PCondicional", "PLaco", "PRead", "PPrint", "PComandosReturn", "PIdentificadorComandos")));
+        conjuntos.put("PIdentificadorComandos", new ArrayList<String>(Arrays.asList("PIdentificadorSemFuncao"))); 
+        conjuntos.put("PIdentificadorComandos2", new ArrayList<String>(Arrays.asList("=", "(")));
+        conjuntos.put("PIdentificadorComandos2_1", new ArrayList<String>(Arrays.asList("PExpressaoAritmetica", "String", "Boolean")));
+        conjuntos.put("PComandosReturn", new ArrayList<String>(Arrays.asList("return")));
+        conjuntos.put("PCodigosRetornos", new ArrayList<String>(Arrays.asList(";", "PExpressaoAritmetica")));
+        conjuntos.put("PStart", new ArrayList<String>(Arrays.asList("start")));
+        
 
 
+        conjuntos.put("SIndiceVetor", new ArrayList<String>(Arrays.asList("]")));
+        conjuntos.put("SEscopo", new ArrayList<String>(Arrays.asList("Id")));
+        conjuntos.put("SIdentificadorSemFuncao", new ArrayList<String>(Arrays.asList("PT2", "PE2", "SExpressaoAritmetica", "PAuxRead" "SIdentificadorComandos")));
+        conjuntos.put("SExpressaoAritmetica", new ArrayList<String>(Arrays.asList("SE2", "ST2", ")", "SArgumentoLR3", "SIdentificadorComandos2_1", ";")));
+        conjuntos.put("SE2", new ArrayList<String>(Arrays.asList("SExpressaoAritmetica", "SExpressaoAritmetica2", "SIdentificadorAritmetico3"))); 
+        conjuntos.put("ST", new ArrayList<String>(Arrays.asList("PE2", "SExpressaoAritmetica")));
+        conjuntos.put("ST2", new ArrayList<String>(Arrays.asList("PE2", "SExpressaoAritmetica", "SExpressaoAritmetica2", "SIdentificadorAritmetico3", "ST"))); 
+        conjuntos.put("SF", new ArrayList<String>(Arrays.asList("PT2", "ST")));
+        conjuntos.put("SIdentificadorAritmetico", new ArrayList<String>(Arrays.asList("SExpressaoAritmetica")));
+        conjuntos.put("SExpressaoLogicaRelacional", new ArrayList<String>(Arrays.asList("SExpressaoLR3", ")")));
+        conjuntos.put("SExpressaoLR", new ArrayList<String>(Arrays.asList("SExpressaoLogicaRelacional", ")")));
+        conjuntos.put("SExpressaoLR2", new ArrayList<String>(Arrays.asList("SExpressaoLR")));
+        conjuntos.put("SExpressaoLR3", new ArrayList<String>(Arrays.asList("SExpressaoLogicaRelacional", "SExpressaoLR", "SExpressaoLR2")));
+        conjuntos.put("SArgumentoLR", new ArrayList<String>(Arrays.asList("PExpressaoLR3", "SExpressaoLR2", "SExpressaoLR")));
+        conjuntos.put("SArgumentoLR2", new ArrayList<String>(Arrays.asList("PExpressaoLR2", "SExpressaoLR"))); 
+        conjuntos.put("SArgumentoLR2_1", new ArrayList<String>(Arrays.asList("SArgumentoLR2")));
+        conjuntos.put("SArgumentoLR3", new ArrayList<String>(Arrays.asList("POperadorRelacional", "SArgumentoLR")));
+        conjuntos.put("SOperadorRelacional", new ArrayList<String>(Arrays.asList("PArgumentoLR")));
+        conjuntos.put("SOperadorLogico", new ArrayList<String>(Arrays.asList("PExpressaoLogicaRelacional")));
+        conjuntos.put("SPrint", new ArrayList<String>(Arrays.asList("SComandos")));
+        conjuntos.put("SPrint1", new ArrayList<String>(Arrays.asList("SPrint", "SAuxPrint")));
+        conjuntos.put("SAuxPrint", new ArrayList<String>(Arrays.asList("SPrint1")));
+        conjuntos.put("SPrintFim", new ArrayList<String>(Arrays.asList("SAuxPrint")));
+        conjuntos.put("SRead", new ArrayList<String>(Arrays.asList("SComandos")));
+        conjuntos.put("SRead1", new ArrayList<String>(Arrays.asList("SRead", "SAuxRead")));
+        conjuntos.put("SAuxRead", new ArrayList<String>(Arrays.asList("SRead1")));
+        conjuntos.put("SReadFim", new ArrayList<String>(Arrays.asList("SAuxRead")));
+        conjuntos.put("SCorpo", new ArrayList<String>(Arrays.asList("}", "SF2")));
+        conjuntos.put("SComandos", new ArrayList<String>(Arrays.asList("PCorpo2", "SCorpo2")));
+        conjuntos.put("SIdentificadorComandos", new ArrayList<String>(Arrays.asList("SComandos")));
+        conjuntos.put("SIdentificadorComandos2", new ArrayList<String>(Arrays.asList(";")));
+        conjuntos.put("SIdentificadorComandos2_1", new ArrayList<String>(Arrays.asList("SIdentificadorComandos2")));
+        conjuntos.put("SComandosReturn", new ArrayList<String>(Arrays.asList("SComandos")));
+        conjuntos.put("SCodigosRetornos", new ArrayList<String>(Arrays.asList("SComandosReturn")));
+        conjuntos.put("SStart", new ArrayList<String>(Arrays.asList("SInicio")));
 
 
 
