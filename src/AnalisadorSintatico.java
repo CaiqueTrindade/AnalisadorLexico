@@ -7,12 +7,14 @@ public class AnalisadorSintatico {
     private List<ErroSintatico> errosSintaticos; // Lista de erros sintáticos
     private Token token; // Token atual
     private static int FLAGERRO = 0;
+    private Conjunto conjunto_P_S;
 
     public AnalisadorSintatico(List<Token> tokens) {
 
         this.tokens = tokens;
         this.token = tokens.size()>0?tokens.get(0):null;
         this.errosSintaticos = new ArrayList<>();
+        this.conjunto_P_S = new Conjunto();
     }
 
     private void nextToken() {
@@ -37,6 +39,8 @@ public class AnalisadorSintatico {
 
     }
 
+    // Todos os conjuntos e lexemas devem ser separados por #
+    // EXEMPLO: "start#if#else", "Inicio#Var#Identificador"
     private void sincronizar(String conjuntos_primeiro, String conjuntos_seguinte, String lexemas) {
 
         ArrayList<String> tokens_sincronizacao = new ArrayList<>();
