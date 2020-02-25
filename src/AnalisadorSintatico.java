@@ -99,6 +99,35 @@ public class AnalisadorSintatico {
             }
         }
     }
+    
+    // tipo_conjunto = 0 (conjunto primeiro) ou 1 (conjunto seguinte) (na vdd qualquer coisa diferente de 0 é considerado como conjunto seguinte)
+    private boolean pertence(int tipo_conjunto, string nterminal) {
+
+        ArrayList<String> conjunto = (tipo_conjunto == 0)?conjunto_P_S.primeiro(nterminal):conjunto_P_S.seguinte(nterminal);
+
+        if (token.getTipo() == 3) {
+                if (conjunto.contains("Id"))
+                    return true;
+        } else if (token.getTipo() == 2 && Integer.parseInt(token.getLexema()) >= 0) {
+            if (conjunto.contains("IntPos"))
+                return = true;
+            else if (conjunto.contains("Numero"))
+                return = true;
+        } else if (token.getTipo() == 0 && token.getLexema().matches("^(true|false)$")) {
+            if (conjunto.contains("Boolean"))
+                return = true;
+        } else if (token.getTipo() == 11) {
+            if (conjunto.contains("String"))
+                return = true;
+        } else if (token.getTipo() == 1 || token.getTipo() == 2) {
+            if (conjunto.contains("Numero"))
+                return = true;
+        } else if (conjunto.contains(token.getLexema())) {
+                return = true;
+        }
+
+        return false;
+    }
 
     public List<ErroSintatico> getListaErrosSintaticos(){
         return this.errosSintaticos;
