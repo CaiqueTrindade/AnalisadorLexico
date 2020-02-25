@@ -10,6 +10,7 @@ public class AnalisadorSintatico {
     private Conjunto conjunto_P_S;
     private static  int linhaErroEOF;
 
+
     public AnalisadorSintatico(List<Token> tokens) {
 
         this.tokens = tokens;
@@ -51,12 +52,12 @@ public class AnalisadorSintatico {
 
         if (conjuntos_primeiro != null) {
             String aux[] = conjuntos_primeiro.split("#");
-            for (int i = 0; i < aux.length; i++) tokens_sincronizacao.addAll(conjuntos_P_S.primeiro(aux[i]));
+            for (int i = 0; i < aux.length; i++) tokens_sincronizacao.addAll(conjunto_P_S.primeiro(aux[i]));
         }
 
         if (conjuntos_seguinte != null) {
             String aux[] = conjuntos_seguinte.split("#");
-            for (int i = 0; i < aux.length; i++) tokens_sincronizacao.addAll(conjuntos_P_S.seguinte(aux[i]));
+            for (int i = 0; i < aux.length; i++) tokens_sincronizacao.addAll(conjunto_P_S.seguinte(aux[i]));
         }
 
         if(lexemas != null) {
@@ -109,16 +110,61 @@ public class AnalisadorSintatico {
 
     }
 
+
+    public void IdVar(){
+
+//        if (token == "identificador"){
+//            token = proximo_token();
+//            var2();
+//
+//        }
+//        else{
+//            erro();
+//        }
+
+    }
+
+
+    public void TipoVar(){
+
+        if (this.conjunto_P_S.primeiro("Tipo").contains(token)){
+            nextToken();
+            //Tipo();
+            IdVar();
+
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("TipoVar", "EOF inesperado", linhaErroEOF));
+        }
+
+
+    }
+
+
     public void Var(){
 
         if (token.getLexema().equals("var")){
             nextToken();
             if (token.getLexema().equals("{")){
                 nextToken();
-                tipoVar();
+                TipoVar();
             }
             else{
                 addErroSintatico(new ErroSintatico("Var", "Esperava { mas encontrou "+token.getLexema(),token.getnLinha()));
+                sincronizar("TipoVar#GeraFuncaoeProcedure#Start",null, "start");
+
+                if (token != null){
+                    if (conjunto_P_S.primeiro("TipoVar").contains(token)){
+                        TipoVar();
+                    }
+                    else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token)){
+                        GerarFuncaoeProcedure();
+                    }
+                    
+                }
+
+
             }
         }
         if (token == null){
@@ -265,30 +311,9 @@ public class AnalisadorSintatico {
 //
 //
 //    }
-//    public static  void idVar(){
-//
-//        if (token == "identificador"){
-//            token = proximo_token();
-//            var2();
-//
-//        }
-//        else{
-//            erro();
-//        }
-//
-//    }
-//
-//    public static void tipoVar(){
-//
-//        if (isPrimeiro("Tipo")){
-//            token = proximo_token();
-//            tipo();
-//            idVar();
-//
-//        }
-//
-//
-//    }
+
+
+
 //
 
 //
