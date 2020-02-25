@@ -99,7 +99,7 @@ public class ConstrutorConjunto {
 
         conjuntos.put("SIndiceVetor", new ArrayList<String>(Arrays.asList("]")));
         conjuntos.put("SEscopo", new ArrayList<String>(Arrays.asList("Id")));
-        conjuntos.put("SIdentificadorSemFuncao", new ArrayList<String>(Arrays.asList("PT2", "PE2", "SExpressaoAritmetica", "PAuxRead" "SIdentificadorComandos")));
+        conjuntos.put("SIdentificadorSemFuncao", new ArrayList<String>(Arrays.asList("PT2", "PE2", "SExpressaoAritmetica", "PAuxRead","SIdentificadorComandos")));
         conjuntos.put("SExpressaoAritmetica", new ArrayList<String>(Arrays.asList("SE2", "ST2", ")", "SArgumentoLR3", "SIdentificadorComandos2_1", ";")));
         conjuntos.put("SE2", new ArrayList<String>(Arrays.asList("SExpressaoAritmetica", "SExpressaoAritmetica2", "SIdentificadorAritmetico3"))); 
         conjuntos.put("ST", new ArrayList<String>(Arrays.asList("PE2", "SExpressaoAritmetica")));

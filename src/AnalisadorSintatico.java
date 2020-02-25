@@ -8,6 +8,7 @@ public class AnalisadorSintatico {
     private Token token; // Token atual
     private static int FLAGERRO = 0;
     private Conjunto conjunto_P_S;
+    private static  int linhaErroEOF;
 
     public AnalisadorSintatico(List<Token> tokens) {
 
@@ -22,13 +23,15 @@ public class AnalisadorSintatico {
         if (tokens.size() > 0) {
             token = tokens.get(0);
             tokens.remove(0);
+            linhaErroEOF = token.getnLinha();
         }
+
         else token = null;
 
     }
 
     private void addErroSintatico(ErroSintatico erro){
-        if (erro.getnTerminal().equals("EOF")){
+        if (erro.getMensagem().split(" ")[0].equals("EOF")){
              if (FLAGERRO !=1 ){
                 FLAGERRO = 1;
                 this.errosSintaticos.add(erro);
@@ -107,6 +110,20 @@ public class AnalisadorSintatico {
     }
 
     public void Var(){
+
+        if (token.getLexema().equals("var")){
+            nextToken();
+            if (token.getLexema().equals("{")){
+                nextToken();
+                tipoVar();
+            }
+            else{
+                addErroSintatico(new ErroSintatico("Var", "Esperava { mas encontrou "+token.getLexema(),token.getnLinha()));
+            }
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Var", "EOF inesperado", linhaErroEOF));
+        }
 
     }
     public void Struct(){
@@ -273,18 +290,7 @@ public class AnalisadorSintatico {
 //
 //    }
 //
-//    public static void var(){
-//
-//        if (token.equals("var")){
-//            token = proximo_token();
-//            if (token.equals("{")){
-//                token = proximo_token();
-//                tipoVar();
-//            }
-//        }
-//
-//
-//    }
+
 //
 //    public static void indiceVetor(){
 //
