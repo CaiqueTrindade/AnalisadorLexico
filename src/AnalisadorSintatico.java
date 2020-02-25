@@ -111,6 +111,82 @@ public class AnalisadorSintatico {
     }
 
 
+    public void Var2(){
+
+        if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
+            if (token.getLexema().equals(",")){
+                nextToken();
+                IdVar();
+            }
+            else if (token.getLexema().equals(";")){
+                nextToken();
+                Var3();
+            }
+            else if (token.getLexema().equals("=")){
+                nextToken();
+                Valor();
+                Var4();
+            }
+            else if (token.getLexema().equals("[")) {
+                Vetor3();
+                Var4();
+            }
+            else {
+                addErroSintatico(new ErroSintatico("Var2", token.getLexema() +" não esperado", token.getnLinha() ));
+                sincronizar("Var2#GeraFuncaoeProcedure#Start",null, null);
+                if (token != null){
+                    if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
+                        Var2();
+                    }
+                    else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
+                        GerarFuncaoeProcedure();
+                    }
+                    else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
+                        Start();
+                    }
+                }
+            }
+        } else {
+            addErroSintatico(new ErroSintatico("Var2", token.getLexema() +" não esperado", token.getnLinha()));
+            if (token != null){
+                if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
+                    Var2();
+                }
+                else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
+                    GerarFuncaoeProcedure();
+                }
+                else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
+                    Start();
+                }
+            }
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("TipoVar", "EOF inesperado", linhaErroEOF));
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void IdVar(){
 
         if (token.getTipo() == 3){
@@ -121,13 +197,13 @@ public class AnalisadorSintatico {
             addErroSintatico(new ErroSintatico("IdVar", "Esperava um identificador mas encontrou "+token.getLexema(),  token.getnLinha()));
             sincronizar("Var2#GeraFuncaoeProcedure#Start",null, null);
             if (token != null){
-                if (conjunto_P_S.primeiro("Var2").contains(token)){
+                if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
                     Var2();
                 }
-                else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token)){
+                else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
                     GerarFuncaoeProcedure();
                 }
-                else if (conjunto_P_S.primeiro("Start").contains(token)){
+                else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
                     Start();
                 }
             }
@@ -143,23 +219,23 @@ public class AnalisadorSintatico {
 
     public void TipoVar(){
 
-        if (this.conjunto_P_S.primeiro("Tipo").contains(token)){
+        if (this.conjunto_P_S.primeiro("Tipo").contains(token.getLexema())){
             nextToken();
             //Tipo();
             IdVar();
 
         }
         else {
-            addErroSintatico(new ErroSintatico("TipoVar", token+" não esperado", token.getnLinha()));
+            addErroSintatico(new ErroSintatico("TipoVar", token.getLexema()+" não esperado", token.getnLinha()));
             sincronizar("IdVar#GeraFuncaoeProcedure#Start",null, null);
             if (token != null){
-                if (conjunto_P_S.primeiro("IdVar").contains(token)){
+                if (conjunto_P_S.primeiro("IdVar").contains(token.getLexema())){
                     IdVar();
                 }
-                else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token)){
+                else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
                     GerarFuncaoeProcedure();
                 }
-                else if (conjunto_P_S.primeiro("Start").contains(token)){
+                else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
                     Start();
                 }
             }
@@ -187,13 +263,13 @@ public class AnalisadorSintatico {
                 sincronizar("TipoVar#GeraFuncaoeProcedure#Start",null, null);
 
                 if (token != null){
-                    if (conjunto_P_S.primeiro("TipoVar").contains(token)){
+                    if (conjunto_P_S.primeiro("TipoVar").contains(token.getLexema())){
                         TipoVar();
                     }
-                    else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token)){
+                    else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
                         GerarFuncaoeProcedure();
                     }
-                    else if (conjunto_P_S.primeiro("Start").contains(token)){
+                    else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
                         Start();
                     }
                 }
@@ -310,38 +386,6 @@ public class AnalisadorSintatico {
 //        else{
 //            erro();
 //        }
-//    }
-//    public static  void var2(){
-//
-//        if (isPrimeiro("Var2")){
-//            if (token.equals(",")){
-//                token = proximo_token();
-//                idVar();
-//            }
-//            else if (token.equals(";")){
-//                token = proximo_token();
-//                var3();
-//
-//
-//            }
-//            else if (token.equals("=")){
-//                token = proximo_token();
-//                valor();
-//                var4();
-//            }
-//            else {
-//                erro();
-//            }
-//        }
-//        else if (isPrimeiro("Vetor")){
-//            vetor3();
-//            var4();
-//
-//        } else {
-//            erro();
-//        }
-//
-//
 //    }
 
 
