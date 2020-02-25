@@ -17,14 +17,14 @@ public class AnalisadorSintatico {
         this.conjunto_P_S = new Conjunto();
     }
 
-    private Token nextToken() {
+    private void nextToken() {
 
         if (tokens.size() > 0) {
             token = tokens.get(0);
             tokens.remove(0);
         }
         else token = null;
-        return token;
+
     }
 
     private void addErroSintatico(ErroSintatico erro){
@@ -121,8 +121,8 @@ public class AnalisadorSintatico {
     }
 
     public void executarAnalise() {
-        this.token = nextToken();
-        if (token != null){
+        nextToken();
+        if (this.token != null){
             Const();
             Struct();
             Var();
