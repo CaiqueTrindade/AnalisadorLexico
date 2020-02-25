@@ -102,7 +102,7 @@ public class AnalisadorSintatico {
     // tipo_conjunto = 0 (conjunto primeiro) ou 1 (conjunto seguinte) (na vdd qualquer coisa diferente de 0 é considerado como conjunto seguinte)
     private boolean pertence(int tipo_conjunto, String nterminal) {
 
-        ArrayList<String> conjunto = (tipo_conjunto == 0)?conjunto_P_S.primeiro(nterminal):conjunto_P_S.seguinte(nterminal);
+        LinkedHashSet<String> conjunto = (tipo_conjunto == 0)?conjunto_P_S.primeiro(nterminal):conjunto_P_S.seguinte(nterminal);
 
         if (token.getTipo() == 3) {
             if (conjunto.contains("Id"))
@@ -135,6 +135,17 @@ public class AnalisadorSintatico {
 
 
     public void Const(){
+
+    }
+
+
+
+    public void ListaParametros(){
+        if (conjunto_P_S.primeiro("ListaParametros2").contains(token.getLexema())){
+            ListaParametros2();
+            ContListaParametros();
+        }
+
 
     }
 
@@ -188,7 +199,6 @@ public class AnalisadorSintatico {
                 }
             }
         }
-
 
         if (token == null){
             addErroSintatico(new ErroSintatico("Matriz","EOF inesperado", linhaErroEOF));
@@ -687,15 +697,7 @@ public class AnalisadorSintatico {
 //
 //    }
 //
-//    public static  void listaParametros(){
-//        if (isPrimeiro("ListaParametros2")){
-//            listaParametros2();
-//            contListaParametros();
-//
-//        }
-//
-//
-//    }
+
 //
 //    public static  void identificador3(){
 //
