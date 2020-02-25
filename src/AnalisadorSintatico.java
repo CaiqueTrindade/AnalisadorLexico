@@ -173,6 +173,26 @@ public class AnalisadorSintatico {
         }
         else{
             addErroSintatico(new ErroSintatico("Vetor3", "Esperava [ mas encontrou "+token.getLexema(),token.getnLinha()));
+            sincronizar("ValorVetor#Matriz#GeraFuncaoeProcedure#Start", "Vetor3", null);
+
+            if (token != null){
+                if (conjunto_P_S.primeiro("ValorVetor").contains(token.getLexema())){
+                    ValorVetor();
+                }
+                if (conjunto_P_S.primeiro("Matriz").contains(token.getLexema())){
+                    Matriz();
+                }
+                else if (conjunto_P_S.seguinte("Vetor3").contains(token.getLexema())){
+                    Var4();
+                }
+                else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
+                    GerarFuncaoeProcedure();
+                }
+                else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
+                    Start();
+                }
+            }
+
         }
 
         if (token == null){
