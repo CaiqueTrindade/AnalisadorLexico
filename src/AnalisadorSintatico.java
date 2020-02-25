@@ -61,7 +61,7 @@ public class AnalisadorSintatico {
         }
 
         if(lexemas != null) {
-            String aux[] = conjuntos_seguinte.split("#");
+            String aux[] = lexemas.split("#");
             for (int i = 0; i < aux.length; i++) if (!tokens_sincronizacao.contains(aux[i])) tokens_sincronizacao.add(aux[i]);
         }
 
