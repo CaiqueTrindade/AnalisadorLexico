@@ -113,14 +113,30 @@ public class AnalisadorSintatico {
 
     public void IdVar(){
 
-//        if (token == "identificador"){
-//            token = proximo_token();
-//            var2();
-//
-//        }
-//        else{
-//            erro();
-//        }
+        if (token.getTipo() == 3){
+            nextToken();
+            Var2();
+        }
+        else{
+            addErroSintatico(new ErroSintatico("IdVar", "Esperava um identificador mas encontrou "+token.getLexema(),  token.getnLinha()));
+            sincronizar("Var2#GeraFuncaoeProcedure#Start",null, null);
+            if (token != null){
+                if (conjunto_P_S.primeiro("Var2").contains(token)){
+                    Var2();
+                }
+                else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token)){
+                    GerarFuncaoeProcedure();
+                }
+                else if (conjunto_P_S.primeiro("Start").contains(token)){
+                    Start();
+                }
+            }
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("TipoVar", "EOF inesperado", linhaErroEOF));
+        }
+
 
     }
 
@@ -131,6 +147,22 @@ public class AnalisadorSintatico {
             nextToken();
             //Tipo();
             IdVar();
+
+        }
+        else {
+            addErroSintatico(new ErroSintatico("TipoVar", token+" não esperado", token.getnLinha()));
+            sincronizar("IdVar#GeraFuncaoeProcedure#Start",null, null);
+            if (token != null){
+                if (conjunto_P_S.primeiro("IdVar").contains(token)){
+                    IdVar();
+                }
+                else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token)){
+                    GerarFuncaoeProcedure();
+                }
+                else if (conjunto_P_S.primeiro("Start").contains(token)){
+                    Start();
+                }
+            }
 
         }
 
