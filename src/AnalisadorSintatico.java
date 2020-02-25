@@ -120,6 +120,395 @@ public class AnalisadorSintatico {
 
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//    public static void var3(){
+//
+//        if (token.equals("}")){
+//            token = proximo_token();
+//        }
+//        else if (isPrimeiro("TipoVar")){
+//            tipoVar();
+//        }
+//        else{
+//            erro();
+//        }
+//
+//    }
+//
+//    public static  void var4(){
+//
+//        if (token.equals(",")){
+//            token = proximo_token();
+//            idVar();
+//
+//        }
+//        else if (token.equals(";")){
+//            token = proximo_token();
+//            var3();
+//
+//        }
+//        else{
+//            erro();
+//        }
+//
+//
+//    }
+//
+
+//    public static  void valorVetor(){
+//
+//    }
+//    public static void matriz(){
+//
+//        if (token.equals("[")){
+//            token = proximo_token();
+//            valorVetor();
+//            if (token.equals("]")){
+//                token = proximo_token();
+//                var4();
+//            }
+//
+//        }
+//        else if (isPrimeiro("Var4")) {
+//            var4();
+//        }
+//        else {
+//            erro();
+//        }
+//
+//
+//    }
+//    public static void vetor3(){
+//
+//        if (token.equals("[")){
+//            token = proximo_token();
+//            valorVetor();
+//            if (token.equals("]")){
+//                token = proximo_token();
+//                matriz();
+//            }
+//
+//        }
+//        else{
+//            erro();
+//        }
+//    }
+//    public static  void var2(){
+//
+//        if (isPrimeiro("Var2")){
+//            if (token.equals(",")){
+//                token = proximo_token();
+//                idVar();
+//            }
+//            else if (token.equals(";")){
+//                token = proximo_token();
+//                var3();
+//
+//
+//            }
+//            else if (token.equals("=")){
+//                token = proximo_token();
+//                valor();
+//                var4();
+//            }
+//            else {
+//                erro();
+//            }
+//        }
+//        else if (isPrimeiro("Vetor")){
+//            vetor3();
+//            var4();
+//
+//        } else {
+//            erro();
+//        }
+//
+//
+//    }
+//    public static  void idVar(){
+//
+//        if (token == "identificador"){
+//            token = proximo_token();
+//            var2();
+//
+//        }
+//        else{
+//            erro();
+//        }
+//
+//    }
+//
+//    public static void tipoVar(){
+//
+//        if (isPrimeiro("Tipo")){
+//            token = proximo_token();
+//            tipo();
+//            idVar();
+//
+//        }
+//
+//
+//    }
+//
+//    public static void var(){
+//
+//        if (token.equals("var")){
+//            token = proximo_token();
+//            if (token.equals("{")){
+//                token = proximo_token();
+//                tipoVar();
+//            }
+//        }
+//
+//
+//    }
+//
+//    public static void indiceVetor(){
+//
+////        if (token é um intPos){
+////            token = proximo_token();
+////
+////        }
+////        else if (token pertence ao conjunto primeiro de identificador){
+////            identificador();
+////        }
+////        else{
+////            Erro
+////        }
+//
+//    }
+//
+//    public static  void vetor2(){
+//
+////        if (token.equals("[")){
+////            token = proximo_token();
+////            indiceVetor();
+////            if (token.equals("]")){
+////                token = proximo_token();
+////            }else {
+////                Erro;
+////            }
+////
+////        }
+////        else{
+////            Erro
+////        }
+//
+//    }
+//
+//    public static  void identificador4(){
+//
+////        if (token.equals(".")){
+////            token = proximo_token();
+////            if (token é um identificador){
+////                token = proximo_token();
+////                vetor();
+////
+////            }
+////            else{
+////                Erro
+////            }
+////        }
+////        else{
+////            Erro
+////        }
+//
+//
+//    }
+//
+//    public static void vetor(){
+//
+////        if(token.equals("[")){
+////            token = proximo_token();
+////            indiceVetor();
+////            if (token.equals("]")){
+////                token = proximo_token();
+////                vetor2();
+//        identificador4();
+////            }
+////            else{
+////                Erro
+////            }
+////
+////        } else if (token pertence ao conjunto primeiro de identificador4){
+////            identificador4();
+////        }
+////        else{
+////            Erro;
+////        }
+//
+//
+//    }
+//    public static void escopo(){
+//        if (token.equals("local") || token.equals("global")){
+//            //token = proximo_token();
+//            if (token.equals(".")){
+//                //token = proximo_token()
+//            }
+//            else{
+//                //Erro
+//            }
+//        }
+//        else{
+//            //Erro
+//        }
+//
+//    }
+//
+//    public static  void identificador2(){
+////
+////        if (token.equals(".")){
+////            //token = proximo_token();
+////            if (token é um identificador){
+////                token = proximo_token();
+////                vetor();
+////            }
+////            else{
+////                Erro;
+////            }
+////        }else if (token pertence ao conjunto primeiro de vetor){
+////                vetor();
+////        }
+////        else{
+////            Erro
+////        }
+//    }
+//
+//    public static  void listaParametros2(){
+//
+//        if (token == "identificador"){
+//            token = proximo_token();
+//        }
+//        else if (token == "numero"){
+//            token = proximo_token();
+//        } else if (token == "String") {
+//            token = proximo_token();
+//        }
+//        else{
+//            erro();
+//        }
+//
+//    }
+//
+//    public static void identificadorSemFuncao(){
+//
+//        if(isPrimeiro("Escopo")){
+//            escopo();
+//            if (token == "identificador"){
+//                token = proximo_token();
+//                identificador2();
+//            }
+//
+//        }
+//        else if (token == "identificador"){
+//            token = proximo_token();
+//            identificador2();
+//
+//        }
+//        else{
+//            erro();
+//        }
+//    }
+//
+//
+//
+//    public static void contListaParametros(){
+//
+//        if (token.equals(",")){
+//            token = proximo_token();
+//            listaParametros();
+//        }else if (!isSeguinte("ListaParametros")){
+//            erro();
+//        }
+//
+//
+//    }
+//
+//    public static  void listaParametros(){
+//        if (isPrimeiro("ListaParametros2")){
+//            listaParametros2();
+//            contListaParametros();
+//
+//        }
+//
+//
+//    }
+//
+//    public static  void identificador3(){
+//
+//        if (isPrimeiro("Identificador2")){
+//            identificador2();
+//        }
+//        else if (token.equals("(")){
+//            token = proximo_token();
+//            listaParametros();
+//            if (token.equals(")")){
+//                token = proximo_token();
+//            }
+//            else
+//                erro();
+//
+//        }
+//        else
+//            erro();
+//
+//
+//
+//    }
+//    public static void identificador(){
+//
+//        if (isPrimeiro("escopo")){
+//            escopo();
+//
+//            if (token == "expressão regular para identificador"){
+//                token = proximo_token();
+//                identificador2();
+//
+//            }
+//            else{
+//                //conjunto primeiro de Identificador2() $
+//                erro();
+//            }
+//        }
+//        else if (token == "expressão regular para identificador"){
+//            token = proximo_token();
+//            identificador3();
+//
+//        }
+//        else{
+//            //seguinte de escopo ou primeiro de de Identificador3 e $
+//            erro();
+//
+//        }
+//
+//
+//
+//    }
+
+
     public void executarAnalise() {
         nextToken();
         if (this.token != null){
