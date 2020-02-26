@@ -1186,6 +1186,7 @@ public class AnalisadorSintatico {
             Var();
             GerarFuncaoeProcedure();
             Start();
+            if (FLAGERRO == 0 && token != null) addErroSintatico(new ErroSintatico("Inicio", "Esperava EOF mas encontrou "+token.getLexema(),token.getnLinha()));
         }
         else
              System.out.println("A lista de tokens está vazia!");
