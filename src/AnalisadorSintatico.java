@@ -15,7 +15,7 @@ public class AnalisadorSintatico {
 
         this.tokens = tokens;
         this.errosSintaticos = new ArrayList<>();
-        this.conjunto_P_S = new Conjunto();
+        this.conjunto_P_S = new Conjunto("conjunto");
     }
 
     private void nextToken() {
@@ -101,7 +101,7 @@ public class AnalisadorSintatico {
     // tipo_conjunto = 0 (conjunto primeiro) ou 1 (conjunto seguinte) (na vdd qualquer coisa diferente de 0 é considerado como conjunto seguinte)
     private boolean pertence(int tipo_conjunto, String nterminal) {
 
-        LinkedHashSet<String> conjunto = (tipo_conjunto == 0)?conjunto_P_S.primeiro(nterminal):conjunto_P_S.seguinte(nterminal);
+        ArrayList<String> conjunto = (tipo_conjunto == 0)?conjunto_P_S.primeiro(nterminal):conjunto_P_S.seguinte(nterminal);
 
         if (token.getTipo() == 3) {
             if (conjunto.contains("Id"))
@@ -132,33 +132,180 @@ public class AnalisadorSintatico {
 
     }
 
+    public void F(){
 
-    public void Const(){
+        if (token != null && token.getLexema().equals("(")){
+            ExpressaoAritmetica();
+        }
+        else if (token != null &&  pertence(0,"F")){
+            nextToken();
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("F", token.getLexema()+" não esperado", token.getnLinha()));
+            sincronizar(null, "F", null);
+
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("F","EOF inesperado", linhaErroEOF));
+        }
+
+
+
 
     }
 
     public void T(){
 
+        if (token != null && conjunto_P_S.primeiro("F").contains(token.getLexema()) || pertence(0,"F")){
+            F();
+            T2();
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("T", token.getLexema()+" não esperado", token.getnLinha()));
+            sincronizar("T2", "T", null);
+            if (token != null) {
+                if (conjunto_P_S.primeiro("T2").contains(token.getLexema())) {
+                    T2();
+                }
+            }
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("T","EOF inesperado", linhaErroEOF));
+        }
+
+
+
     }
 
     public void T2(){
+        if (token != null && token.getLexema().equals("*")){
+            ExpressaoAritmetica();
+        }
+        else if (token != null && token.getLexema().equals("/")) {
+            ExpressaoAritmetica();
+
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("T2", token.getLexema()+" não esperado", token.getnLinha()));
+            sincronizar("ExpressaoAritmetica", "T2", null);
+            if (token != null) {
+                if (conjunto_P_S.primeiro("ExpressaoAritmetica").contains(token.getLexema())) {
+                    ExpressaoAritmetica();
+                }
+            }
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("T2","EOF inesperado", linhaErroEOF));
+        }
 
     }
 
-
     public void E2(){
+        if (token != null && token.getLexema().equals("+")){
+            ExpressaoAritmetica();
+        }
+        else if (token != null && token.getLexema().equals("-")) {
+            ExpressaoAritmetica();
+
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("E2", token.getLexema()+" não esperado", token.getnLinha()));
+            sincronizar("ExpressaoAritmetica", "E2", null);
+            if (token != null) {
+                if (conjunto_P_S.primeiro("ExpressaoAritmetica").contains(token.getLexema())) {
+                    ExpressaoAritmetica();
+                }
+            }
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("T2","EOF inesperado", linhaErroEOF));
+        }
+
 
     }
 
     public void IdentificadorAritmetico(){
+        if (token != null && conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
+            Escopo();
+            if (token != null && token.getTipo() == 3){
+                nextToken();
+                Identificador3();
+                //ExpressaoAritmetica2();
+            }
+            else if (token != null) {
+                addErroSintatico(new ErroSintatico("IdentificadorAritmetico", "Esperava um Identificador, mas encontrou "+token.getLexema(), token.getnLinha()));
+                sincronizar("Identificador2#ExpressaoAritmetica2", "IdentificadorAritmetico", null);
+                if (token != null) {
+                    if (conjunto_P_S.primeiro("Identificador2").contains(token.getLexema())) {
+                        Identificador2();
+                    }
+                    else  if (conjunto_P_S.primeiro("ExpressaoAritmetica2").contains(token.getLexema())) {
+                        //ExpressaoAritmetica2();
+                    }
+                }
+            }
+
+        }
+        else if (token != null && token.getTipo() == 3) {
+            nextToken();
+            IdentificadorAritmetico3();
+
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("IdentificadorAritmetico", token.getLexema()+" não esperado", token.getnLinha()));
+            sincronizar(null,"IdentificadorAritmetico", null);
+         }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("T2","EOF inesperado", linhaErroEOF));
+        }
+
 
     }
+
 
     public void IdentificadorAritmetico3(){
+        if (token != null && conjunto_P_S.primeiro("Identificador2").contains(token.getLexema())){
+            Identificador2();
+            //ExpressaoAritmetica2();
+        }
+        else if (token != null && token.getLexema().equals("(")){
+            nextToken();
+            ListaParametros();
+            if (token != null && token.getLexema().equals(")")){
+                nextToken();
+                T2();
+                E2();
+            }
+            else if (token != null) {
+                addErroSintatico(new ErroSintatico("IdentificadorAritmetico3", "Esperava (, mas encontrou "+token.getLexema(), token.getnLinha()));
+                sincronizar("T2", "IdentificadorAritmetico3", null);
+                if (token != null) {
+                    if (conjunto_P_S.primeiro("T2").contains(token.getLexema())) {
+                        Identificador2();
+                    }
+                    else  if (conjunto_P_S.primeiro("T2").contains(token.getLexema())) {
+                        T2();
+                        E2();
+                    }
+                }
+            }
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("IdentificadorAritmetico3", token.getLexema()+" não esperado", token.getnLinha()));
+            sincronizar(null, "IdentificadorAritmetico3", null);
 
-    }
+        }
 
-    public void Corpo2(){
+        if (token == null){
+            addErroSintatico(new ErroSintatico("F","EOF inesperado", linhaErroEOF));
+        }
+
+
 
     }
 
@@ -261,10 +408,10 @@ public class AnalisadorSintatico {
                     Extend();
                     TipoStruct();
                     Struct();
-                } else{
+                } else if (token != null){
                     addErroSintatico(new ErroSintatico("Struct", token.getLexema() +" não esperado", token.getnLinha()));
                     sincronizar("Extends", "Struct", ";");
-                    if(token != null && conjunto_P_S.primeiro("Extends").contains(token.getLexema())){
+                    if(token != null && pertence(0, "Extends")){
                         Extend();
                         TipoStruct();
                         Struct();
@@ -273,10 +420,10 @@ public class AnalisadorSintatico {
                         Struct3();
                     }
                 }
-            }else{
+            }else if (token != null){
                 addErroSintatico(new ErroSintatico("Struct", token.getLexema() +" não esperado", token.getnLinha()));
                 sincronizar("Extends", "Struct", ";");
-                if(token != null && conjunto_P_S.primeiro("Extends").contains(token.getLexema())){
+                if(token != null && pertence(0, "Extends")){
                     Extend();
                     TipoStruct();
                     struct();
@@ -300,7 +447,7 @@ public class AnalisadorSintatico {
                 nextToken();
                 if (token != null && token.getLexema().equals("{")){
                     nextToken();
-                } else{
+                } else if(token != null){
                     addErroSintatico(new ErroSintatico("Extends", token.getLexema() +" não esperado", token.getnLinha()));
                     sincronizar(null, "Extends", ";");
 
@@ -309,7 +456,7 @@ public class AnalisadorSintatico {
                         Struct3();
                     }
                 }
-            }else{
+            }else if(token != null){
                 addErroSintatico(new ErroSintatico("Extends", token.getLexema() +" não esperado", token.getnLinha()));
                 sincronizar(null, "Extends", ";");
                 if(token != null && token.getLexema().equals(";")){
@@ -319,7 +466,7 @@ public class AnalisadorSintatico {
             }
         } else if(token != null && token.getLexema().equals("{")){
             nextToken();
-        }else{
+        }else if(token != null){
             addErroSintatico(new ErroSintatico("Extends", token.getLexema() +" não esperado", token.getnLinha()));
             sincronizar(null, "Extends", ";");
             if(token != null && token.getLexema().equals(";")){
@@ -344,13 +491,13 @@ public class AnalisadorSintatico {
         if(token != null && token.getTipo() == 3){
             nextToken();
             Struct2();
-        } else{
+        } else if(token != null){
             addErroSintatico(new ErroSintatico("IdStruct", token.getLexema() +" não esperado", token.getnLinha()));
             sincronizar("Struct2", "IdStruct", ";");
             if(token != null && token.getLexema().equals(";")){
                 nextToken();
                 Struct3();
-            }else if(token != null && conjunto_P_S.primeiro("Struct2").contains(token.getLexema())){
+            }else if(token != null && pertence(0, "Struct2")){
                 Struct2();
             }
         }
@@ -368,10 +515,10 @@ public class AnalisadorSintatico {
         } else if(token != null && token.getLexema().equals(";")){
             nextToken();
             Struct3();
-        } else{
+        } else if(token != null){
             addErroSintatico(new ErroSintatico("Struct2", token.getLexema() +" não esperado", token.getnLinha()));
             sincronizar("Struct3", "Struct2", ";");
-            if(token != null && conjunto_P_S.primeiro("Struct3").contains(token.getLexema())){
+            if(token != null && pertence(0, "Struct3")){
                 Struct3();
             } else if(token != null && token.getLexema().equals(";")){
                 nextToken();
@@ -387,9 +534,9 @@ public class AnalisadorSintatico {
     public void Struct3(){
         if(token != null && token.getLexema().equals("}")){
             nextToken();
-        } if (token != null && conjunto_P_S.primeiro("TipoStruct").contains(token.getLexema())){
+        }else if (token != null && pertence(0, "TipoStruct")){
             TipoStruct();
-        }else{
+        }else if(token != null){
             addErroSintatico(new ErroSintatico("Struct3", token.getLexema() +" não esperado", token.getnLinha()));
             sincronizar(null, "Struct3", null);
 
@@ -400,15 +547,9 @@ public class AnalisadorSintatico {
     }
 
     public void Valor(){
-        if(token != null && (token.getTipo() == 1 || token.getTipo() == 2)){
+        if(token != null && pertence(0, "Valor")){
             nextToken();
-        } else if(token != null && token.getTipo() == 11){
-            nextToken();
-        } else if (token != null && (token.getLexema().equals("true") || token.getLexema().equals("false"))){
-            nextToken();
-        } else if (token != null && token.getTipo() == 3){
-            nextToken();
-        } else{
+        } else if (token != null){
             addErroSintatico(new ErroSintatico("Valor", token.getLexema() +" não esperado", token.getnLinha()));
             sincronizar(null, "Valor", null);
         }
@@ -416,14 +557,16 @@ public class AnalisadorSintatico {
             addErroSintatico(new ErroSintatico("Valor","EOF inesperado", linhaErroEOF));
         }
     }
-
+//<ValorVetor> ::= IntPos | Id
     public void ValorVetor(){
-        if(token != null && token.getLexema().equals("IntPos")){
+        if(token != null && pertence(0, "ValorVetor")){
             nextToken();
-        } else if(token != null && token.getTipo() == 3){
-            nextToken();
-        } else {
-            erro(c.seguinte("ValorVetor")).contains(token.getLexema());
+        } else if (token != null) {
+            addErroSintatico(new ErroSintatico("ValorVetor", token.getLexema() +" não esperado", token.getnLinha()));
+            sincronizar(null, "ValorVetor", null);
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("ValorVetor","EOF inesperado", linhaErroEOF));
         }
     }
 
@@ -436,10 +579,14 @@ public class AnalisadorSintatico {
             nextToken();
         } else if (token != null && token.getLexema().equals("real")){
             nextToken();
-        } else if(token != null && token.getTipo() == 3)){
+        } else if(token != null && token.getTipo() == 3){
 
-        } else{
-            erro(c.seguinte("Tipo")).contains(token.getLexema());
+        } else if (token != null){
+            addErroSintatico(new ErroSintatico("Tipo", token.getLexema() +" não esperado", token.getnLinha()));
+            sincronizar(null, "Tipo", null);
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Tipo","EOF inesperado", linhaErroEOF));
         }
     }
 
@@ -449,6 +596,542 @@ public class AnalisadorSintatico {
         Var();
         GeraFuncaoeProcedure();
         Start();
+    }
+
+    public void Laco() {
+        if (token != null && token.getLexema().equals("while")) {
+            nextToken();
+            if (token != null && token.getLexema().equals("(")) {
+                nextToken();
+                ExpressaoLogicaRelacional();
+                if (token != null && token.getLexema().equals(")")) {
+                    nextToken();
+                    if (token != null && token.getLexema().equals("{")) {
+                        nextToken();
+                        Corpo2();
+                        if (token != null && token.getLexema().equals("}")) {
+                            nextToken();
+                        } else if (token != null) {
+                            addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
+                            sincronizar(null, "Laco", null);
+                        }
+                    } else if (token != null) {
+                        addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
+                        sincronizar("Corpo2", "Laco", null);
+                        if (token != null && conjunto_P_S.primeiro("Corpo2").contains(token.getLexema())) {
+                            Corpo2();
+                            if (token != null && token.getLexema().equals("}")) {
+                                nextToken();
+                            } else if (token != null) {
+                                addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
+                                sincronizar(null, "Laco", null);
+                            }
+                        }
+                    }
+                } else if (token != null) {
+                    addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
+                    sincronizar("Corpo", "Laco", "{");
+                    if (token != null && token.getLexema().equals("{")) {
+                        nextToken();
+                        Corpo2();
+                        if (token != null && token.getLexema().equals("}")) {
+                            nextToken();
+                        } else {
+                            addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
+                            sincronizar("Corpo", "Laco", null);
+                        }
+                    } else if (token != null && pertence(0, "Corpo2")) {
+                        Corpo2();
+                        if (token != null && token.getLexema().equals("}")) {
+                            nextToken();
+                        } else if (token != null) {
+                            addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
+                            sincronizar(null, "Laco", null);
+                        }
+                    }
+                }
+            } else if (token != null) {
+                addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
+                sincronizar("expressaoLogicaRelacional", "Laco", null);
+                if (token != null && pertence(0, "expressaoLogicaRelacional")) {
+                    ExpressaoLogicaRelacional();
+                    if (token != null && token.getLexema().equals(")")) {
+                        nextToken();
+                        if (token != null && token.getLexema().equals("{")) {
+                            nextToken();
+                            Corpo2();
+                            if (token != null && token.getLexema().equals("}")) {
+                                nextToken();
+                            } else if (token != null) {
+                                addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
+                                sincronizar(null, "Laco", null);
+                            }
+                        } else if (token != null) {
+                            addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
+                            sincronizar("Corpo2", "Laco", null);
+                            if (token != null && pertence(0, "Corpo2")) {
+                                Corpo2();
+                                if (token != null && token.getLexema().equals("}")) {
+                                    nextToken();
+                                } else if (token != null) {
+                                    addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
+                                    sincronizar(null, "Laco", null);
+                                }
+                            }
+                        }
+                    }
+                }
+            } else if (token != null) {
+                addErroSintatico(new ErroSintatico("Laco", token.getLexema() +" não esperado", token.getnLinha()));
+                sincronizar(null, "Laco", "while");
+                if (token != null && token.getLexema().equals("while")) {
+                    Laco();
+                }
+            }
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Laco","EOF inesperado", linhaErroEOF));
+        }
+    }
+
+
+// <GeraFuncaoeProcedure> ::= <Funcao> <GeraFuncaoeProcedure> | <Procedimento>  <GeraFuncaoeProcedure> | <>
+public void GeraFuncaoeProcedure(){
+    if(token != null && pertence(0, "Funcao")){
+        Funcao();
+        GeraFuncaoeProcedure();
+    }else if(token != null && pertence(0, "Procedimento")){
+        Procedimento();
+        GeraFuncaoeProcedure();
+    }
+    if (token == null){
+        addErroSintatico(new ErroSintatico("GeraFuncaoeProcedure","EOF inesperado", linhaErroEOF));
+    }
+}
+
+// <Funcao> ::= 'function' <Tipo> Id '(' <Parametro>
+public void Funcao(){
+    if(token != null && token.getLexema().equals("function")){
+        nextToken();
+        Tipo();
+        if(token != null && token.getTipo() == 3){
+            nextToken();
+            if(token != null && token.getLexema().equals("(")){
+                nextToken();
+                Parametro();
+            }else if(token != null){
+                addErroSintatico(new ErroSintatico("Funcao", token.getLexema() +" não esperado", token.getnLinha()));
+                sincronizar("Parametro", "Funcao", null);
+                if (token != null && pertence(0, "Parametro")){
+                    Parametro();
+                }
+            }
+        }else if (token != null){
+            addErroSintatico(new ErroSintatico("Funcao", token.getLexema() +" não esperado", token.getnLinha()));
+            sincronizar("Parametro", "Funcao", null);
+            if (token != null && pertence(0, "Parametro")){
+                Parametro();
+            }
+        }
+    }else if (token != null){
+        addErroSintatico(new ErroSintatico("Funcao", token.getLexema() +" não esperado", token.getnLinha()));
+        sincronizar(null, "Funcao", "function");
+        if (token != null && token.getLexema().equals("function")){
+            Funcao();
+        }
+    }
+    if (token == null){
+        addErroSintatico(new ErroSintatico("Funcao","EOF inesperado", linhaErroEOF));
+    }
+}
+
+//<Procedimento> ::= 'procedure' Id '(' <Parametro>
+public void Procedimento(){
+    if(token != null && token.getLexema().equals("procedure")){
+        nextToken();
+        if(token != null && token.getTipo() == 3){
+            nextToken();
+            if(token != null && token.getLexema().equals("(")){
+                nextToken();
+                Parametro();
+            }else if(token != null){
+                addErroSintatico(new ErroSintatico("Procedimento", token.getLexema() +" não esperado", token.getnLinha()));
+                sincronizar("Parametro", "Procedimento", null);
+                if (token != null && pertence(0, "Parametro")){
+                    Parametro();
+                }
+            }
+        }else if (token != null){
+            addErroSintatico(new ErroSintatico("Procedimento", token.getLexema() +" não esperado", token.getnLinha()));
+            sincronizar("Parametro", "Procedimento", null);
+            if (token != null && pertence(0, "Parametro")){
+                Parametro();
+            }
+        }
+    }else if (token != null){
+        addErroSintatico(new ErroSintatico("Procedimento", token.getLexema() +" não esperado", token.getnLinha()));
+        sincronizar(null, "Procedimento", "procedure");
+        if (token != null && token.getLexema().equals("procedure")){
+            Procedimento();
+        }
+    }
+    if (token == null){
+        addErroSintatico(new ErroSintatico("Procedimento","EOF inesperado", linhaErroEOF));
+    }
+}
+//<Parametro> ::=  <Tipo> Id <Para2> <Para1>
+    public void Parametro(){
+        Tipo();
+        if(token != null && token.getTipo() == 3){
+            nextToken();
+            Para2();
+            Para1();
+        } else if (token != null){
+            addErroSintatico(new ErroSintatico("Parametro", token.getLexema() +" não esperado", token.getnLinha()));
+            sincronizar("Para1", "Parametro", null);
+            if(token != null && pertence(0, "Para1")){
+                Para1();
+            }
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Parametro","EOF inesperado", linhaErroEOF));
+        }
+    }
+
+
+    public void Para1(){
+        if(token != null && token.getLexema().equals(",")){
+            nextToken();
+            Parametro();
+        }else if(token != null && token.getLexema().equals(")")){
+            nextToken();
+            F2();
+        }else if (token != null){
+            addErroSintatico(new ErroSintatico("Para1", token.getLexema() +" não esperado", token.getnLinha()));
+            sincronizar(null, "Para1", null);
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Para1","EOF inesperado", linhaErroEOF));
+        }
+    }
+
+    public void Para2(){
+        if(token != null && token.getLexema().equals("[")){
+            nextToken();
+            if(token != null && token.getLexema().equals("]")){
+                nextToken();
+                Para3();
+            }else if(token != null){
+                addErroSintatico(new ErroSintatico("Para2", token.getLexema() +" não esperado", token.getnLinha()));
+                sincronizar("Para3", "Para2", null);
+                if(token != null && pertence(0, "Para3")){
+                    Para3();
+                }
+            }
+
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Para2","EOF inesperado", linhaErroEOF));
+        }
+    }
+
+    public void Para3(){
+        if(token != null && token.getLexema().equals("[")){
+            nextToken();
+            if(token != null && token.getLexema().equals("]")){
+                nextToken();
+            }else{
+                addErroSintatico(new ErroSintatico("Para3", token.getLexema() +" não esperado", token.getnLinha()));
+                sincronizar(null, "Para3", null);
+            }
+
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Para3","EOF inesperado", linhaErroEOF));
+        }
+    }
+
+    public void F2(){
+        if(token != null && token.getLexema().equals("{")){
+            nextToken();
+            Corpo();
+        }else if(token != null){
+            addErroSintatico(new ErroSintatico("F2", token.getLexema() +" não esperado", token.getnLinha()));
+            sincronizar(null, "F2", null);
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("F2","EOF inesperado", linhaErroEOF));
+        }
+    }
+
+    public void Print(){
+        if(token != null && token.getLexema().equals("print")){
+            nextToken();
+            if(token != null && token.getLexema().equals("(")){
+                nextToken();
+                Print1();
+            }else if (token != null){
+                addErroSintatico(new ErroSintatico("Print", token.getLexema() +" não esperado", token.getnLinha()));
+                sincronizar("Print1", "Print", null);
+                if (token != null && pertence(0, "Print1")){
+                    Print1();
+                }
+            }
+        }else if (token != null){
+            addErroSintatico(new ErroSintatico("Print", token.getLexema() +" não esperado", token.getnLinha()));
+            sincronizar("Print1", "Print", "print");
+            if (token != null && pertence(0, "Print1")){
+                Print1();
+            } else if (token.getLexema().equals("print")){
+                Print();
+            }
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Print","EOF inesperado", linhaErroEOF));
+        }
+    }
+
+    public void Print1(){
+        if(token != null && pertence(0, "Print1")){
+            nextToken();
+            AuxPrint();
+        }else if(token != null && pertence(0, "Identificador")){
+            Identificador();
+            AuxPrint();
+        }else if (token != null){
+            addErroSintatico(new ErroSintatico("Print1", token.getLexema() +" não esperado", token.getnLinha()));
+            sincronizar("AuxPrint", "Print1", null);
+            if (token != null && pertence(0, "AuxPrint")){
+                AuxPrint();
+            }
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Print1","EOF inesperado", linhaErroEOF));
+        }
+    }
+
+    public void AuxPrint(){
+        if(token != null && token.getLexema().equals(",")){
+            nextToken();
+            Print1();
+        }else if(token != null && pertence(0, "PrintFim")){
+            PrintFim();
+        }else if (token != null){
+            addErroSintatico(new ErroSintatico("AuxPrint", token.getLexema() +" não esperado", token.getnLinha()));
+            sincronizar("Print1", "AuxPrint", null);
+            if (token != null && pertence(0, "Print1")){
+                Print1();
+            }
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("AuxPrint","EOF inesperado", linhaErroEOF));
+        }
+    }
+
+    public void PrintFim(){
+        if(token != null && token.getLexema().equals(")")){
+            nextToken();
+            if(token != null && token.getLexema().equals(";")){
+                nextToken();
+            }else if (token != null){
+                addErroSintatico(new ErroSintatico("PrintFim", token.getLexema() +" não esperado", token.getnLinha()));
+                sincronizar(null, "PrintFim", null);
+
+            }
+        }else if (token != null){
+            addErroSintatico(new ErroSintatico("PrintFim", token.getLexema() +" não esperado", token.getnLinha()));
+            sincronizar(null, "PrintFim", null);
+
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("PrintFim","EOF inesperado", linhaErroEOF));
+        }
+    }
+
+    //<CondEnd> ::= 'else' '{' <Corpo> '}'| <>
+    public void CondEnd(){
+        if(token != null && token.getLexema().equals("else")){
+            nextToken();
+            if(token != null && token.getLexema().equals("{")){
+                nextToken();
+                Corpo2();
+                if(token != null && token.getLexema().equals("}")){
+                    nextToken();
+                }else if(token != null){
+                    addErroSintatico(new ErroSintatico("CondEnd", token.getLexema() +" não esperado", token.getnLinha()));
+                    sincronizar(null, "CondEnd", null);
+                }
+            }else if(token != null){
+                addErroSintatico(new ErroSintatico("CondEnd", token.getLexema() +" não esperado", token.getnLinha()));
+                sincronizar("Corpo2", "CondEnd", null);
+                if(token != null && pertence(0, "Corpo2")){
+                    Corpo2();
+                    if(token != null && token.getLexema().equals("}")){
+                        nextToken();
+                    }else if(token != null){
+                        addErroSintatico(new ErroSintatico("CondEnd", token.getLexema() +" não esperado", token.getnLinha()));
+                        sincronizar(null, "CondEnd", null);
+                    }
+                }
+            }
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("CondEnd","EOF inesperado", linhaErroEOF));
+        }
+    }
+
+    public void Condicional(){
+        if(token != null && token.getLexema().equals("if")){
+            nextToken();
+            if(token != null && token.getLexema().equals("(")){
+                nextToken();
+                ExpressaoLogicaRelacional();
+                if(token != null && token.getLexema().equals(")")){
+                    nextToken();
+                    if(token != null && token.getLexema().equals("then")){
+                        nextToken();
+                        if(token != null && token.getLexema().equals("{")){
+                            nextToken();
+                            Corpo2();
+                            if(token != null && token.getLexema().equals("}")){
+                                nextToken();
+                                CondEnd();
+                            }else if (token != null){
+                                addErroSintatico(new ErroSintatico("Condicional", token.getLexema() +" não esperado", token.getnLinha()));
+                                sincronizar("CondEnd", "Condicional", null);
+                                if(token != null && pertence(0, "CondEnd")){
+                                    CondEnd();
+                                }
+
+                            }
+                        }else if (token != null){
+                            addErroSintatico(new ErroSintatico("Condicional", token.getLexema() +" não esperado", token.getnLinha()));
+                            sincronizar("Corpo2", "Condicional", null);
+                            if(token != null && pertence(0, "Corpo2")){
+                                Corpo2();
+                                if(token != null && token.getLexema().equals("}")){
+                                    nextToken();
+                                    CondEnd();
+                                }else if (token != null){
+                                    addErroSintatico(new ErroSintatico("Condicional", token.getLexema() +" não esperado", token.getnLinha()));
+                                    sincronizar("CondEnd", "Condicional", null);
+                                    if(token != null && pertence(0, "CondEnd")){
+                                        CondEnd();
+                                    }
+
+                                }
+                            }
+                        }
+                    }else if(token != null){
+                        addErroSintatico(new ErroSintatico("Condicional", token.getLexema() +" não esperado", token.getnLinha()));
+                        sincronizar("Corpo2", "Condicional", null);
+                        if(token != null && pertence(0, "Corpo2")){
+                            Corpo2();
+                            if(token != null && token.getLexema().equals("}")){
+                                nextToken();
+                                CondEnd();
+                            }else if (token != null){
+                                addErroSintatico(new ErroSintatico("Condicional", token.getLexema() +" não esperado", token.getnLinha()));
+                                sincronizar("CondEnd", "Condicional", null);
+                                if(token != null && pertence(0, "CondEnd")){
+                                    CondEnd();
+                                }
+
+                            }
+                        }
+                    }
+                }else if(token != null){
+                    addErroSintatico(new ErroSintatico("Condicional", token.getLexema() +" não esperado", token.getnLinha()));
+                    sincronizar("Corpo2", "Condicional", null);
+                    if(token != null && pertence(0, "Corpo2")){
+                        Corpo2();
+                        if(token != null && token.getLexema().equals("}")){
+                            nextToken();
+                            CondEnd();
+                        }else if (token != null){
+                            addErroSintatico(new ErroSintatico("Condicional", token.getLexema() +" não esperado", token.getnLinha()));
+                            sincronizar("CondEnd", "Condicional", null);
+                            if(token != null && pertence(0, "CondEnd")){
+                                CondEnd();
+                            }
+
+                        }
+                    }
+                }
+            }else if(token != null){
+                addErroSintatico(new ErroSintatico("Condicional", token.getLexema() +" não esperado", token.getnLinha()));
+                sincronizar("ExpressaoLogicaRelacional", "Condicional", null);
+                if(token != null && pertence(0, "ExpressaoLogicaRelacional")){
+                    ExpressaoLogicaRelacional();
+                    if(token != null && token.getLexema().equals(")")) {
+                        nextToken();
+                        if (token != null && token.getLexema().equals("then")) {
+                            nextToken();
+                            if (token != null && token.getLexema().equals("{")) {
+                                nextToken();
+                                Corpo2();
+                                if (token != null && token.getLexema().equals("}")) {
+                                    nextToken();
+                                    CondEnd();
+                                } else if (token != null) {
+                                    addErroSintatico(new ErroSintatico("Condicional", token.getLexema() + " não esperado", token.getnLinha()));
+                                    sincronizar("CondEnd", "Condicional", null);
+                                    if (token != null && pertence(0, "CondEnd")) {
+                                        CondEnd();
+                                    }
+
+                                }
+                            } else if (token != null) {
+                                addErroSintatico(new ErroSintatico("Condicional", token.getLexema() + " não esperado", token.getnLinha()));
+                                sincronizar("Corpo2", "Condicional", null);
+                                if (token != null && pertence(0, "Corpo2")) {
+                                    Corpo2();
+                                    if (token != null && token.getLexema().equals("}")) {
+                                        nextToken();
+                                        CondEnd();
+                                    } else if (token != null) {
+                                        addErroSintatico(new ErroSintatico("Condicional", token.getLexema() + " não esperado", token.getnLinha()));
+                                        sincronizar("CondEnd", "Condicional", null);
+                                        if (token != null && pertence(0, "CondEnd")) {
+                                            CondEnd();
+                                        }
+
+                                    }
+                                }
+                            }
+                        } else if (token != null) {
+                            addErroSintatico(new ErroSintatico("Condicional", token.getLexema() + " não esperado", token.getnLinha()));
+                            sincronizar("Corpo2", "Condicional", null);
+                            if (token != null && pertence(0, "Corpo2")) {
+                                Corpo2();
+                                if (token != null && token.getLexema().equals("}")) {
+                                    nextToken();
+                                    CondEnd();
+                                } else if (token != null) {
+                                    addErroSintatico(new ErroSintatico("Condicional", token.getLexema() + " não esperado", token.getnLinha()));
+                                    sincronizar("CondEnd", "Condicional", null);
+                                    if (token != null && pertence(0, "CondEnd")) {
+                                        CondEnd();
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }else if (token != null){
+            addErroSintatico(new ErroSintatico("Condicional", token.getLexema() +" não esperado", token.getnLinha()));
+            sincronizar(null, "Condicional", "if");
+            if(token != null && token.getLexema().equals("if")){
+                Condicional();
+            }
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Condicional","EOF inesperado", linhaErroEOF));
+        }
     }
 
 
@@ -465,10 +1148,10 @@ public void Vetor2(){
                 sincronizar(null, "Vetor2", null);
              }
         }
-        else if (token != null && !conjunto_P_S.seguinte("Vetor2").contains(token.getLexema()) && !pertence(1,"Vetor2")){
-            addErroSintatico(new ErroSintatico("Vetor", token.getLexema()+" não esperado" + token.getLexema(), token.getnLinha()));
-            sincronizar("Vetor", "Vetor2", null);
-        }
+//        else if (token != null && !conjunto_P_S.seguinte("Vetor2").contains(token.getLexema()) && !pertence(1,"Vetor2")){
+//            addErroSintatico(new ErroSintatico("Vetor", token.getLexema()+" não esperado" + token.getLexema(), token.getnLinha()));
+//            sincronizar("Vetor", "Vetor2", null);
+//        }
 
         if (token == null){
             addErroSintatico(new ErroSintatico("Vetor2","EOF inesperado", linhaErroEOF));
@@ -504,16 +1187,16 @@ public void Vetor2(){
         } else if ( token != null && conjunto_P_S.primeiro("Identificador4").contains(token.getLexema())){
             Identificador4();
         }
-        else if (token != null && !conjunto_P_S.seguinte("Vetor").contains(token.getLexema()) && !pertence(1,"Vetor")){
-            addErroSintatico(new ErroSintatico("Vetor", token.getLexema()+" não esperado" + token.getLexema(), token.getnLinha()));
-            sincronizar("Vetor", "Vetor", null);
-            if (token != null) {
-                if (conjunto_P_S.primeiro("Vetor").contains(token.getLexema())) {
-                    Vetor();
-                }
-
-            }
-        }
+//        else if (token != null && !conjunto_P_S.seguinte("Vetor").contains(token.getLexema()) && !pertence(1,"Vetor")){
+//            addErroSintatico(new ErroSintatico("Vetor", token.getLexema()+" não esperado" + token.getLexema(), token.getnLinha()));
+//            sincronizar("Vetor", "Vetor", null);
+//            if (token != null) {
+//                if (conjunto_P_S.primeiro("Vetor").contains(token.getLexema())) {
+//                    Vetor();
+//                }
+//
+//            }
+//        }
 
         if (token == null){
             addErroSintatico(new ErroSintatico("Vetor","EOF inesperado", linhaErroEOF));
@@ -540,16 +1223,17 @@ public void Vetor2(){
                 }
 
             }
-        }else if (token != null && !conjunto_P_S.seguinte("Identificador4").contains(token.getLexema()) && !pertence(1,"Identificador4")){
-            addErroSintatico(new ErroSintatico("Identificador4", token.getLexema()+"  não esperado", token.getnLinha()));
-            sincronizar("Vetor", "Identificador2", null);
-            if (token != null) {
-                if (conjunto_P_S.primeiro("Vetor").contains(token.getLexema())) {
-                    Vetor();
-                }
-            }
-
         }
+//        else if (token != null && !conjunto_P_S.seguinte("Identificador4").contains(token.getLexema()) && !pertence(1,"Identificador4")){
+//            addErroSintatico(new ErroSintatico("Identificador4", token.getLexema()+"  não esperado", token.getnLinha()));
+//            sincronizar("Vetor", "Identificador2", null);
+//            if (token != null) {
+//                if (conjunto_P_S.primeiro("Vetor").contains(token.getLexema())) {
+//                    Vetor();
+//                }
+//            }
+//
+//        }
 
         if (token == null){
             addErroSintatico(new ErroSintatico("Identificador4","EOF inesperado", linhaErroEOF));
@@ -608,15 +1292,15 @@ public void Vetor2(){
         }else if (token != null && conjunto_P_S.primeiro("Vetor").contains(token.getLexema())){
             Vetor();
         }
-        else if (token != null && !conjunto_P_S.seguinte("Identificador2").contains(token.getLexema()) && !pertence(1,"Identificador2")){
-            addErroSintatico(new ErroSintatico("Identificador3", "Esperava ) mas encontrou "+token.getLexema(),token.getnLinha()));
-            sincronizar("Vetor", "Identificador2", null);
-            if (token != null){
-                if (conjunto_P_S.primeiro("Vetor").contains(token.getLexema())){
-                    Vetor();
-                }
-            }
-        }
+//        else if (token != null && !conjunto_P_S.seguinte("Identificador2").contains(token.getLexema()) && !pertence(1,"Identificador2")){
+//            addErroSintatico(new ErroSintatico("Identificador3", "Esperava ) mas encontrou "+token.getLexema(),token.getnLinha()));
+//            sincronizar("Vetor", "Identificador2", null);
+//            if (token != null){
+//                if (conjunto_P_S.primeiro("Vetor").contains(token.getLexema())){
+//                    Vetor();
+//                }
+//            }
+//        }
 
         if (token == null){
             addErroSintatico(new ErroSintatico("Identificador2","EOF inesperado", linhaErroEOF));
@@ -730,16 +1414,16 @@ public void Vetor2(){
             nextToken();
             ListaParametros();
         }
-        else if (token != null && !conjunto_P_S.seguinte("ListaParametros").contains(token.getLexema()) && !pertence(1,"ListaParametros")){
-            addErroSintatico(new ErroSintatico("ContListaParametros", token.idToToken(token.getTipo())+" não esperado",token.getnLinha()));
-            sincronizar("ContListaParametros", "ListaParametros", null);
-
-            if (token != null){
-                if (conjunto_P_S.primeiro("ContListaParametros").contains(token.getLexema())){
-                    ContListaParametros();
-                }
-            }
-        }
+//        else if (token != null && !conjunto_P_S.seguinte("ListaParametros").contains(token.getLexema()) && !pertence(1,"ListaParametros")){
+//            addErroSintatico(new ErroSintatico("ContListaParametros", token.idToToken(token.getTipo())+" não esperado",token.getnLinha()));
+//            sincronizar("ContListaParametros", "ListaParametros", null);
+//
+//            if (token != null){
+//                if (conjunto_P_S.primeiro("ContListaParametros").contains(token.getLexema())){
+//                    ContListaParametros();
+//                }
+//            }
+//        }
         if (token == null){
             addErroSintatico(new ErroSintatico("ContListaParametros","EOF inesperado", linhaErroEOF));
         }
@@ -873,9 +1557,6 @@ public void Vetor2(){
                 if (token != null){
                     if (conjunto_P_S.primeiro("Matriz").contains(token.getLexema())){
                         Matriz();
-                    }
-                    else if (conjunto_P_S.seguinte("Vetor3").contains(token.getLexema())){
-                        Var4();
                     }
                     else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
                         GerarFuncaoeProcedure();
