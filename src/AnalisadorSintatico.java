@@ -19,15 +19,12 @@ public class AnalisadorSintatico {
     }
 
     private void nextToken() {
-
         if (tokens.size() > 0) {
             token = tokens.get(0);
             tokens.remove(0);
             linhaErroEOF = token.getnLinha();
         }
-
         else token = null;
-
     }
 
     private void addErroSintatico(ErroSintatico erro){
@@ -1018,9 +1015,761 @@ public class AnalisadorSintatico {
         }
         else
              System.out.println("A lista de tokens está vazia!");
+    }
+    
+    // <Const> ::= 'const' ' { ' <TipoConst> | <>
+    private void Const() {
+
+        if (token != null && token.getLexema().equals("const")) {
+            nextToken();
+            if (token != null && token.getLexema().equals("{")) {
+                nextToken();
+                TipoConst();
+            }
+        }
+		else if (token != null) {
+            addErroSintatico(new ErroSintatico("Const", "Esperava { mas encontrou "+token.getLexema(),token.getnLinha()));
+            sincronizar("TipoConst#IdConst#Const2#Const3", "Const", null);
+            if (token != null) {
+                if (pertence(0, "TipoConst"))
+                    TipoConst();
+                else if (pertence(0, "IdConst"))
+                    IdConst();
+                else if (pertence(0, "Const2"))
+                    Const2();
+                else if (pertence(0, "Const3"))
+                    Const3();
+                else return;
+            }
+            else addErroSintatico(new ErroSintatico("Const", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("Const", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <TipoConst> ::= <Tipo> <IdConst>
+    private void TipoConst() {
+        Tipo();
+        IdConst();
+    }
+
+    // <IdConst> ::= Id <Valor> <Const2>
+    private void IdConst() {
+        if (token != null && token.getTipo() == 3) {
+            nextToken();
+            Valor();
+            Const2();
+        }
+        else if (token != null) {
+            sincronizar("IdConst#Valor#Const2", "IdConst", null);
+            addErroSintatico(new ErroSintatico("IdConst", "Esperava Id mas encontrou "+token.getLexema(),token.getnLinha()));
+
+            if (token != null) {
+                if (pertence(0, "IdConst"))
+                    IdConst();
+                else if (pertence(0, "Valor"))
+                    Valor();
+                else if (pertence(0, "Const2"))
+                    Const2();
+                else return;
+            }
+            else addErroSintatico(new ErroSintatico("IdConst", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("IdConst", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <Const2> ::= ' , ' <IdConst> | ' ; ' <Const3>
+    private void Const2() {
+        if (token != null && token.getLexema().equals(",")) {
+            nextToken();
+            IdConst();
+        }
+        else if (token != null && token.getLexema().equals(";")) {
+            nextToken();
+            Const3();
+        }
+        else if (token != null) {
+            sincronizar("Const2#IdConst#Const3", "Const2", null);
+            addErroSintatico(new ErroSintatico("Const2", "Esperava , ou ; mas encontrou "+token.getLexema(),token.getnLinha()));
+
+            if (token != null) {
+                if (pertence(0, "Const2"))
+                    Const2();
+                else if (pertence(0, "IdConst"))
+                    IdConst();
+                else if (pertence(0, "Const3"))
+                    Const3();
+                else return;
+            }
+            else addErroSintatico(new ErroSintatico("Const2", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("Const2", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <Const3> ::= ' } ' | <TipoConst>
+    private void Const3() {
+        if (token != null && token.getLexema().equals("}"))
+            nextToken();
+	    else if (token != null && pertence(0, "TipoConst"))
+            TipoConst();
+        else if (token != null) {
+            sincronizar("Const3", "Const3", null);
+            addErroSintatico(new ErroSintatico("Const3", "Esperava } ou nova declaração de const mas encontrou " + token.getLexema(), token.getnLinha()));
+
+            if (token != null) {
+                if (pertence(0, "Const3"))
+                    Const3();
+                else return;
+            } else addErroSintatico(new ErroSintatico("Const3", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("Const3", "EOF inesperado", linhaErroEOF));
+    }
 
 
+    // <ExpressaoLogicaRelacional> ::= <ExpressaoLR> | '(' <ExpressaoLR> ')' <ExpressaoLR3>
+    private void ExpressaoLogicaRelacional() {
 
+        if (token != null && pertence(0, "ExpressaoLR"))
+            ExpressaoLR();
+        else if (token != null && token.getLexema().equals("(")) {
+            nextToken();
+            ExpressaoLR();
+
+            if (token != null && token.getLexema().equals(")")) {
+                nextToken();
+                ExpressaoLR3();
+            }
+            else if (token != null) {
+                addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "Esperava ) mas encontrou " + token.getLexema(), token.getnLinha()));
+                sincronizar("ExpressaoLR3", "ExpressaoLogicaRelacional", ")");
+
+                if (token != null) {
+                    if (pertence(0, "ExpressaoLR3"))
+                        ExpressaoLR3();
+                    else if (token.getLexema().equals(")")) {
+                        nextToken();
+                        ExpressaoLR3();
+                    }
+                    else return;
+                }
+                else addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "EOF inesperado", linhaErroEOF));
+            }
+            else addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <ExpressaoLR> ::= <ArgumentoLR2> <ExpressaoLR2> | <ArgumentoLR3> <OperadorRelacional> <ArgumentoLR> <ExpressaoLR3>
+    private void ExpressaoLR() {
+
+        if (token != null && pertence(0, "ArgumentoLR2")) {
+            ArgumentoLR2();
+            ExpressaoLR2();
+        }
+        else if (token != null && pertence(0, "ArgumentoLR3")) {
+            ArgumentoLR3();
+            OperadorRelacional();
+            ArgumentoLR();
+            ExpressaoLR3();
+        }
+        else if (token != null){
+            addErroSintatico(new ErroSintatico("ExpressaoLR", "" + token.getLexema() +" inesperado", token.getnLinha()));
+            sincronizar("ExpressaoLR#ExpressaoLR2#OperadorRelacional#ArgumentoLR#ExpressaoLR3", "ExpressaoLR", "");
+
+            if (token != null) {
+                if (pertence(0, "ExpressaoLR"))
+                    ExpressaoLR();
+                else if (pertence(0, "ExpressaoLR2"))
+                    ExpressaoLR2();
+                else if (pertence(0, "OperadorRelacional")) {
+                    OperadorRelacional();
+                    ArgumentoLR();
+                    ExpressaoLR3();
+                }
+                else if (pertence(0, "ArgumentoLR")) {
+                    ArgumentoLR();
+                    ExpressaoLR3();
+                }
+                else if (pertence(0, "ExpressaoLR3"))
+                    ExpressaoLR3();
+                else return;
+            }
+            else addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("ExpressaoLR", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <ExpressaoLR2> ::= <OperadorRelacional> <ArgumentoLR> <ExpressaoLR3> | <ExpressaoLR3>
+    private void ExpressaoLR2() {
+
+        if (token != null && pertence(0, "OperadorRelacional")) {
+            OperadorRelacional();
+            ArgumentoLR();
+            ExpressaoLR3();
+        }
+        else if (token != null && pertence(0, "ExpressaoLR3")) {
+            ExpressaoLR3();
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("ExpressaoLR2", "" + token.getLexema() +" inesperado", token.getnLinha()));
+            sincronizar("ExpressaoLR2#ArgumentoLR", "ExpressaoLR2", "");
+
+            if (token != null) {
+                if (pertence(0, "ExpressaoLR2"))
+                    ExpressaoLR2();
+                else if (pertence(0, "ArgumentoLR")) {
+                    ArgumentoLR();
+                    ExpressaoLR3();
+                }
+                else return;
+            }
+            else addErroSintatico(new ErroSintatico("ExpressaoLR2", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("ExpressaoLR2", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <ExpressaoLR3> ::= <OperadorLogico> <ExpressaoLogicaRelacional> | <>
+    private void ExpressaoLR3() {
+
+        if (token != null && pertence(0, "OperadorLogico")) {
+            OperadorLogico();
+            ExpressaoLogicaRelacional();
+        }
+        else if (token == null) addErroSintatico(new ErroSintatico("ExpressaoLR3", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <ArgumentoLR> ::= <ArgumentoLR2> | <ArgumentoLR3>
+    private void ArgumentoLR() {
+        if (token != null && pertence(0, "ArgumentoLR3")) {
+            ArgumentoLR2();
+        }
+        else if (token != null && pertence(0, "ArgumentoLR3")) {
+            ArgumentoLR3();
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("ArgumentoLR", "" + token.getLexema() +" inesperado", token.getnLinha()));
+            sincronizar("ArgumentoLR", "ArgumentoLR", "");
+
+            if (token != null) {
+                if (pertence(0, "ArgumentoLR"))
+                    ArgumentoLR();
+                else return;
+            }
+            else addErroSintatico(new ErroSintatico("ExpressaoLR2", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("ArgumentoLR", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <ArgumentoLR2> ::= '!' <ArgumentoLR2_1> | true | false
+    private void ArgumentoLR2() {
+
+        if (token != null && token.getLexema().equals("!")) {
+            nextToken();
+            ArgumentoLR2_1();
+        }
+        else if (token != null && token.getLexema().equals("true"))
+            nextToken();
+        else if (token != null && token.getLexema().equals("false"))
+            nextToken();
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("ArgumentoLR2", "Esperava !, true ou false mas encontrou " + token.getLexema(), token.getnLinha()));
+            sincronizar("ArgumentoLR2#ArgumentoLR2_1", "ArgumentoLR2", "");
+
+            if (token != null) {
+                if (pertence(0, "ArgumentoLR2"))
+                    ArgumentoLR2();
+                else if (pertence(0, "ArgumentoLR2_1"))
+                    ArgumentoLR2_1();
+                else return;
+            }
+            else addErroSintatico(new ErroSintatico("ArgumentoLR2", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("ArgumentoLR2", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <ArgumentoLR2_1> ::= Id | true | false
+    private void ArgumentoLR2_1() {
+
+        if (token != null) {
+            if (token.getTipo() == 3 || token.getLexema().matches("^(true|false)$"))
+                nextToken();
+            else {
+                addErroSintatico(new ErroSintatico("ArgumentoLR2_1", "Esperava identificador, true ou false mas encontrou " + token.getLexema(), token.getnLinha()));
+                sincronizar("ArgumentoLR2_1", "ArgumentoLR2_1", "");
+
+                if (token != null) {
+                    if (pertence(0, "ArgumentoLR2_1"))
+                        ArgumentoLR2_1();
+                    else return;
+                }
+                else addErroSintatico(new ErroSintatico("ArgumentoLR2_1", "EOF inesperado", linhaErroEOF));
+            }
+        }
+        else addErroSintatico(new ErroSintatico("ArgumentoLR2_1", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <ArgumentoLR3> ::= String | <ExpressaoAritmetica>
+    private void ArgumentoLR3() {
+
+        if (token != null && token.getTipo() == 11)
+            nextToken();
+        else if (token != null && pertence(0, "ExpressaoAritmetica"))
+            ExpressaoAritmetica();
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("ArgumentoLR3", "" + token.getLexema() +" inesperado", token.getnLinha()));
+            sincronizar("ArgumentoLR3", "ArgumentoLR3", "");
+
+            if (token != null) {
+                if (pertence(0, "ArgumentoLR3"))
+                    ArgumentoLR3();
+                else return;
+            }
+            else addErroSintatico(new ErroSintatico("ArgumentoLR3", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("ArgumentoLR3", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <OperadorRelacional> ::= '!=' | '==' | '<' | '>' | '<=' | '>='
+    private void OperadorRelacional() {
+
+        if (token != null && token.getTipo() == 6)
+            nextToken();
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("OperadorRelacional", "Esperava um operador relacional mas encontrou " + token.getLexema(), token.getnLinha()));
+            sincronizar("OperadorRelacional", "OperadorRelacional", "");
+
+            if (token != null) {
+                if (pertence(0, "OperadorRelacional"))
+                    OperadorRelacional();
+                else return;
+            }
+            else addErroSintatico(new ErroSintatico("OperadorRelacional", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("OperadorRelacional", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <OperadorLogico> ::= '&&' | '||'
+    private void OperadorLogico() {
+        if (token != null && token.getTipo() == 4)
+            nextToken();
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("OperadorLogico", "Esperava um operador relacional mas encontrou " + token.getLexema(), token.getnLinha()));
+            sincronizar("OperadorLogico", "OperadorLogico", "");
+
+            if (token != null) {
+                if (pertence(0, "OperadorLogico"))
+                    OperadorLogico();
+                else return;
+            }
+            else addErroSintatico(new ErroSintatico("OperadorLogico", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("OperadorLogico", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <Read> ::= 'read' '(' <Read1>
+    private void Read() {
+        if (token != null && token.getLexema().equals("read")) {
+            nextToken();
+            if (token != null && token.getLexema().equals("(")) {
+                nextToken();
+                Read1();
+            }
+            else if (token != null) {
+                addErroSintatico(new ErroSintatico("Read", "Esperava um ( mas encontrou " + token.getLexema(), token.getnLinha()));
+                sincronizar("Read1", "Read", "(");
+
+                if (token != null) {
+                    if (pertence(0, "Read1"))
+                        Read1();
+                    else if (token.getLexema().equals("(")) {
+                        nextToken();
+                        Read1();
+                    }
+                    else return;
+                }
+                else addErroSintatico(new ErroSintatico("Read", "EOF inesperado", linhaErroEOF));
+            }
+            else addErroSintatico(new ErroSintatico("Read", "EOF inesperado", linhaErroEOF));
+        }
+    }
+
+    // <Read1> ::= <IdentificadorSemFuncao> <AuxRead>
+    private void Read1() {
+        IdentificadorSemFuncao();
+        AuxRead();
+    }
+
+    // <AuxRead> ::= ',' <Read1> | <ReadFim>
+    private void AuxRead() {
+
+        if (token != null && token.getLexema().equals(",")) {
+            nextToken();
+            Read1();
+        }
+        else if (token != null && pertence(0, "ReadFim"))
+            ReadFim();
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("AuxRead", "" + token.getLexema() +" inesperado", token.getnLinha()));
+            sincronizar("AuxRead#Read1", "AuxRead", null);
+
+            if (token != null) {
+                if (pertence(0, "AuxRead"))
+                    AuxRead();
+                else if (pertence(0, "Read1"))
+                    Read1();
+                else return;
+            }
+            else addErroSintatico(new ErroSintatico("AuxRead", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("AuxRead", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <ReadFim> ::= ')' ';'
+    private void ReadFim() {
+
+        if (token != null && token.getLexema().equals(")")) {
+            nextToken();
+            if (token != null && token.getLexema().equals(";"))
+                nextToken();
+            else {
+                addErroSintatico(new ErroSintatico("ReadFim", "Esperava um ; mas encontrou " + token.getLexema(), token.getnLinha()));
+                sincronizar(null, "ReadFim", ";");
+
+                if (token != null) {
+                    if (token.getLexema().equals(";"))
+                        nextToken();
+                    else return;
+                }
+                else addErroSintatico(new ErroSintatico("ReadFim", "EOF inesperado", linhaErroEOF));
+            }
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("ReadFim", "Esperava um ; mas encontrou " + token.getLexema(), token.getnLinha()));
+            sincronizar("ReadFim", "ReadFim", ";");
+
+            if (token != null) {
+                if (token.getLexema().equals(";"))
+                    nextToken();
+                else if (pertence(0, "ReadFim"))
+                    ReadFim();
+                else return;
+            }
+            else addErroSintatico(new ErroSintatico("ReadFim", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("ReadFim", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <Corpo>::= <Var> <Corpo2> '}' | '}'
+    private void Corpo() {
+
+        if (token != null) {
+            if (pertence(0, "Var")) {
+                Var();
+                Corpo2();
+                if (token != null && token.getLexema().equals(("}")))
+                    nextToken();
+                else if (token != null) {
+                    addErroSintatico(new ErroSintatico("Corpo", "Esperava um } mas encontrou " + token.getLexema(), token.getnLinha()));
+                    sincronizar(null, "Corpo", "}");
+
+                    if (token != null) {
+                        if (token.getLexema().equals("}"))
+                            nextToken();
+                        else return;
+                    }
+                    else addErroSintatico(new ErroSintatico("Corpo", "EOF inesperado", linhaErroEOF));
+                }
+                else addErroSintatico(new ErroSintatico("Corpo", "EOF inesperado", linhaErroEOF));
+            }
+            else if (token.getLexema().equals("}"))
+                nextToken();
+            else {
+                addErroSintatico(new ErroSintatico("Corpo", "" + token.getLexema() +" inesperado", token.getnLinha()));
+                sincronizar("Corpo#Corpo2", "Corpo", null);
+
+                if (token != null) {
+                    if (pertence(0,"Corpo"))
+                        Corpo();
+                    else if (pertence(0, "Corpo2"))
+                        Corpo2();
+                    else return;
+                }
+                else addErroSintatico(new ErroSintatico("Corpo", "EOF inesperado", linhaErroEOF));
+            }
+        }
+        else addErroSintatico(new ErroSintatico("Corpo", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <Corpo2>::= <Comandos> <Corpo2> | <>
+    private void Corpo2() {
+        if (token != null && pertence(0, "Comandos")) {
+            Comandos();
+            Corpo2();
+        }
+    }
+
+    // <Comandos> ::= <Condicional>| <Laco> | <Read> | <Print> | <ComandosReturn> | <IdentificadorComandos>
+    private void Comandos() {
+        if (pertence(0, "Condicional"))
+            Condicional();
+        else if (pertence(0, "Laco"))
+            Laco();
+        else if (pertence(0, "Read"))
+            Read();
+        else if (pertence(0, "Print"))
+            Print();
+        else if (pertence(0, "ComandosReturn"))
+            ComandosReturn();
+        else if (pertence(0, "IdentificadorComandos"))
+            IdentificadorComandos();
+    }
+
+    // <IdentificadorComandos> ::= <IdentificadorSemFuncao> <IdentificadorComandos2> ';'
+    private void IdentificadorComandos() {
+        IdentificadorSemFuncao();
+        IdentificadorComandos2();
+        if (token != null && token.getLexema().equals(";"))
+            nextToken();
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("IdentificadorComandos", "Esperava um ; mas encontrou " + token.getLexema(), token.getnLinha()));
+            sincronizar("", "IdentificadorComandos", ";");
+
+            if (token != null) {
+                if (token.getLexema().equals(";"))
+                    nextToken();
+                else return;
+            }
+            else addErroSintatico(new ErroSintatico("IdentificadorComandos", "EOF inesperado", linhaErroEOF));
+        }
+        else addErroSintatico(new ErroSintatico("IdentificadorComandos", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <IdentificadorComandos2>::= '=' <IdentificadorComandos2_1> | '(' <ListaParametros> ')'
+    private void IdentificadorComandos2() {
+        if (token != null) {
+            if (token.getLexema().equals("=")) {
+                nextToken();
+                IdentificadorComandos2_1();
+            }
+            else if (token.getLexema().equals("(")) {
+                nextToken();
+                ListaParametros();
+                if (token != null && token.getLexema().equals(")"))
+                    nextToken();
+                else {
+                    addErroSintatico(new ErroSintatico("IdentificadorComandos2", "Esperava um ) mas encontrou " + token.getLexema(), token.getnLinha()));
+                    sincronizar(null, "IdentificadorComandos2", ")");
+
+                    if (token != null) {
+                        if (token.getLexema().equals(")"))
+                            nextToken();
+                        else return;
+                    }
+                    else addErroSintatico(new ErroSintatico("IdentificadorComandos2", "EOF inesperado", linhaErroEOF));
+                }
+            }
+            else {
+                addErroSintatico(new ErroSintatico("IdentificadorComandos2", "" + token.getLexema() +" inesperado", token.getnLinha()));
+                sincronizar("IdentificadorComandos2#IdentificadorComandos2_1#ListaParametros", "IdentificadorComandos2", null);
+
+                if (token != null) {
+                    if (pertence(0,"IdentificadorComandos2"))
+                        IdentificadorComandos2();
+                    else if (pertence(0, "IdentificadorComandos2_1"))
+                        IdentificadorComandos2_1();
+                    else if (pertence(0, "ListaParametros")) {
+                        ListaParametros();
+
+                        if (token != null && token.getLexema().equals(")"))
+                            nextToken();
+                        else {
+                            addErroSintatico(new ErroSintatico("IdentificadorComandos2", "Esperava um ) mas encontrou " + token.getLexema(), token.getnLinha()));
+                            sincronizar(null, "IdentificadorComandos2", ")");
+
+                            if (token != null) {
+                                if (token.getLexema().equals(")"))
+                                    nextToken();
+                                else return;
+                            }
+                            else addErroSintatico(new ErroSintatico("IdentificadorComandos2", "EOF inesperado", linhaErroEOF));
+                        }
+                    }
+                    else return;
+                }
+                else addErroSintatico(new ErroSintatico("IdentificadorComandos2", "EOF inesperado", linhaErroEOF));
+            }
+        }
+        else addErroSintatico(new ErroSintatico("IdentificadorComandos2", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <IdentificadorComandos2_1> ::= <ExpressaoAritmetica> | String | Boolean
+    private void IdentificadorComandos2_1() {
+        if (token != null) {
+            if (pertence(0, "ExpressaoAritmetica"))
+                ExpressaoAritmetica();
+            else if (token.getTipo() == 11 || token.getLexema().matches("^(true|false)$"))
+                nextToken();
+            else {
+                addErroSintatico(new ErroSintatico("IdentificadorComandos2_1", "" + token.getLexema() +" inesperado", token.getnLinha()));
+                sincronizar("IdentificadorComandos2_1", "IdentificadorComandos2_1", null);
+
+                if (token != null) {
+                    if (pertence(0,"IdentificadorComandos2_1"))
+                        IdentificadorComandos2_1();
+                    else return;
+                }
+                else addErroSintatico(new ErroSintatico("IdentificadorComandos2_1", "EOF inesperado", linhaErroEOF));
+            }
+        }
+        else addErroSintatico(new ErroSintatico("IdentificadorComandos2_1", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <ComandosReturn> ::= 'return' <CodigosRetornos>
+    private void ComandosReturn() {
+        if (token != null) {
+            if (token.getLexema().equals("return")) {
+                nextToken();
+                CodigosRetornos();
+            }
+            else {
+                addErroSintatico(new ErroSintatico("ComandosReturn", "Esperava return mas encontrou " + token.getLexema(), token.getnLinha()));
+                sincronizar("ComandosReturn#CodigosRetornos", "ComandosReturn", null);
+
+                if (token != null) {
+                    if (pertence(0,"ComandosReturn"))
+                        ComandosReturn();
+                    else if (pertence(0, "CodigosRetornos"))
+                        CodigosRetornos();
+                    else return;
+                }
+                else addErroSintatico(new ErroSintatico("ComandosReturn", "EOF inesperado", linhaErroEOF));
+            }
+        }
+        else addErroSintatico(new ErroSintatico("ComandosReturn", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <CodigosRetornos>::= ';' | <ExpressaoAritmetica> ';'
+    private void CodigosRetornos() {
+        if (token != null) {
+            if (token.getLexema().equals(";"))
+                nextToken();
+            else if (pertence(0, "ExpressaoAritmetica")) {
+                ExpressaoAritmetica();
+                if (token != null && token.getLexema().equals(";"))
+                    nextToken();
+                else {
+                    addErroSintatico(new ErroSintatico("CodigosRetornos", "Esperava ; mas encontrou " + token.getLexema(), token.getnLinha()));
+                    sincronizar(null, "CodigosRetornos", ";");
+
+                    if (token != null) {
+                        if (token.getLexema().equals(";"))
+                            nextToken();
+                        else return;
+                    }
+                    else addErroSintatico(new ErroSintatico("CodigosRetornos", "EOF inesperado", linhaErroEOF));
+                }
+            }
+            else {
+                addErroSintatico(new ErroSintatico("CodigosRetornos", "" + token.getLexema() +" inesperado", token.getnLinha()));
+                sincronizar("CodigosRetornos", "CodigosRetornos", null);
+
+                if (token != null) {
+                    if (pertence(0, "CodigosRetornos"))
+                        CodigosRetornos();
+                    else return;
+                }
+                else addErroSintatico(new ErroSintatico("CodigosRetornos", "EOF inesperado", linhaErroEOF));
+            }
+        }
+        else addErroSintatico(new ErroSintatico("CodigosRetornos", "EOF inesperado", linhaErroEOF));
+    }
+
+    // <Start> ::= 'start' '(' ')' '{' <Corpo> '}'
+    private void Start(int estagio) {
+
+        int estagio_atual = estagio;
+
+        if (token!= null) {
+            switch (estagio) {
+                case 0:
+                    if (token.getLexema().equals("start")) {
+                        nextToken();
+                        estagio_atual ++;
+                    }
+                case 1:
+                    if (token.getLexema().equals("(") && estagio_atual == 1) {
+                        nextToken();
+                        estagio_atual ++;
+                    }
+                case 2:
+                    if (token.getLexema().equals(")") && estagio_atual == 2) {
+                        nextToken();
+                        estagio_atual ++;
+                    }
+                case 3:
+                    if (token.getLexema().equals("{") && estagio_atual == 3) {
+                        nextToken();
+                        estagio_atual ++;
+                    }
+                case 4:
+                    if (estagio_atual == 4) {
+                        Corpo();
+                        estagio_atual ++;
+                    }
+                case 5:
+                    if (token.getLexema().equals("}") && estagio_atual == 5) {
+                        nextToken();
+                        estagio_atual ++;
+                    }
+            }
+
+            if (estagio_atual < 6) {
+                String lexemas = null;
+                String conjuntos_primeiro = null;
+                switch (estagio_atual) {
+                    case 0:
+                        lexemas = "start";
+                    case 1:
+                        lexemas = (lexemas != null)?lexemas + "#(":"(";
+                    case 2:
+                        lexemas = (lexemas != null)?lexemas + "#)":")";
+                    case 3:
+                        lexemas = (lexemas != null)?lexemas + "#{":"{";
+                    case 4:
+                        conjuntos_primeiro = "Corpo";
+                    case 5:
+                        lexemas = (lexemas != null)?lexemas + "#}":"}";
+                }
+
+                addErroSintatico(new ErroSintatico("Start", "Esperava " + lexemas.split("#")[0] + " mas encontrou " + token.getLexema(), token.getnLinha()));
+                sincronizar(conjuntos_primeiro, null, lexemas);
+
+                if (token != null) {
+                    if (pertence(0, "Corpo"))
+                        Start(4);
+                    else {
+                        switch (token.getLexema()) {
+                            case "start":
+                                Start(0);
+                                break;
+                            case "(":
+                                Start(1);
+                                break;
+                            case ")":
+                                Start(2);
+                                break;
+                            case "{":
+                                Start(3);
+                                break;
+                            case "}":
+                                Start(5);
+                                break;
+                        }
+                    }
+                }
+                else addErroSintatico(new ErroSintatico("Start", "EOF inesperado", linhaErroEOF));
+            }
+        }
+        else addErroSintatico(new ErroSintatico("Start", "EOF inesperado", linhaErroEOF));
     }
 
     /**
