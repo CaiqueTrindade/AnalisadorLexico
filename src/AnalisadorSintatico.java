@@ -134,12 +134,31 @@ public class AnalisadorSintatico {
 
     public void F(){
 
+        if (token != null && token.getLexema().equals("(")){
+            ExpressaoAritmetica();
+        }
+        else if (token != null &&  pertence(0,"F")){
+            nextToken();
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("F", token.getLexema()+" não esperado", token.getnLinha()));
+            sincronizar(null, "F", null);
+
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("F","EOF inesperado", linhaErroEOF));
+        }
+
+
+
+
     }
 
     public void T(){
 
         if (token != null && conjunto_P_S.primeiro("F").contains(token.getLexema()) || pertence(0,"F")){
-            F();;
+            F();
             T2();
         }
         else if (token != null) {
