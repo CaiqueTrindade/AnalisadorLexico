@@ -140,6 +140,60 @@ public class AnalisadorSintatico {
 
     }
 
+    public void T(){
+
+    }
+
+    public void T2(){
+
+    }
+
+
+    public void E2(){
+
+    }
+
+    public void IdentificadorAritmetico(){
+
+    }
+
+    public void ExpressaoAritmetica (){
+
+        if (token != null && conjunto_P_S.primeiro("T").contains(token.getLexema()) || pertence(0, "T")){
+            T();
+            E2();
+
+        }
+        else if (token != null && conjunto_P_S.primeiro("IdentificadorAritmetico").contains(token.getLexema()) || token.getTipo() == 3){
+            IdentificadorAritmetico();
+
+        }
+        else if (token != null && token.getTipo() == 9){
+            IdentificadorSemFuncao();
+            T2();
+            E2();
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("ExpressaoAritmetica", token.getLexema()+" não esperado", token.getnLinha()));
+            sincronizar("E2", "ExpressaoAritmetica", null);
+            if (token != null) {
+                if (conjunto_P_S.primeiro("E2").contains(token.getLexema())) {
+                    E2();
+                }
+            }
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("ExpressaoAritmetica","EOF inesperado", linhaErroEOF));
+        }
+
+
+    }
+
+
+
+
+
     public void IdentificadorSemFuncao(){
 
         if(token != null && conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
