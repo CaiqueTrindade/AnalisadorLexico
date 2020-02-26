@@ -1,4 +1,4 @@
-import sun.awt.image.ImageWatched;
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+
+//import sun.awt.image.ImageWatched;
+
 
 public class Conjunto {
     private Map<String, LinkedHashSet<String>> conjuntos = new HashMap<String, LinkedHashSet<String>>();
