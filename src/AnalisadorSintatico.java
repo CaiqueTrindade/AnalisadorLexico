@@ -140,6 +140,26 @@ public class AnalisadorSintatico {
 
     }
 
+    public void IndiceVetor(){
+
+        if (token != null && token.getTipo() == 2 && Integer.parseInt(token.getLexema()) >= 0) {
+            nextToken();
+        }
+        else if (token != null && conjunto_P_S.primeiro("Identificador").contains(token.getLexema())){
+            Identificador();
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("IndiceVetor", token.getLexema() +" não esperado", token.getnLinha()));
+            sincronizar(null, "IndiceVetor", null);
+           
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("IndiceVetor","EOF inesperado", linhaErroEOF));
+        }
+
+    }
+
     public void Vetor2(){
 
         if (token != null && token.getLexema().equals("[")){
@@ -871,20 +891,7 @@ public class AnalisadorSintatico {
 //
 
 //
-//    public static void indiceVetor(){
-//
-////        if (token é um intPos){
-////            token = proximo_token();
-////
-////        }
-////        else if (token pertence ao conjunto primeiro de identificador){
-////            identificador();
-////        }
-////        else{
-////            Erro
-////        }
-//
-//    }
+
 //
 
 //
