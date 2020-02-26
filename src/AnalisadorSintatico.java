@@ -132,12 +132,31 @@ public class AnalisadorSintatico {
 
     }
 
-
-    public void Const(){
+    public void F(){
 
     }
 
     public void T(){
+
+        if (token != null && conjunto_P_S.primeiro("F").contains(token.getLexema()) || pertence(0,"F")){
+            F();;
+            T2();
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("T", token.getLexema()+" não esperado", token.getnLinha()));
+            sincronizar("T2", "T", null);
+            if (token != null) {
+                if (conjunto_P_S.primeiro("T2").contains(token.getLexema())) {
+                    T2();
+                }
+            }
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("T","EOF inesperado", linhaErroEOF));
+        }
+
+
 
     }
 
@@ -155,10 +174,6 @@ public class AnalisadorSintatico {
     }
 
     public void IdentificadorAritmetico3(){
-
-    }
-
-    public void Corpo2(){
 
     }
 
