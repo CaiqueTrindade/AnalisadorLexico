@@ -228,9 +228,6 @@ public class AnalisadorSintatico {
 
     }
 
-    <IdentificadorAritmetico> ::= <Escopo> Id <Identificador2> <ExpressaoAritmetica2>
-    | Id <IdentificadorAritmetico3>
-
     public void IdentificadorAritmetico(){
         if (token != null && conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
             Escopo();
@@ -243,7 +240,7 @@ public class AnalisadorSintatico {
                 addErroSintatico(new ErroSintatico("IdentificadorAritmetico", "Esperava um Identificador, mas encontrou "+token.getLexema(), token.getnLinha()));
                 sincronizar("Identificador2#ExpressaoAritmetica2", "IdentificadorAritmetico", null);
                 if (token != null) {
-                    if (conjunto_P_S.primeiro("Identificcador2").contains(token.getLexema())) {
+                    if (conjunto_P_S.primeiro("Identificador2").contains(token.getLexema())) {
                         Identificador2();
                     }
                     else  if (conjunto_P_S.primeiro("ExpressaoAritmetica2").contains(token.getLexema())) {
@@ -270,7 +267,45 @@ public class AnalisadorSintatico {
 
     }
 
+
     public void IdentificadorAritmetico3(){
+        if (token != null && conjunto_P_S.primeiro("Identificador2").contains(token.getLexema())){
+            Identificador2();
+            //ExpressaoAritmetica2();
+        }
+        else if (token != null && token.getLexema().equals("(")){
+            nextToken();
+            ListaParametros();
+            if (token != null && token.getLexema().equals(")")){
+                nextToken();
+                T2();
+                E2();
+            }
+            else if (token != null) {
+                addErroSintatico(new ErroSintatico("IdentificadorAritmetico3", "Esperava (, mas encontrou "+token.getLexema(), token.getnLinha()));
+                sincronizar("T2", "IdentificadorAritmetico3", null);
+                if (token != null) {
+                    if (conjunto_P_S.primeiro("T2").contains(token.getLexema())) {
+                        Identificador2();
+                    }
+                    else  if (conjunto_P_S.primeiro("T2").contains(token.getLexema())) {
+                        T2();
+                        E2();
+                    }
+                }
+            }
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("IdentificadorAritmetico3", token.getLexema()+" não esperado", token.getnLinha()));
+            sincronizar(null, "IdentificadorAritmetico3", null);
+
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("F","EOF inesperado", linhaErroEOF));
+        }
+
+
 
     }
 
