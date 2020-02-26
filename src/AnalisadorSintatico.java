@@ -138,6 +138,107 @@ public class AnalisadorSintatico {
 
     }
 
+    public void Identificador3(){
+
+        if (token != null && conjunto_P_S.primeiro("Identificador2").contains(token.getLexema())){
+            Identificador2();
+        }
+        else if (token != null && token.getLexema().equals("(")){
+            nextToken();
+            ListaParametros();
+            if (token != null && token.getLexema().equals(")")){
+                nextToken();
+            }
+            else if (token != null) {
+                addErroSintatico(new ErroSintatico("Identificador3", "Esperava ) mas encontrou "+token.getLexema(),token.getnLinha()));
+                sincronizar("Identificador", "Identificador3", null);
+                if (token != null){
+                    if (conjunto_P_S.primeiro("Identificador").contains(token.getLexema())){
+                        Identificador();
+                    }
+                }
+
+            }
+        }
+        else if (token != null){
+            addErroSintatico(new ErroSintatico("Identificador3", "Esperava ( mas encontrou "+token.getLexema(),token.getnLinha()));
+            sincronizar("ListaParametros", "Identificador3", null);
+            if (token != null){
+                if (conjunto_P_S.primeiro("ListaParametros").contains(token.getLexema())){
+                    ListaParametros();
+                    if (token != null && token.getLexema().equals(")")){
+                        nextToken();
+                    }
+                    else if (token != null) {
+                        addErroSintatico(new ErroSintatico("Identificador3", "Esperava ) mas encontrou "+token.getLexema(),token.getnLinha()));
+                        sincronizar("Identificador", "Identificador3", null);
+                        if (token != null){
+                            if (conjunto_P_S.primeiro("Identificador").contains(token.getLexema())){
+                                Identificador();
+                            }
+                        }
+
+                    }
+                }
+            }
+
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Identificador3","EOF inesperado", linhaErroEOF));
+        }
+
+
+
+
+    }
+
+
+    public void Identificador(){
+
+        if (token != null && conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
+            Escopo();
+            if (token != null  && token.getTipo() == 3){
+                nextToken();
+                Identificador2();
+            }
+            else if (token != null){
+                addErroSintatico(new ErroSintatico("Identificador", token.getLexema()+" não esperado",token.getnLinha()));
+                sincronizar("Identificador2", "Identificador", null);
+
+                if (token != null){
+                    if (conjunto_P_S.primeiro("Identificador2").contains(token.getLexema())){
+                        Identificador2();
+                    }
+                }
+
+
+            }
+        }
+        else if (token != null && token.getTipo() == 3){
+            nextToken();
+            Identificador3();
+        }
+        else if (token != null){
+            //seguinte de escopo ou primeiro de de Identificador3 e $
+            addErroSintatico(new ErroSintatico("Identificador", token.idToToken(token.getTipo())+" não esperado",token.getnLinha()));
+            sincronizar("Identificador3", "Identificador", null);
+
+            if (token != null){
+                if (conjunto_P_S.primeiro("Identificador3").contains(token.getLexema())){
+                    Identificador3();
+                }
+            }
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Identificador","EOF inesperado", linhaErroEOF));
+        }
+
+    }
+
+
+
+
+
     public void ContListaParametros(){
 
         if (token != null && token.getLexema().equals(",")){
@@ -154,9 +255,6 @@ public class AnalisadorSintatico {
                 }
             }
         }
-
-
-
         if (token == null){
             addErroSintatico(new ErroSintatico("ContListaParametros","EOF inesperado", linhaErroEOF));
         }
@@ -740,57 +838,6 @@ public class AnalisadorSintatico {
 //
 
 //
-//    public static  void identificador3(){
-//
-//        if (isPrimeiro("Identificador2")){
-//            identificador2();
-//        }
-//        else if (token.equals("(")){
-//            token = proximo_token();
-//            listaParametros();
-//            if (token.equals(")")){
-//                token = proximo_token();
-//            }
-//            else
-//                erro();
-//
-//        }
-//        else
-//            erro();
-//
-//
-//
-//    }
-//    public static void identificador(){
-//
-//        if (isPrimeiro("escopo")){
-//            escopo();
-//
-//            if (token == "expressão regular para identificador"){
-//                token = proximo_token();
-//                identificador2();
-//
-//            }
-//            else{
-//                //conjunto primeiro de Identificador2() $
-//                erro();
-//            }
-//        }
-//        else if (token == "expressão regular para identificador"){
-//            token = proximo_token();
-//            identificador3();
-//
-//        }
-//        else{
-//            //seguinte de escopo ou primeiro de de Identificador3 e $
-//            erro();
-//
-//        }
-//
-//
-//
-//    }
-
 
     public void executarAnalise() {
         nextToken();
