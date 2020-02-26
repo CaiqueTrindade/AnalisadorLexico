@@ -139,6 +139,51 @@ public class AnalisadorSintatico {
     }
 
 
+    public void Vetor(){
+
+        if(token != null && token.equals("[")){
+            nextToken();
+            IndiceVetor();
+            if (token != null && token.equals("]")){
+                nextToken();
+                Vetor2();
+                Identificador4();
+            }
+            else if (token != null) {
+                addErroSintatico(new ErroSintatico("Vetor", "Esperava ] mas encontrou " + token.getLexema(), token.getnLinha()));
+                sincronizar("Vetor2#Identificador4", "Vetor", null);
+                if (token != null) {
+                    if (conjunto_P_S.primeiro("Vetor2").contains(token.getLexema())) {
+                        Vetor2();
+                    }
+                    else if (conjunto_P_S.primeiro("Identificador4").contains(token.getLexema())) {
+                        Identificador4();
+                    }
+                }
+
+            }
+
+        } else if ( token != null && conjunto_P_S.primeiro("Identificador4").contains(token.getLexema())){
+            Identificador4();
+        }
+        else if (token != null && !conjunto_P_S.seguinte("Vetor").contains(token.getLexema()) && !pertence(1,"Vetor")){
+            addErroSintatico(new ErroSintatico("Vetor", token.getLexema()+" não esperado" + token.getLexema(), token.getnLinha()));
+            sincronizar("Vetor", "Vetor", null);
+            if (token != null) {
+                if (conjunto_P_S.primeiro("Vetor").contains(token.getLexema())) {
+                    Vetor();
+                }
+
+            }
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Vetor","EOF inesperado", linhaErroEOF));
+        }
+
+
+    }
+
     public void Identificador4() {
 
         if (token != null && token.getLexema().equals(".")) {
@@ -839,29 +884,7 @@ public class AnalisadorSintatico {
 //
 //    }
 //
-//    public static void vetor(){
-//
-////        if(token.equals("[")){
-////            token = proximo_token();
-////            indiceVetor();
-////            if (token.equals("]")){
-////                token = proximo_token();
-////                vetor2();
-//        identificador4();
-////            }
-////            else{
-////                Erro
-////            }
-////
-////        } else if (token pertence ao conjunto primeiro de identificador4){
-////            identificador4();
-////        }
-////        else{
-////            Erro;
-////        }
-//
-//
-//    }
+
 
 //
 
