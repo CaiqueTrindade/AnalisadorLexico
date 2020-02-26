@@ -140,6 +140,38 @@ public class AnalisadorSintatico {
 
     }
 
+    public void IdentificadorSemFuncao(){
+
+        if(token != null && conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
+            Escopo();
+            if (token != null && token.getTipo() == 3){
+                nextToken();
+                Identificador2();
+            }
+        }
+        else  if (token != null && token.getTipo() == 3){
+            nextToken();
+            Identificador2();
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("IdentificadorSemFuncao", token.getLexema()+" não esperado", token.getnLinha()));
+            sincronizar("Identificador2", "IdentificadorSemFuncao", null);
+            if (token != null) {
+                if (conjunto_P_S.primeiro("Identificador2").contains(token.getLexema())) {
+                    Identificador2();
+                }
+            }
+        }
+        if (token == null){
+            addErroSintatico(new ErroSintatico("IdentificadorSemFuncao","EOF inesperado", linhaErroEOF));
+        }
+
+    }
+
+
+
+
+
     public void IndiceVetor(){
 
         if (token != null && token.getTipo() == 2 && Integer.parseInt(token.getLexema()) >= 0) {
@@ -151,7 +183,7 @@ public class AnalisadorSintatico {
         else if (token != null) {
             addErroSintatico(new ErroSintatico("IndiceVetor", token.getLexema() +" não esperado", token.getnLinha()));
             sincronizar(null, "IndiceVetor", null);
-           
+
         }
 
         if (token == null){
@@ -907,25 +939,6 @@ public class AnalisadorSintatico {
 //
 
 //
-//    public static void identificadorSemFuncao(){
-//
-//        if(isPrimeiro("Escopo")){
-//            escopo();
-//            if (token == "identificador"){
-//                token = proximo_token();
-//                identificador2();
-//            }
-//
-//        }
-//        else if (token == "identificador"){
-//            token = proximo_token();
-//            identificador2();
-//
-//        }
-//        else{
-//            erro();
-//        }
-//    }
 //
 //
 //
