@@ -138,13 +138,27 @@ public class AnalisadorSintatico {
 
     }
 
-    public static void contListaParametros(){
+    public void ContListaParametros(){
 
-        if (token.equals(",")){
-            token = proximo_token();
-            listaParametros();
-        }else if (!isSeguinte("ListaParametros")){
-            erro();
+        if (token != null && token.getLexema().equals(",")){
+            nextToken();
+            ListaParametros();
+        }
+        else if (token != null && !conjunto_P_S.seguinte("ListaParametros").contains(token.getLexema()) && !pertence(1,"ListaParametros")){
+            addErroSintatico(new ErroSintatico("ContListaParametros", token.idToToken(token.getTipo())+" não esperado",token.getnLinha()));
+            sincronizar("ContListaParametros", "ListaParametros", null);
+
+            if (token != null){
+                if (conjunto_P_S.primeiro("ContListaParametros").contains(token.getLexema())){
+                    ContListaParametros();
+                }
+            }
+        }
+
+
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("ContListaParametros","EOF inesperado", linhaErroEOF));
         }
 
 
@@ -157,15 +171,13 @@ public class AnalisadorSintatico {
         }
         else if (token != null){
             addErroSintatico(new ErroSintatico("ListaParametros2", token.idToToken(token.getTipo())+" não esperado",token.getnLinha()));
-            sincronizar("ContListaParametros#Start", null, null);
+            sincronizar("ContListaParametros", null, null);
 
             if (token != null){
                 if (conjunto_P_S.primeiro("ContListaParametros").contains(token.getLexema())){
                     ContListaParametros();
                 }
-                else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                    Start();
-                }
+
             }
 
         }
