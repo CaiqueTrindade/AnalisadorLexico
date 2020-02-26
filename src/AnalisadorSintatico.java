@@ -1,16 +1,23 @@
 import java.io.*;
 import java.util.*;
 
+/**
+ * Classe responsável por realizar a análise sintática.
+ * @author Caique Trindade, Felipe Damasceno e Solenir Figuerêdo
+ */
 public class AnalisadorSintatico {
 
     private List<Token> tokens; // Lista de tokens
     private List<ErroSintatico> errosSintaticos; // Lista de erros sintáticos
     private Token token; // Token atual
-    private static int FLAGERRO = 0;
-    private Conjunto conjunto_P_S;
-    private static  int linhaErroEOF;
+    private static int FLAGERRO = 0; // Flag para identificar se foi encontrado EOF no meio da análise
+    private Conjunto conjunto_P_S; // Conjuntos primeiro e seguinte de todos os não-terminais
+    private static  int linhaErroEOF; // Linha onde foi encontrado EOF
 
-
+     /**
+     * Construtor da classe do AnalisadorSintatico.
+     * @param tokens recebe uma lista com todos os tokens gerados pela análise léxica
+     */
     public AnalisadorSintatico(List<Token> tokens) {
 
         this.tokens = tokens;
@@ -18,6 +25,9 @@ public class AnalisadorSintatico {
         this.conjunto_P_S = new Conjunto("conjunto");
     }
 
+     /**
+     * Consome o token atual e atualiza para o próximo token da lista.
+     */
     private void nextToken() {
         if (tokens.size() > 0) {
             token = tokens.get(0);
@@ -27,6 +37,10 @@ public class AnalisadorSintatico {
         else token = null;
     }
 
+     /**
+     * Acrescenta um erro sintático na lista de erros sintáticos.
+     * @param erro sintático.
+     */
     private void addErroSintatico(ErroSintatico erro){
         if (erro.getMensagem().split(" ")[0].equals("EOF")){
              if (FLAGERRO !=1 ){
@@ -40,8 +54,16 @@ public class AnalisadorSintatico {
 
     }
 
-    // Todos os conjuntos e lexemas devem ser separados por #
-    // EXEMPLO: "start#if#else", "Inicio#Var#Identificador"
+     /**
+     * Busca por tokens de sincronização conforme os parâmetros passados.
+     *
+     * Todos os conjuntos e lexemas passados devem ser separados pelo caracter #
+     * Exemplo de chamada: sincronizar("Var#Start", "Identificador#Struct", "Id#IntPos#++#-");
+     *
+     * @param conjuntos_primeiro string contendo os conjuntos primeiros a serem inclusos.
+     * @param conjuntos_seguinte string contendo os conjuntos seguintes a serem inclusos.
+     * @param lexemas string contendo os lexemas a serem inclusos.
+     */
     private void sincronizar(String conjuntos_primeiro, String conjuntos_seguinte, String lexemas) {
 
         ArrayList<String> tokens_sincronizacao = new ArrayList<>();
@@ -96,9 +118,16 @@ public class AnalisadorSintatico {
         }
     }
 
-
-
-    // tipo_conjunto = 0 (conjunto primeiro) ou 1 (conjunto seguinte) (na vdd qualquer coisa diferente de 0 é considerado como conjunto seguinte)
+     /**
+     * Verifica se o token atual pertence a um conjunto (primeiro ou seguinte).
+     *
+     * Todos os conjuntos e lexemas passados devem ser separados pelo caracter #
+     * Exemplo de chamada para verificar se o token atual pertence ao conjunto primeiro de Var: pertence(0, "Var");
+     *
+     * @param tipo_conjunto tipo do conjunto (0 para conjunto primeiro, 1 para conjunto seguinte).
+     * @param nterminal string com o nome do não terminal.
+     * @return true se pertencer ou false caso não pertença.
+     */
     private boolean pertence(int tipo_conjunto, String nterminal) {
 
         ArrayList<String> conjunto = (tipo_conjunto == 0)?conjunto_P_S.primeiro(nterminal):conjunto_P_S.seguinte(nterminal);
@@ -1895,6 +1924,7 @@ public void Vetor2(){
             Var();
             GerarFuncaoeProcedure();
             Start();
+            if (FLAGERRO == 0 && token != null) addErroSintatico(new ErroSintatico("Inicio", "Esperava EOF mas encontrou "+token.getLexema(),token.getnLinha()));
         }
         else
              System.out.println("A lista de tokens está vazia!");
