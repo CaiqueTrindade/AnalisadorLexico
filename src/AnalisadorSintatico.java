@@ -161,6 +161,26 @@ public class AnalisadorSintatico {
     }
 
     public void T2(){
+        if (token != null && token.getLexema().equals("*")){
+            ExpressaoAritmetica();
+        }
+        else if (token != null && token.getLexema().equals("/")) {
+            ExpressaoAritmetica();
+
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("T2", token.getLexema()+" não esperado", token.getnLinha()));
+            sincronizar("ExpressaoAritmetica", "T2", null);
+            if (token != null) {
+                if (conjunto_P_S.primeiro("ExpressaoAritmetica").contains(token.getLexema())) {
+                    ExpressaoAritmetica();
+                }
+            }
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("T2","EOF inesperado", linhaErroEOF));
+        }
 
     }
 
