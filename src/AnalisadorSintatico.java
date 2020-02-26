@@ -138,6 +138,40 @@ public class AnalisadorSintatico {
 
     }
 
+
+    public void Identificador4() {
+
+        if (token != null && token.getLexema().equals(".")) {
+            nextToken();
+            if (token != null && token.getTipo() == 3) {
+                nextToken();
+                Vetor();
+
+            } else if (token != null) {
+                addErroSintatico(new ErroSintatico("Identificador4", "Esperava um Identificador mas encontrou " + token.getLexema(), token.getnLinha()));
+                sincronizar("Vetor", "Identificador4", null);
+                if (token != null) {
+                    if (conjunto_P_S.primeiro("Vetor").contains(token.getLexema())) {
+                        Vetor();
+                    }
+                }
+
+            }
+        }else if (token != null && !conjunto_P_S.seguinte("Identificador4").contains(token.getLexema()) && !pertence(1,"Identificador4")){
+            addErroSintatico(new ErroSintatico("Identificador4", token.getLexema()+"  não esperado", token.getnLinha()));
+            sincronizar("Vetor", "Identificador2", null);
+            if (token != null) {
+                if (conjunto_P_S.primeiro("Vetor").contains(token.getLexema())) {
+                    Vetor();
+                }
+            }
+
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Identificador4","EOF inesperado", linhaErroEOF));
+        }
+    }
     public void Escopo(){
         if (token != null && (token.getLexema().equals("local") || token.getLexema().equals("global"))){
             nextToken();
@@ -176,27 +210,27 @@ public class AnalisadorSintatico {
             nextToken();
             if (token!= null && token.getTipo() == 3){
                 nextToken();
-                //VetorDeclaracao();
+                Vetor();
             }
             else if (token != null) {
                 addErroSintatico(new ErroSintatico("Identificador2", "Esperava um Identificador mas encontrou "+token.getLexema(),token.getnLinha()));
-                sincronizar("VetorDeclaracao", "Identificador2", null);
+                sincronizar("Vetor", "Identificador2", null);
                 if (token != null){
-                    if (conjunto_P_S.primeiro("VetorDeclaracao").contains(token.getLexema())){
-                        //VetorDeclaracao();
+                    if (conjunto_P_S.primeiro("Vetor").contains(token.getLexema())){
+                        Vetor();
                     }
                 }
 
             }
-        }else if (token != null && conjunto_P_S.primeiro("VetorDeclaracao").contains(token.getLexema())){
-            //VetorDeclaracao();
+        }else if (token != null && conjunto_P_S.primeiro("Vetor").contains(token.getLexema())){
+            Vetor();
         }
         else if (token != null && !conjunto_P_S.seguinte("Identificador2").contains(token.getLexema()) && !pertence(1,"Identificador2")){
             addErroSintatico(new ErroSintatico("Identificador3", "Esperava ) mas encontrou "+token.getLexema(),token.getnLinha()));
-            sincronizar("VetorDeclaracao", "Identificador2", null);
+            sincronizar("Vetor", "Identificador2", null);
             if (token != null){
-                if (conjunto_P_S.primeiro("VetorDeclaracao").contains(token.getLexema())){
-                    //VetorDeclaracao();
+                if (conjunto_P_S.primeiro("Vetor").contains(token.getLexema())){
+                    Vetor();
                 }
             }
         }
@@ -800,22 +834,7 @@ public class AnalisadorSintatico {
 //
 //    }
 //
-//    public static  void identificador4(){
-//
-////        if (token.equals(".")){
-////            token = proximo_token();
-////            if (token é um identificador){
-////                token = proximo_token();
-////                vetor();
-////
-////            }
-////            else{
-////                Erro
-////            }
-////        }
-////        else{
-////            Erro
-////        }
+
 //
 //
 //    }
