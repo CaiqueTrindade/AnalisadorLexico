@@ -138,18 +138,34 @@ public class AnalisadorSintatico {
 
     }
 
-    public static void escopo(){
-        if (token.equals("local") || token.equals("global")){
-            //token = proximo_token();
-            if (token.equals(".")){
-                //token = proximo_token()
+    public void Escopo(){
+        if (token != null && (token.getLexema().equals("local") || token.getLexema().equals("global"))){
+            nextToken();
+            if (token != null && token.equals(".")){
+                nextToken();
             }
-            else{
-                //Erro
+            else if (token != null) {
+                addErroSintatico(new ErroSintatico("Escopo", "Esperava . mas encontrou "+token.getLexema(),token.getnLinha()));
+                sincronizar(null, "Escopo", null);
+
             }
         }
-        else{
-            //Erro
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("Escopo", "Esperava local ou global mas encontrou "+token.getLexema(),token.getnLinha()));
+            sincronizar(null, "Escopo", ".");
+            if (token != null && token.equals(".")){
+                nextToken();
+            }
+            else if (token != null) {
+                addErroSintatico(new ErroSintatico("Escopo", "Esperava . mas encontrou "+token.getLexema(),token.getnLinha()));
+                sincronizar(null, "Escopo", null);
+
+            }
+
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Escopo","EOF inesperado", linhaErroEOF));
         }
 
     }
