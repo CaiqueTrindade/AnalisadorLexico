@@ -98,7 +98,9 @@ public class AnalisadorSintatico {
             }
         }
     }
-    
+
+
+
     // tipo_conjunto = 0 (conjunto primeiro) ou 1 (conjunto seguinte) (na vdd qualquer coisa diferente de 0 é considerado como conjunto seguinte)
     private boolean pertence(int tipo_conjunto, String nterminal) {
 
@@ -135,6 +137,29 @@ public class AnalisadorSintatico {
 
 
     public void Const(){
+
+    }
+
+    public void Vetor2(){
+
+        if (token != null && token.getLexema().equals("[")){
+            nextToken();
+            IndiceVetor();
+            if (token != null && token.getLexema().equals("]")){
+                nextToken();
+            }else if (token != null) {
+                addErroSintatico(new ErroSintatico("Vetor2", "Esperava ] mas encontrou " + token.getLexema(), token.getnLinha()));
+                sincronizar(null, "Vetor2", null);
+             }
+        }
+        else if (token != null && !conjunto_P_S.seguinte("Vetor2").contains(token.getLexema()) && !pertence(1,"Vetor2")){
+            addErroSintatico(new ErroSintatico("Vetor", token.getLexema()+" não esperado" + token.getLexema(), token.getnLinha()));
+            sincronizar("Vetor", "Vetor2", null);
+        }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("Vetor2","EOF inesperado", linhaErroEOF));
+        }
 
     }
 
@@ -861,23 +886,7 @@ public class AnalisadorSintatico {
 //
 //    }
 //
-//    public static  void vetor2(){
-//
-////        if (token.equals("[")){
-////            token = proximo_token();
-////            indiceVetor();
-////            if (token.equals("]")){
-////                token = proximo_token();
-////            }else {
-////                Erro;
-////            }
-////
-////        }
-////        else{
-////            Erro
-////        }
-//
-//    }
+
 //
 
 //
