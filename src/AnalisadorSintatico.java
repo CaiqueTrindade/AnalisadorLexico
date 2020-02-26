@@ -228,7 +228,45 @@ public class AnalisadorSintatico {
 
     }
 
+    <IdentificadorAritmetico> ::= <Escopo> Id <Identificador2> <ExpressaoAritmetica2>
+    | Id <IdentificadorAritmetico3>
+
     public void IdentificadorAritmetico(){
+        if (token != null && conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
+            Escopo();
+            if (token != null && token.getTipo() == 3){
+                nextToken();
+                Identificador3();
+                //ExpressaoAritmetica2();
+            }
+            else if (token != null) {
+                addErroSintatico(new ErroSintatico("IdentificadorAritmetico", "Esperava um Identificador, mas encontrou "+token.getLexema(), token.getnLinha()));
+                sincronizar("Identificador2#ExpressaoAritmetica2", "IdentificadorAritmetico", null);
+                if (token != null) {
+                    if (conjunto_P_S.primeiro("Identificcador2").contains(token.getLexema())) {
+                        Identificador2();
+                    }
+                    else  if (conjunto_P_S.primeiro("ExpressaoAritmetica2").contains(token.getLexema())) {
+                        //ExpressaoAritmetica2();
+                    }
+                }
+            }
+
+        }
+        else if (token != null && token.getTipo() == 3) {
+            nextToken();
+            IdentificadorAritmetico3();
+
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("IdentificadorAritmetico", token.getLexema()+" não esperado", token.getnLinha()));
+            sincronizar(null,"IdentificadorAritmetico", null);
+         }
+
+        if (token == null){
+            addErroSintatico(new ErroSintatico("T2","EOF inesperado", linhaErroEOF));
+        }
+
 
     }
 
