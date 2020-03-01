@@ -35,7 +35,14 @@ public class ConstrutorConjunto {
         conjuntos.put("PCondEnd", new ArrayList<String>(Arrays.asList("else")));
         conjuntos.put("PLaco", new ArrayList<String>(Arrays.asList("while")));
         conjuntos.put("PGeraFuncaoeProcedure", new ArrayList<String>(Arrays.asList("PFuncao", "PProcedimento")));
-
+        conjuntos.put("PIdConst", new ArrayList<String>(Arrays.asList("Id")));
+        conjuntos.put("PConst2", new ArrayList<String>(Arrays.asList(",", ";")));
+        conjuntos.put("PConst3", new ArrayList<String>(Arrays.asList("}", "PTipoConst")));
+        conjuntos.put("PStruct", new ArrayList<String>(Arrays.asList("typedef")));
+        conjuntos.put("PExtends", new ArrayList<String>(Arrays.asList("extends")));
+        conjuntos.put("PTipoStruct", new ArrayList<String>(Arrays.asList("PTipo")));
+        conjuntos.put("PIdStruct", new ArrayList<String>(Arrays.asList("Id")));
+        conjuntos.put("PStruct2", new ArrayList<String>(Arrays.asList(",", ";")));
 
 
         conjuntos.put("PVar", new ArrayList<String>(Arrays.asList("var")));
@@ -59,15 +66,7 @@ public class ConstrutorConjunto {
 
 
 
-        conjuntos.put("PIndiceVetor", new ArrayList<String>(Arrays.asList("IntPos", "PIdentificador")));
-        conjuntos.put("PEscopo", new ArrayList<String>(Arrays.asList("local", "global")));
-        conjuntos.put("PIdentificadorSemFuncao", new ArrayList<String>(Arrays.asList("PEscopo", "Id")));
-        conjuntos.put("PExpressaoAritmetica", new ArrayList<String>(Arrays.asList("PT", "PIdentificadorAritmetico", "++", "--")));
-        conjuntos.put("PE2", new ArrayList<String>(Arrays.asList("+", "-")));
-        conjuntos.put("PT", new ArrayList<String>(Arrays.asList("PF")));
-        conjuntos.put("PT2", new ArrayList<String>(Arrays.asList("*", "/")));
-        conjuntos.put("PF", new ArrayList<String>(Arrays.asList("(", "Numero")));
-        conjuntos.put("PIdentificadorAritmetico", new ArrayList<String>(Arrays.asList("PEscopo", "Id")));
+
         conjuntos.put("PExpressaoLogicaRelacional", new ArrayList<String>(Arrays.asList("PExpressaoLR", "(")));
         conjuntos.put("PExpressaoLR", new ArrayList<String>(Arrays.asList("PArgumentoLR2", "PArgumentoLR3", "POperadorRelacional")));
         conjuntos.put("PExpressaoLR2", new ArrayList<String>(Arrays.asList("POperadorRelacional", "PExpressaoLR3")));
@@ -149,15 +148,14 @@ public class ConstrutorConjunto {
         conjuntos.put("SF2", new ArrayList<String>(Arrays.asList("SPara1")));
         conjuntos.put("SConst", new ArrayList<String>(Arrays.asList("PStruct", "PVar", "PGeraFuncaoeProcedure", "PStart")));
         conjuntos.put("STipoConst", new ArrayList<String>(Arrays.asList("SConst", "SConst3")));
-        conjuntos.put("SIndiceVetor", new ArrayList<String>(Arrays.asList("]")));
-        conjuntos.put("SEscopo", new ArrayList<String>(Arrays.asList("Id")));
-        conjuntos.put("SIdentificadorSemFuncao", new ArrayList<String>(Arrays.asList("PT2", "PE2", "SExpressaoAritmetica", "PAuxRead", "SIdentificadorComandos")));
-        conjuntos.put("SExpressaoAritmetica", new ArrayList<String>(Arrays.asList("SE2", "ST2", ")", "SArgumentoLR3", "SIdentificadorComandos2_1", ";")));
-        conjuntos.put("SE2", new ArrayList<String>(Arrays.asList("SExpressaoAritmetica", "SExpressaoAritmetica2", "SIdentificadorAritmetico3")));
-        conjuntos.put("ST", new ArrayList<String>(Arrays.asList("SExpressaoAritmetica", "PE2")));
-        conjuntos.put("ST2", new ArrayList<String>(Arrays.asList("PE2", "SExpressaoAritmetica", "SExpressaoAritmetica2", "ST", "SIdentificadorAritmetico3")));
-        conjuntos.put("SF", new ArrayList<String>(Arrays.asList("PT2", "ST")));
-        conjuntos.put("SIdentificadorAritmetico", new ArrayList<String>(Arrays.asList("SExpressaoAritmetica")));
+        conjuntos.put("SIdConst", new ArrayList<String>(Arrays.asList("STipoConst")));
+        conjuntos.put("SConst2", new ArrayList<String>(Arrays.asList("STipoConst")));
+        conjuntos.put("SConst3", new ArrayList<String>(Arrays.asList("STipoConst")));
+        conjuntos.put("SStruct", new ArrayList<String>(Arrays.asList("PVar", "PStart", "PGeraFuncaoeProcedure")));
+        conjuntos.put("SExtends", new ArrayList<String>(Arrays.asList("PTipo")));
+        conjuntos.put("STipoStruct", new ArrayList<String>(Arrays.asList("typedef", "PVar", "SStruct3")));
+        conjuntos.put("SIdStruct", new ArrayList<String>(Arrays.asList("STipoStruct")));
+        conjuntos.put("SStruct2", new ArrayList<String>(Arrays.asList("SIdStruct")));
         conjuntos.put("SStruct3", new ArrayList<String>(Arrays.asList("SStruct2")));
         conjuntos.put("SValor", new ArrayList<String>(Arrays.asList("PVar4","PConst2")));
         conjuntos.put("SValorVetor", new ArrayList<String>(Arrays.asList("]")));
@@ -190,7 +188,7 @@ public class ConstrutorConjunto {
         conjuntos.put("SIdentificador4", new ArrayList<String>(Arrays.asList("SVetor")));
         conjuntos.put("SVetor", new ArrayList<String>(Arrays.asList("SIdentificador2","SIdentificador4")));
         conjuntos.put("SVetor2", new ArrayList<String>(Arrays.asList("PIdentificador4","SVetor")));
-        conjuntos.put("Corpo2", new ArrayList<String>(Arrays.asList("{")));
+        conjuntos.put("SCorpo2", new ArrayList<String>(Arrays.asList("{")));
 
     }
 
