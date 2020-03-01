@@ -436,14 +436,14 @@ public class AnalisadorSintatico {
                     nextToken();
                     Extend();
                     TipoStruct();
-                    Struct();
+                    struct();
                 } else if (token != null){
                     addErroSintatico(new ErroSintatico("Struct", token.getLexema() +" não esperado", token.getnLinha()));
                     sincronizar("Extends", "Struct", ";");
                     if(token != null && pertence(0, "Extends")){
                         Extend();
                         TipoStruct();
-                        Struct();
+                        struct();
                     }else if( token != null && token.getLexema().equals(";")){
                         nextToken();
                         Struct3();
@@ -617,14 +617,6 @@ public class AnalisadorSintatico {
         if (token == null){
             addErroSintatico(new ErroSintatico("Tipo","EOF inesperado", linhaErroEOF));
         }
-    }
-
-    public void Inicio(){
-	    Const();
-        struct();
-        Var();
-        GeraFuncaoeProcedure();
-        Start();
     }
 
     public void Laco() {
@@ -1499,7 +1491,7 @@ public void Vetor2(){
                     ContListaParametros();
                 }
                 else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                    Start();
+                    Start(0);
                 }
             }
         }
@@ -1514,7 +1506,7 @@ public void Vetor2(){
 
         if (token != null && token.getLexema().equals("[")){
             nextToken();
-            //ValorVetor();
+            ValorVetor();
             if (token != null && token.getLexema().equals("]")){
                 nextToken();
                 Var4();
@@ -1525,16 +1517,16 @@ public void Vetor2(){
 
                 if (token != null){
                     if (conjunto_P_S.primeiro("ValorVetor").contains(token.getLexema())){
-                        //ValorVetor();
+                        ValorVetor();
                     }
                     else if (conjunto_P_S.seguinte("Var4").contains(token.getLexema())){
                         Var4();
                     }
                     else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                        GerarFuncaoeProcedure();
+                        GeraFuncaoeProcedure();
                     }
                     else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                        Start();
+                        Start(0);
                     }
                 }
             }
@@ -1553,10 +1545,10 @@ public void Vetor2(){
                     Var2();
                 }
                 else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                    GerarFuncaoeProcedure();
+                    GeraFuncaoeProcedure();
                 }
                 else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                    Start();
+                    Start(0);
                 }
             }
         }
@@ -1574,7 +1566,7 @@ public void Vetor2(){
 
         if (token != null && token.getLexema().equals("[")){
             nextToken();
-            //ValorVetor();
+            ValorVetor();
             if (token != null && token.equals("]")){
                 nextToken();
                 Matriz();
@@ -1588,10 +1580,10 @@ public void Vetor2(){
                         Matriz();
                     }
                     else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                        GerarFuncaoeProcedure();
+                        GeraFuncaoeProcedure();
                     }
                     else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                        Start();
+                        Start(0);
                     }
                 }
             }
@@ -1603,16 +1595,16 @@ public void Vetor2(){
 
             if (token != null){
                 if (conjunto_P_S.primeiro("ValorVetor").contains(token.getLexema())){
-                    //ValorVetor();
+                    ValorVetor();
                 }
                 if (conjunto_P_S.primeiro("Matriz").contains(token.getLexema())){
                     Matriz();
                 }
                 else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                    GerarFuncaoeProcedure();
+                    GeraFuncaoeProcedure();
                 }
                 else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                    Start();
+                    Start(0);
                 }
             }
 
@@ -1650,10 +1642,10 @@ public void Vetor2(){
                     Var2();
                 }
                 else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                    GerarFuncaoeProcedure();
+                    GeraFuncaoeProcedure();
                 }
                 else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                    Start();
+                    Start(0);
                 }
            }
         }
@@ -1681,10 +1673,10 @@ public void Vetor2(){
                     Var2();
                 }
                 else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                    GerarFuncaoeProcedure();
+                    GeraFuncaoeProcedure();
                 }
                 else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                    Start();
+                    Start(0);
                 }
             }
         }
@@ -1725,10 +1717,10 @@ public void Vetor2(){
                         Var2();
                     }
                     else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                        GerarFuncaoeProcedure();
+                        GeraFuncaoeProcedure();
                     }
                     else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                        Start();
+                        Start(0);
                     }
                 }
             }
@@ -1740,10 +1732,10 @@ public void Vetor2(){
                     Var2();
                 }
                 else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                    GerarFuncaoeProcedure();
+                    GeraFuncaoeProcedure();
                 }
                 else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                    Start();
+                    Start(0);
                 }
             }
         }
@@ -1769,10 +1761,10 @@ public void Vetor2(){
                     Var2();
                 }
                 else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                    GerarFuncaoeProcedure();
+                    GeraFuncaoeProcedure();
                 }
                 else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                    Start();
+                    Start(0);
                 }
             }
         }
@@ -1801,10 +1793,10 @@ public void Vetor2(){
                     IdVar();
                 }
                 else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                    GerarFuncaoeProcedure();
+                    GeraFuncaoeProcedure();
                 }
                 else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                    Start();
+                    Start(0);
                 }
             }
 
@@ -1835,10 +1827,10 @@ public void Vetor2(){
                         TipoVar();
                     }
                     else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                        GerarFuncaoeProcedure();
+                        GeraFuncaoeProcedure();
                     }
                     else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                        Start();
+                        Start(0);
                     }
                 }
             }
@@ -1848,82 +1840,18 @@ public void Vetor2(){
         }
 
     }
-    public void Struct(){
-
-    }
-    public void GerarFuncaoeProcedure(){
-
-    }
-
-    public void Start(){
-
-    }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    public static  void valorVetor(){
-//
-//    }
-
-
-
-
-//
-
-//
-
-//
-
-//
-
-//
-//
-//    }
-//
-
-
-//
-
-//
-
-//
-//
-//
-//
-
-//
-
-//
 
     public void executarAnalise() {
         nextToken();
         if (this.token != null){
             Const();
-            Struct();
+            struct();
             Var();
-            GerarFuncaoeProcedure();
-            Start();
+            GeraFuncaoeProcedure();
+            Start(0);
             if (FLAGERRO == 0 && token != null) addErroSintatico(new ErroSintatico("Inicio", "Esperava EOF mas encontrou "+token.getLexema(),token.getnLinha()));
         }
         else
