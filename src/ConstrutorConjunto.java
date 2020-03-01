@@ -21,11 +21,13 @@ public class ConstrutorConjunto {
         conjuntos.put("PEscopo", new ArrayList<String>(Arrays.asList("local", "global")));
         conjuntos.put("PIdentificadorSemFuncao", new ArrayList<String>(Arrays.asList("PEscopo", "Id")));
         conjuntos.put("PExpressaoAritmetica", new ArrayList<String>(Arrays.asList("PT", "PIdentificadorAritmetico", "++", "--")));
+        conjuntos.put("PExpressaoAritmetica2", new ArrayList<String>(Arrays.asList("PT2", "PE2", "++", "--")));
         conjuntos.put("PE2", new ArrayList<String>(Arrays.asList("+", "-")));
         conjuntos.put("PT", new ArrayList<String>(Arrays.asList("PF")));
         conjuntos.put("PT2", new ArrayList<String>(Arrays.asList("*",  "/")));
         conjuntos.put("PF", new ArrayList<String>(Arrays.asList("(", "Numero")));
         conjuntos.put("PIdentificadorAritmetico", new ArrayList<String>(Arrays.asList("PEscopo", "Id")));
+        conjuntos.put("PIdentificadorAritmetico3", new ArrayList<String>(Arrays.asList( "PIdentificador2", "(", "PListaParametros" )));
         conjuntos.put("PStruct3", new ArrayList<String>(Arrays.asList("}", "PTipoStruct")));
         conjuntos.put("PValor", new ArrayList<String>(Arrays.asList("Numero", "String", "Boolean", "Id")));
         conjuntos.put("PValorVetor", new ArrayList<String>(Arrays.asList("IntPos", "Id")));
@@ -78,6 +80,7 @@ public class ConstrutorConjunto {
         conjuntos.put("POperadorRelacional", new ArrayList<String>(Arrays.asList("!=", "==", "<", ">", "<=", ">=")));
         conjuntos.put("POperadorLogico", new ArrayList<String>(Arrays.asList("&&", "||")));
         conjuntos.put("PPrint", new ArrayList<String>(Arrays.asList("print")));
+        conjuntos.put("PFuncao", new ArrayList<String>(Arrays.asList("function")));
         conjuntos.put("PPrint1", new ArrayList<String>(Arrays.asList("String", "Numero", "PIdentificador")));
         conjuntos.put("PAuxPrint", new ArrayList<String>(Arrays.asList("PPrintFim", ",")));
         conjuntos.put("PPrintFim", new ArrayList<String>(Arrays.asList(")")));
@@ -100,11 +103,13 @@ public class ConstrutorConjunto {
         conjuntos.put("SEscopo", new ArrayList<String>(Arrays.asList("Id")));
         conjuntos.put("SIdentificadorSemFuncao", new ArrayList<String>(Arrays.asList("PT2", "PE2", "SExpressaoAritmetica", "PAuxRead","SIdentificadorComandos")));
         conjuntos.put("SExpressaoAritmetica", new ArrayList<String>(Arrays.asList("SE2", "ST2", ")", "SArgumentoLR3", "SIdentificadorComandos2_1", ";")));
-        conjuntos.put("SE2", new ArrayList<String>(Arrays.asList("SExpressaoAritmetica", "SExpressaoAritmetica2", "SIdentificadorAritmetico3"))); 
+        conjuntos.put("SExpressaoAritmetica2", new ArrayList<String>(Arrays.asList("SIdentificadorAritmetico", "SIdentificadorAritmetico3")));
+        conjuntos.put("SE2", new ArrayList<String>(Arrays.asList("SExpressaoAritmetica", "SExpressaoAritmetica2", "SIdentificadorAritmetico3")));
         conjuntos.put("ST", new ArrayList<String>(Arrays.asList("PE2", "SExpressaoAritmetica")));
         conjuntos.put("ST2", new ArrayList<String>(Arrays.asList("PE2", "SExpressaoAritmetica", "SExpressaoAritmetica2", "SIdentificadorAritmetico3", "ST"))); 
         conjuntos.put("SF", new ArrayList<String>(Arrays.asList("PT2", "ST")));
         conjuntos.put("SIdentificadorAritmetico", new ArrayList<String>(Arrays.asList("SExpressaoAritmetica")));
+        conjuntos.put("SIdentificadorAritmetico3", new ArrayList<String>(Arrays.asList("SExpressaoAritmetica2", "SListaParametros", ")", "ST2", "SE2")));
         conjuntos.put("SExpressaoLogicaRelacional", new ArrayList<String>(Arrays.asList("SExpressaoLR3", ")")));
         conjuntos.put("SExpressaoLR", new ArrayList<String>(Arrays.asList("SExpressaoLogicaRelacional", ")")));
         conjuntos.put("SExpressaoLR2", new ArrayList<String>(Arrays.asList("SExpressaoLR")));
@@ -116,6 +121,7 @@ public class ConstrutorConjunto {
         conjuntos.put("SOperadorRelacional", new ArrayList<String>(Arrays.asList("PArgumentoLR")));
         conjuntos.put("SOperadorLogico", new ArrayList<String>(Arrays.asList("PExpressaoLogicaRelacional")));
         conjuntos.put("SPrint", new ArrayList<String>(Arrays.asList("SComandos")));
+        conjuntos.put("SFuncao", new ArrayList<String>(Arrays.asList("PGeraFuncaoeProcedure", "SGeraFuncaoeProcedure")));
         conjuntos.put("SPrint1", new ArrayList<String>(Arrays.asList("SPrint", "SAuxPrint")));
         conjuntos.put("SAuxPrint", new ArrayList<String>(Arrays.asList("SPrint1")));
         conjuntos.put("SPrintFim", new ArrayList<String>(Arrays.asList("SAuxPrint")));
@@ -171,7 +177,7 @@ public class ConstrutorConjunto {
         //Observação Verificar na gramática se trocou o corpo para corpo2 na condicional
 
 
-        conjuntos.put("SVar", new ArrayList<String>(Arrays.asList("PGerarFuncaoeProcedure","start","PCorpo2", "SCorpo")));
+        conjuntos.put("SVar", new ArrayList<String>(Arrays.asList("PGeraFuncaoeProcedure","start","PCorpo2", "SCorpo")));
         conjuntos.put("STipoVar", new ArrayList<String>(Arrays.asList("SVar", "SVar3")));
         conjuntos.put("SIdVar", new ArrayList<String>(Arrays.asList("STipoVar","SVar2","SVar4")));
         conjuntos.put("SVar2", new ArrayList<String>(Arrays.asList("SIdVar")));
