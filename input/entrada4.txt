@@ -59,14 +59,14 @@ start () {
 		read(entrada);
 
 		if (entrada == 0) then {
-			print("Digite o nome, endereço e telefone da pessoa que deseja cadastrar:");
+			print("Digite o nome, endereco e telefone da pessoa que deseja cadastrar:");
 			read(pessoa.nome, pessoa.endereco, pessoa.telefone);
 			retorno = cadastrarPessoa(pessoa);
 			if(retorno) then {
 				print("Nova pessoa cadastrada com sucesso.");
 			}
 			else {
-				print("A lista está cheia.");
+				print("A lista esta cheia.");
 			}
 		}
 		else {
@@ -74,7 +74,7 @@ start () {
 				imprimirPessoas();
 			}
 			else {
-				print("Entrada inválida, tente novamente.");
+				print("Entrada invalida, tente novamente.");
 			}
 		}
 	}

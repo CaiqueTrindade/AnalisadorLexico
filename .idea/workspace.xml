@@ -4,6 +4,7 @@
     <list default="true" id="39ab9ca6-bff4-40ef-be53-bff73e582c6c" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/input/entrada4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input/entrada4.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/saida4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida4.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/saida_lexica4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida_lexica4.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AnalisadorSintatico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorSintatico.java" afterDir="false" />
     </list>
@@ -132,29 +133,29 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1582572434894" />
-    <state width="1815" height="295" key="GridCell.Tab.0.bottom" timestamp="1583183963181">
+    <state width="1815" height="295" key="GridCell.Tab.0.bottom" timestamp="1583185384914">
       <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
-    <state width="1815" height="295" key="GridCell.Tab.0.bottom/0.0.1858.1080@0.0.1858.1080" timestamp="1583183963181" />
+    <state width="1815" height="295" key="GridCell.Tab.0.bottom/0.0.1858.1080@0.0.1858.1080" timestamp="1583185384914" />
     <state width="1253" height="175" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1583091917499" />
-    <state width="1815" height="295" key="GridCell.Tab.0.center" timestamp="1583183963180">
+    <state width="1815" height="295" key="GridCell.Tab.0.center" timestamp="1583185384914">
       <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
-    <state width="1815" height="295" key="GridCell.Tab.0.center/0.0.1858.1080@0.0.1858.1080" timestamp="1583183963180" />
+    <state width="1815" height="295" key="GridCell.Tab.0.center/0.0.1858.1080@0.0.1858.1080" timestamp="1583185384914" />
     <state width="1253" height="175" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1583091917498" />
-    <state width="1815" height="295" key="GridCell.Tab.0.left" timestamp="1583183963180">
+    <state width="1815" height="295" key="GridCell.Tab.0.left" timestamp="1583185384913">
       <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
-    <state width="1815" height="295" key="GridCell.Tab.0.left/0.0.1858.1080@0.0.1858.1080" timestamp="1583183963180" />
+    <state width="1815" height="295" key="GridCell.Tab.0.left/0.0.1858.1080@0.0.1858.1080" timestamp="1583185384913" />
     <state width="1253" height="175" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1583091917497" />
-    <state width="1815" height="295" key="GridCell.Tab.0.right" timestamp="1583183963181">
+    <state width="1815" height="295" key="GridCell.Tab.0.right" timestamp="1583185384914">
       <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
-    <state width="1815" height="295" key="GridCell.Tab.0.right/0.0.1858.1080@0.0.1858.1080" timestamp="1583183963181" />
+    <state width="1815" height="295" key="GridCell.Tab.0.right/0.0.1858.1080@0.0.1858.1080" timestamp="1583185384914" />
     <state width="1253" height="175" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1583091917498" />
     <state x="242" y="33" key="SettingsEditor" timestamp="1582741121217">
       <screen x="67" y="27" width="1299" height="741" />

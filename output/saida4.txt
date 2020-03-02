@@ -1,11 +1,2 @@
-57 ExpressaoLogicaRelacional true inesperado;
-57 Laco { não esperado;
-62 AuxPrint e não esperado;
-62 AuxPrint telefone não esperado;
-62 AuxPrint da não esperado;
-62 AuxPrint pessoa não esperado;
-62 AuxPrint que não esperado;
-62 AuxPrint deseja não esperado;
 64 ListaParametros pessoa não esperado;
-77 ListaParametros tente não esperado;
 83 ListaParametros EOF inesperado;
