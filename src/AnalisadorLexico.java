@@ -280,7 +280,7 @@ public class AnalisadorLexico {
                         } else if (ascii == 123) {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 18));
                         // Condição para quando o caractere lido é uma } (fechamento de chave)
-                        } else if (ascii == 126) {
+                        } else if (ascii == 125) {
                             this.inserirToken(new Token(caractere.toString(), linha_atual, 19));
                         // Condição para quando o caractere lido é um . (ponto)
                         } else if (ascii == 46) {
@@ -626,7 +626,7 @@ public class AnalisadorLexico {
         OutputStreamWriter arquivoEscrita;
 
         //Instancia um objeto file, criando o arquivo de saída correpondente
-        File fileSaida = new File("output/"+"saida"+this.file.getName().replaceAll("[^0-9]","")+".txt");
+        File fileSaida = new File("output/"+"saida_lexica"+this.file.getName().replaceAll("[^0-9]","")+".txt");
         //Instancia o stream de saída
         arquivo = new FileOutputStream(fileSaida);
         arquivoEscrita = new OutputStreamWriter(arquivo);

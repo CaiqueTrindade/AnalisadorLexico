@@ -1,0 +1,6 @@
+20 Var4 Esperava , ou ; mas encontrou um function não esperado;
+21 IdentificadorAritmetico3 ) não esperado;
+21 Condicional { não esperado;
+21 Corpo Esperava um } mas encontrou {;
+22 Var4 Esperava , ou ; mas encontrou um vetor_pessoas não esperado;
+22 Start EOF inesperado;

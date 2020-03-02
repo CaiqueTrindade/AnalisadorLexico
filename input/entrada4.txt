@@ -1,0 +1,79 @@
+const {
+	int tamanho_vetor 50;
+}
+
+typedef struct pessoa {
+	string nome, endereco, telefone;
+}
+
+typedef struct funcionario extends pessoa {
+	string departamento;
+	real salario;
+}
+
+var {
+	pessoa vetor_pessoas[tamanho_vetor];
+	funcionario vetor_funcionarios[50];
+	int pessoas_cadastradas = 0, funcionarios_cadastrados = 0;
+}
+
+function boolean cadastrarPessoas(pessoa pessoa) {
+	if (global.pessoas_cadastradas < tamanho_vetor) {
+		global.vetor_pessoas[global.pessoas_cadastradas] = pessoa;
+		global.pessoas_cadastradas = global.pessoas_cadastradas + 1;
+	}
+	else {
+		return false;
+	}
+}
+
+procedore imprimirPessoas(string vetor) {
+
+	var {
+		int i = 0;
+	}
+
+	if (vetor == "vetor_pessoas") {
+		while( i < global.pessoas_cadastradas) {
+			print(vetor_pessoas[i]);
+			i++;
+		}
+	}
+	else {
+		print(vetor_funcionarios);
+	}
+}
+
+start {
+	var {
+		int entrada, retorno;
+		pessoa pessoa;
+	}
+
+	while (true) {
+		print("Digite 0 para cadastrar uma nova pessoa ou 1 para imprimir a lista de pessoas cadastradas:");
+		read(entrada);
+
+		if (entrada == 0) {
+			print("Digite o nome, endereço e telefone da pessoa que deseja cadastrar:");
+			read(pessoa.nome, pessoa.endereco, pessoa.telefone);
+			retorno = cadastrarPessoa(pessoa);
+			if(retorno) {
+				print("Nova pessoa cadastrada com sucesso.");
+			}
+			else {
+				print("A lista está cheia.");
+			}
+		}
+		else {
+			if (entrada == 1) {
+				imprimirPessoas();
+			}
+			else {
+				print("Entrada inválida, tente novamente.");
+			}
+		}
+	}
+}
+
+// teste de comentário

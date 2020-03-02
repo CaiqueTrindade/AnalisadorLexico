@@ -44,7 +44,7 @@ public class Principal {
                         File input = (File) it.next();
                         System.out.println("Lendo e analisando lexicalmente o arquivo: " + input.getName());
                         AnalisadorLexico al = null;
-                        //AnalisadorSintatico as = null;
+                        AnalisadorSintatico as = null;
                         try {
                             // Passa o arquivo de entrada para a classe que fará a leitura e a análise léxica do código-fonte
                             al = new AnalisadorLexico(input);
@@ -53,11 +53,12 @@ public class Principal {
                             // Solicita que o AnalisadorLexico faça a escrita do arquivo de saída com os tokens e os erros encontrados
                             al.escreverEmArquivo();
 
-                            //as = new AnalisadorSintatico(al.getTokens());
-
-                            //as.executarAnalise();
-
-                            //as.escreverEmArquivo(input.getName());
+                            // Passa a lista de tokens provenientes da análise léxica para o analisador sintático
+                            as = new AnalisadorSintatico(al.getTokens());
+                            // Solicita que o AnalisadorSintatico faça a análise
+                            as.executarAnalise();
+                            // Solicita que o AnalisadorSintatico faça a escrita do arquivo de saída
+                            as.escreverEmArquivo(input.getName());
 
                             if(al.errosIsVazio())
                                 System.out.println("O arquivo "+ input.getName() +" não possui erro! Análise feita com sucesso!");

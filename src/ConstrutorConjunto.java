@@ -259,7 +259,7 @@ public class ConstrutorConjunto {
         }
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         ConstrutorConjunto c = new ConstrutorConjunto();
         for( Map.Entry<String, ArrayList<String>> entry : c.getConjuntos().entrySet()) {
             String key = entry.getKey();
@@ -271,5 +271,5 @@ public class ConstrutorConjunto {
         Conjunto conj = new Conjunto("conjunto");
         conj.seguinte("Parametro");
         conj.primeiro("Procedimento");
-    }
+    }*/
 }
