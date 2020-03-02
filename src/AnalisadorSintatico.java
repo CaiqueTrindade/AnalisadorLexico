@@ -242,11 +242,11 @@ public class AnalisadorSintatico {
             Escopo();
             if (token != null && token.getTipo() == 3){
                 nextToken();
-                System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu "+token.getLexema());
+
                 Identificador2();
-                System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu "+token.getLexema());
+
                 ExpressaoAritmetica2();
-                System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu "+token.getLexema());
+
 
             }
             else if (token != null) {
@@ -282,7 +282,7 @@ public class AnalisadorSintatico {
 
     //<IdentificadorAritmetico3> ::= <Identificador2> <ExpressaoAritmetica2> | '(' <ListaParametros> ')' <T2> <E2>
     public void IdentificadorAritmetico3(){
-        System.out.println("Tokennnnnnnnnnnnnnnnnnnnnnnnnnnn-------------"+token.getLexema());
+
         if (token != null && pertence(0, "Identificador2")){
             Identificador2();
             ExpressaoAritmetica2();
@@ -320,7 +320,7 @@ public class AnalisadorSintatico {
     }
 
     public void ExpressaoAritmetica (){
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+token.getLexema());
+
         if (token != null && conjunto_P_S.primeiro("T").contains(token.getLexema()) || pertence(0, "T")){
             T();
             E2();
@@ -576,7 +576,7 @@ public class AnalisadorSintatico {
     public void Valor(){
         if(token != null && pertence(0, "Valor")){
             nextToken();
-            System.out.println("Retorno 4"+ token.getLexema());
+
         } else if (token != null){
             addErroSintatico(new ErroSintatico("Valor", token.getLexema() +" não esperado", token.getnLinha()));
             sincronizar(null, "Valor", null);
@@ -1611,16 +1611,16 @@ public void Vetor2(){
 
    //<Var4> ::= ',' <IdVar> | ';' <Var3>
     public void Var4(){
-        System.out.println("Souuuuuuuuuuuuuuuuuuuuuuuuuuuuuu "+token.getLexema());
+
         if (token != null && token.getLexema().equals(",")){
             nextToken();
             IdVar();
-            System.out.println("Retorno 1"+ token.getLexema());
+
         }
         else if (token != null && token.getLexema().equals(";")){
             nextToken();
             Var3();
-            System.out.println("Retorno 5"+ token.getLexema());
+
         }
         else if (token != null){
            addErroSintatico(new ErroSintatico("Var4", "Esperava , ou ; mas encontrou um " + token.getLexema()+ " não esperado", token.getnLinha()));
@@ -1655,7 +1655,7 @@ public void Vetor2(){
 
         if (token != null && token.getLexema().equals("}")){
             nextToken();
-            System.out.println("---------------------------------------------------------------"+token.getLexema());
+
         }
         else if (token != null && pertence(0, "TipoVar")){
             TipoVar();
@@ -1698,7 +1698,7 @@ public void Vetor2(){
             else if (token != null && token.getLexema().equals("=")){
                 nextToken();
                 Valor();
-                System.out.println("Retorno 3"+ token.getLexema());
+
                 Var4();
             }
             else if (token != null && token.getLexema().equals("[")) {
