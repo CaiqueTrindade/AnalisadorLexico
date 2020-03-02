@@ -40,7 +40,7 @@ procedure imprimirPessoas(string vetor) {
 	if (vetor == "vetor_pessoas") then {
 		while( i < global.pessoas_cadastradas) {
 			print(vetor_pessoas[i]);
-			i++;
+			i = i + 1;
 		}
 	}
 	else {

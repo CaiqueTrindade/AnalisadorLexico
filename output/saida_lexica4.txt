@@ -156,7 +156,10 @@ Lista de Tokens
 42 ) Delimitador );
 42 ; Delimitador ;;
 43 i Identificador;
-43 ++ Operador Aritmético de incremento/decremento;
+43 = Operador Relacional de Atribuição;
+43 i Identificador;
+43 + Operador Aritmético;
+43 1 Número Inteiro;
 43 ; Delimitador ;;
 44 } Delimitador };
 45 } Delimitador };
