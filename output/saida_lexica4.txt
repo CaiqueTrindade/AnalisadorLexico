@@ -102,7 +102,7 @@ Lista de Tokens
 26 ; Delimitador ;;
 27 } Delimitador };
 28 } Delimitador };
-30 procedore Identificador;
+30 procedure Palavra Reservada;
 30 imprimirPessoas Identificador;
 30 ( Delimitador (;
 30 string Palavra Reservada;

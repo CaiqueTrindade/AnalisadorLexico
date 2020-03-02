@@ -232,13 +232,19 @@ public class AnalisadorSintatico {
         else addErroSintatico(new ErroSintatico("T2","EOF inesperado", linhaErroEOF));
     }
 
+    //<IdentificadorAritmetico> ::= <Escopo> Id <Identificador2> <ExpressaoAritmetica2>
+    //    | Id <IdentificadorAritmetico3>
     public void IdentificadorAritmetico(){
         if (token != null && conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
             Escopo();
             if (token != null && token.getTipo() == 3){
                 nextToken();
+                System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu "+token.getLexema());
                 Identificador2();
+                System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu "+token.getLexema());
                 ExpressaoAritmetica2();
+                System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu "+token.getLexema());
+
             }
             else if (token != null) {
                 addErroSintatico(new ErroSintatico("IdentificadorAritmetico", "Esperava um Identificador, mas encontrou "+token.getLexema(), token.getnLinha()));
@@ -273,6 +279,7 @@ public class AnalisadorSintatico {
 
     //<IdentificadorAritmetico3> ::= <Identificador2> <ExpressaoAritmetica2> | '(' <ListaParametros> ')' <T2> <E2>
     public void IdentificadorAritmetico3(){
+        System.out.println("Tokennnnnnnnnnnnnnnnnnnnnnnnnnnn-------------"+token.getLexema());
         if (token != null && pertence(0, "Identificador2")){
             Identificador2();
             ExpressaoAritmetica2();
@@ -299,11 +306,7 @@ public class AnalisadorSintatico {
                 }
             }
         }
-        else if (token != null) {
-            addErroSintatico(new ErroSintatico("IdentificadorAritmetico3", token.getLexema()+" não esperado", token.getnLinha()));
-            sincronizar(null, "IdentificadorAritmetico3", null);
 
-        }
 
         if (token == null){
             addErroSintatico(new ErroSintatico("F","EOF inesperado", linhaErroEOF));
@@ -314,7 +317,7 @@ public class AnalisadorSintatico {
     }
 
     public void ExpressaoAritmetica (){
-
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+token.getLexema());
         if (token != null && conjunto_P_S.primeiro("T").contains(token.getLexema()) || pertence(0, "T")){
             T();
             E2();
@@ -349,9 +352,18 @@ public class AnalisadorSintatico {
     //<ExpressaoAritmetica2> ::= '++' <T2> <E2> | '--' <T2> <E2> | <T2> <E2>
     private void ExpressaoAritmetica2() {
         if(token != null) {
-            if(token.getTipo() == 9) nextToken();
-            T2();
-            E2();
+            if(token.getTipo() == 9){
+                nextToken();
+                T2();
+                E2();
+            }
+            else if (conjunto_P_S.primeiro("T2").contains(token.getLexema())){
+                T2();
+                E2();
+
+            }
+
+
         }
         else addErroSintatico(new ErroSintatico("ExpressaoAritmetica2","EOF inesperado", linhaErroEOF));
     }
@@ -561,6 +573,7 @@ public class AnalisadorSintatico {
     public void Valor(){
         if(token != null && pertence(0, "Valor")){
             nextToken();
+            System.out.println("Retorno 4"+ token.getLexema());
         } else if (token != null){
             addErroSintatico(new ErroSintatico("Valor", token.getLexema() +" não esperado", token.getnLinha()));
             sincronizar(null, "Valor", null);
@@ -1163,7 +1176,8 @@ public void Vetor2(){
 
     }
 
-
+    //<Vetor> ::= '[' <IndiceVetor> ']' <Vetor2> <Identificador4>
+    //    | <Identificador4>
     public void Vetor(){
 
         if(token != null && token.equals("[")){
@@ -1243,6 +1257,7 @@ public void Vetor2(){
             addErroSintatico(new ErroSintatico("Identificador4","EOF inesperado", linhaErroEOF));
         }
     }
+
     public void Escopo(){
         if (token != null && (token.getLexema().equals("local") || token.getLexema().equals("global"))){
             nextToken();
@@ -1274,7 +1289,7 @@ public void Vetor2(){
         }
 
     }
-
+  //<Identificador2> ::= '.' Id <VetorDeclaracao> | <VetorDeclaracao> | <>
     public void Identificador2(){
 
         if (token != null && token.getLexema().equals(".")){
@@ -1296,15 +1311,6 @@ public void Vetor2(){
         }else if (token != null && conjunto_P_S.primeiro("Vetor").contains(token.getLexema())){
             Vetor();
         }
-//        else if (token != null && !conjunto_P_S.seguinte("Identificador2").contains(token.getLexema()) && !pertence(1,"Identificador2")){
-//            addErroSintatico(new ErroSintatico("Identificador3", "Esperava ) mas encontrou "+token.getLexema(),token.getnLinha()));
-//            sincronizar("Vetor", "Identificador2", null);
-//            if (token != null){
-//                if (conjunto_P_S.primeiro("Vetor").contains(token.getLexema())){
-//                    Vetor();
-//                }
-//            }
-//        }
 
         if (token == null){
             addErroSintatico(new ErroSintatico("Identificador2","EOF inesperado", linhaErroEOF));
@@ -1544,7 +1550,7 @@ public void Vetor2(){
     }
 
 
-
+    //<Vetor3> ::= '[' <ValorVetor> ']' <Matriz>
     public void Vetor3(){
 
         if (token != null && token.getLexema().equals("[")){
@@ -1600,16 +1606,18 @@ public void Vetor2(){
 
 
 
-
+   //<Var4> ::= ',' <IdVar> | ';' <Var3>
     public void Var4(){
-
+        System.out.println("Souuuuuuuuuuuuuuuuuuuuuuuuuuuuuu "+token.getLexema());
         if (token != null && token.getLexema().equals(",")){
             nextToken();
             IdVar();
+            System.out.println("Retorno 1"+ token.getLexema());
         }
         else if (token != null && token.getLexema().equals(";")){
             nextToken();
             Var3();
+            System.out.println("Retorno 5"+ token.getLexema());
         }
         else if (token != null){
            addErroSintatico(new ErroSintatico("Var4", "Esperava , ou ; mas encontrou um " + token.getLexema()+ " não esperado", token.getnLinha()));
@@ -1639,11 +1647,12 @@ public void Vetor2(){
 
 
     }
-
+    //<Var3> ::= '}' | <TipoVar>
     public void Var3(){
 
         if (token != null && token.getLexema().equals("}")){
             nextToken();
+            System.out.println("---------------------------------------------------------------"+token.getLexema());
         }
         else if (token != null && pertence(0, "TipoVar")){
             TipoVar();
@@ -1671,10 +1680,10 @@ public void Vetor2(){
 
     }
 
-
+    //<Var2> ::= ',' <IdVar> | ';' <Var3> | '=' <Valor> <Var4> | <Vetor3> <Var4>
     public void Var2(){
 
-        if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
+        if (token != null && conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
             if (token != null && token.getLexema().equals(",")){
                 nextToken();
                 IdVar();
@@ -1686,11 +1695,12 @@ public void Vetor2(){
             else if (token != null && token.getLexema().equals("=")){
                 nextToken();
                 Valor();
+                System.out.println("Retorno 3"+ token.getLexema());
                 Var4();
             }
             else if (token != null && token.getLexema().equals("[")) {
                 Vetor3();
-                Var4();
+                //Var4();
             }
             else if (token != null) {
                 addErroSintatico(new ErroSintatico("Var2", token.getLexema() +" não esperado", token.getnLinha() ));
@@ -1730,6 +1740,7 @@ public void Vetor2(){
 
 
     }
+    //<IdVar> ::= Id <Var2>
     public void IdVar(){
 
         if (token != null && token.getTipo() == 3){
@@ -1738,7 +1749,7 @@ public void Vetor2(){
         }
         else if (token != null){
             addErroSintatico(new ErroSintatico("IdVar", "Esperava um identificador mas encontrou "+token.getLexema(),  token.getnLinha()));
-            sincronizar("Var2#GeraFuncaoeProcedure#Start",null, null);
+            sincronizar("Var2#GeraFuncaoeProcedure#Start","IdVar", null);
             if (token != null){
                 if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
                     Var2();
@@ -1753,46 +1764,19 @@ public void Vetor2(){
         }
 
         if (token == null){
-            addErroSintatico(new ErroSintatico("TipoVar", "EOF inesperado", linhaErroEOF));
+            addErroSintatico(new ErroSintatico("IdVar", "EOF inesperado", linhaErroEOF));
         }
 
 
     }
 
-
+    //<TipoVar> ::= <Tipo> <IdVar>
     public void TipoVar(){
-
-        if (token != null && pertence(0, "Tipo")){
-            nextToken();
-            //Tipo();
+            Tipo();
             IdVar();
-
-        }
-        else if (token != null){
-            addErroSintatico(new ErroSintatico("TipoVar", token.getLexema()+" não esperado", token.getnLinha()));
-            sincronizar("IdVar#GeraFuncaoeProcedure#Start",null, null);
-            if (token != null){
-                if (conjunto_P_S.primeiro("IdVar").contains(token.getLexema())){
-                    IdVar();
-                }
-                else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                    GeraFuncaoeProcedure();
-                }
-                else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                    Start(0);
-                }
-            }
-
-        }
-
-        if (token == null){
-            addErroSintatico(new ErroSintatico("TipoVar", "EOF inesperado", linhaErroEOF));
-        }
-
-
     }
 
-
+    //<Var> ::= 'var' '{' <TipoVar> | <>
     public void Var(){
 
         if (token != null && token.getLexema().equals("var")){
@@ -1800,6 +1784,7 @@ public void Vetor2(){
             if (token != null && token.getLexema().equals("{")){
                 nextToken();
                 TipoVar();
+
             }
             else if (token != null){
                 addErroSintatico(new ErroSintatico("Var", "Esperava { mas encontrou "+token.getLexema(),token.getnLinha()));
