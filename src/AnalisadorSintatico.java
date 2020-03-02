@@ -37,7 +37,7 @@ public class AnalisadorSintatico {
         else token = null;
 	
 	// ignora blocos de comentários
-	if (token.getTipo() == 10) nextToken();
+	if (token != null && token.getTipo() == 10) nextToken();
     }
 
      /**
