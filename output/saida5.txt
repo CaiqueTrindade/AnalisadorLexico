@@ -1,8 +1,4 @@
 3 Valor ; não esperado;
 6 Start Esperava start mas encontrou struct;
-10 Start Esperava } mas encontrou typedef;
-14 Start Esperava } mas encontrou typedef;
-18 Start Esperava } mas encontrou function;
-22 Start Esperava } mas encontrou fuction;
-26 Start Esperava } mas encontrou vr;
-31 Start Esperava } mas encontrou main;
+10 Start Tokens inesperado após a declaração do Start.;
+10 Inicio Esperava EOF mas encontrou typedef;

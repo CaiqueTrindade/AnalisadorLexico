@@ -36,13 +36,13 @@ public class Principal {
 
                 // Se houver arquivos válidos
                 if (entradas_validas.size() > 0) {
-                    System.out.println("Arquivos válidos de entrada encontrados: " + entradas_validas.size());
+                    System.out.println("Arquivos válidos de entrada encontrados: " + entradas_validas.size() + "\n");
 
                     // Percorre a lista das entradas válidas
                     Iterator it = entradas_validas.iterator();
                     while (it.hasNext()) {
                         File input = (File) it.next();
-                        System.out.println("Lendo e analisando lexicalmente o arquivo: " + input.getName());
+                        System.out.println("Lendo e analisando o arquivo: " + input.getName());
                         AnalisadorLexico al = null;
                         AnalisadorSintatico as = null;
                         try {
@@ -53,6 +53,10 @@ public class Principal {
                             // Solicita que o AnalisadorLexico faça a escrita do arquivo de saída com os tokens e os erros encontrados
                             al.escreverEmArquivo();
 
+                            if(al.errosIsVazio())
+                                System.out.print("O arquivo "+ input.getName() +" não possui erros léxicos! ");
+                            System.out.println("Análise léxica feita com sucesso!");
+
                             // Passa a lista de tokens provenientes da análise léxica para o analisador sintático
                             as = new AnalisadorSintatico(al.getTokens());
                             // Solicita que o AnalisadorSintatico faça a análise
@@ -60,11 +64,11 @@ public class Principal {
                             // Solicita que o AnalisadorSintatico faça a escrita do arquivo de saída
                             as.escreverEmArquivo(input.getName());
 
-                            if(al.errosIsVazio())
-                                System.out.println("O arquivo "+ input.getName() +" não possui erro! Análise feita com sucesso!");
+                            if(as.errosIsVazio())
+                                System.out.print("O arquivo "+ input.getName() +" não possui erros sintáticos! ");
+                            System.out.println("Análise sintática feita com sucesso!");
 
-
-                            System.out.println("Leitura do arquivo " + input.getName() + " finalizada!");
+                            System.out.println("Leitura do arquivo " + input.getName() + " finalizada!\n\n");
                         } catch (FileNotFoundException e) {
                             System.err.println("Arquivo de entrada não encontrado.");
                             e.printStackTrace();

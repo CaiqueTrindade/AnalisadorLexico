@@ -240,6 +240,8 @@ Lista de Tokens
 65 if Palavra Reservada;
 65 ( Delimitador (;
 65 retorno Identificador;
+65 == Operador Relacional;
+65 true Palavra Reservada;
 65 ) Delimitador );
 65 then Palavra Reservada;
 65 { Delimitador {;
