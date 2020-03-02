@@ -18,12 +18,16 @@ var {
 }
 
 function boolean cadastrarPessoas(pessoa pessoa) {
-	if (global.pessoas_cadastradas < tamanho_vetor) {
+	var {
+	    boolean retorno = false;
+	}
+	if (global.pessoas_cadastradas < tamanho_vetor) then {
 		global.vetor_pessoas[global.pessoas_cadastradas] = pessoa;
 		global.pessoas_cadastradas = global.pessoas_cadastradas + 1;
+		retorno = true;
 	}
 	else {
-		return false;
+		return retorno;
 	}
 }
 
@@ -33,7 +37,7 @@ procedure imprimirPessoas(string vetor) {
 		int i = 0;
 	}
 
-	if (vetor == "vetor_pessoas") {
+	if (vetor == "vetor_pessoas") then {
 		while( i < global.pessoas_cadastradas) {
 			print(vetor_pessoas[i]);
 			i++;
@@ -54,11 +58,11 @@ start {
 		print("Digite 0 para cadastrar uma nova pessoa ou 1 para imprimir a lista de pessoas cadastradas:");
 		read(entrada);
 
-		if (entrada == 0) {
+		if (entrada == 0) then {
 			print("Digite o nome, endereço e telefone da pessoa que deseja cadastrar:");
 			read(pessoa.nome, pessoa.endereco, pessoa.telefone);
 			retorno = cadastrarPessoa(pessoa);
-			if(retorno) {
+			if(retorno) then {
 				print("Nova pessoa cadastrada com sucesso.");
 			}
 			else {
@@ -66,7 +70,7 @@ start {
 			}
 		}
 		else {
-			if (entrada == 1) {
+			if (entrada == 1) then {
 				imprimirPessoas();
 			}
 			else {

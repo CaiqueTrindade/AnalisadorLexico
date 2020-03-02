@@ -1,3 +1,5 @@
-21 Condicional { não esperado;
-21 Corpo Esperava um } mas encontrou {;
-22 Start EOF inesperado;
+42 Identificador3 Esperava ( mas encontrou ];
+43 IdentificadorComandos2 ++ inesperado;
+43 IdentificadorSemFuncao ; não esperado;
+47 Identificador3 Esperava ( mas encontrou );
+51 Start EOF inesperado;

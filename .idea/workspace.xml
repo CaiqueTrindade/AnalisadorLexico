@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="39ab9ca6-bff4-40ef-be53-bff73e582c6c" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorSintatico.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorSintatico.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/entrada4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input/entrada4.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/saida4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida4.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/saida5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida5.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/saida_lexica4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida_lexica4.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/saida_lexica5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida_lexica5.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AnalisadorSintatico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorSintatico.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,12 +26,6 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-65" />
-    <option name="y" value="139" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
-  </component>
   <component name="ProjectId" id="1XrJpf5ACad9k4v7IkAdrY8C8uD" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -38,7 +37,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="RunManager" selected="Application.Principal">
@@ -127,48 +126,141 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1582572499467" />
-    <state x="572" y="285" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1583083926596">
-      <screen x="67" y="27" width="1299" height="741" />
+    <state x="722" y="376" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1583173295652">
+      <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state x="531" y="253" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1366.728@0.0.1366.728" timestamp="1583081678486" />
+    <state x="722" y="376" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1858.1080@0.0.1858.1080" timestamp="1583173295652" />
     <state x="572" y="285" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/67.27.1299.741@67.27.1299.741" timestamp="1583083926596" />
     <state x="463" y="105" key="FileChooserDialogImpl" timestamp="1582572434894">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1582572434894" />
-    <state width="1323" height="179" key="GridCell.Tab.0.bottom" timestamp="1583125293231">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state width="1815" height="295" key="GridCell.Tab.0.bottom" timestamp="1583178360452">
+      <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
+    <state width="1815" height="295" key="GridCell.Tab.0.bottom/0.0.1858.1080@0.0.1858.1080" timestamp="1583178360452" />
     <state width="1253" height="175" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1583091917499" />
-    <state width="1323" height="179" key="GridCell.Tab.0.center" timestamp="1583125293231">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state width="1815" height="295" key="GridCell.Tab.0.center" timestamp="1583178360452">
+      <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
+    <state width="1815" height="295" key="GridCell.Tab.0.center/0.0.1858.1080@0.0.1858.1080" timestamp="1583178360452" />
     <state width="1253" height="175" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1583091917498" />
-    <state width="1323" height="179" key="GridCell.Tab.0.left" timestamp="1583125293231">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state width="1815" height="295" key="GridCell.Tab.0.left" timestamp="1583178360452">
+      <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
+    <state width="1815" height="295" key="GridCell.Tab.0.left/0.0.1858.1080@0.0.1858.1080" timestamp="1583178360452" />
     <state width="1253" height="175" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1583091917497" />
-    <state width="1323" height="179" key="GridCell.Tab.0.right" timestamp="1583125293231">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state width="1815" height="295" key="GridCell.Tab.0.right" timestamp="1583178360452">
+      <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
+    <state width="1815" height="295" key="GridCell.Tab.0.right/0.0.1858.1080@0.0.1858.1080" timestamp="1583178360452" />
     <state width="1253" height="175" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1583091917498" />
     <state x="242" y="33" key="SettingsEditor" timestamp="1582741121217">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
     <state x="184" y="6" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1582572384161" />
     <state x="242" y="33" key="SettingsEditor/67.27.1299.741@67.27.1299.741" timestamp="1582741121217" />
-    <state x="321" y="195" key="com.intellij.ide.util.TipDialog" timestamp="1583151506222">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state x="437" y="289" key="com.intellij.ide.util.TipDialog" timestamp="1583173283380">
+      <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state x="321" y="195" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1583151506222" />
+    <state x="437" y="289" key="com.intellij.ide.util.TipDialog/0.0.1858.1080@0.0.1858.1080" timestamp="1583173283380" />
     <state x="372" y="225" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1582048455652" />
     <state x="339" y="162" key="run.anything.popup" timestamp="1583082915291">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1583082915291" />
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>Analisador Léxico</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

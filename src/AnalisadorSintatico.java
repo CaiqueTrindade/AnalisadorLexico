@@ -238,16 +238,12 @@ public class AnalisadorSintatico {
     //<IdentificadorAritmetico> ::= <Escopo> Id <Identificador2> <ExpressaoAritmetica2>
     //    | Id <IdentificadorAritmetico3>
     public void IdentificadorAritmetico(){
-        if (token != null && conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
+        if (token != null && pertence(0, "Escopo")){
             Escopo();
             if (token != null && token.getTipo() == 3){
                 nextToken();
-
                 Identificador2();
-
                 ExpressaoAritmetica2();
-
-
             }
             else if (token != null) {
                 addErroSintatico(new ErroSintatico("IdentificadorAritmetico", "Esperava um Identificador, mas encontrou "+token.getLexema(), token.getnLinha()));
@@ -319,18 +315,18 @@ public class AnalisadorSintatico {
 
     }
 
+    // <ExpressaoAritmetica> ::= <T> <E2> | <IdentificadorAritmetico> | '++' <IdentificadorSemFuncao> <T2> <E2> | '--' <IdentificadorSemFuncao> <T2> <E2>
     public void ExpressaoAritmetica (){
 
-        if (token != null && conjunto_P_S.primeiro("T").contains(token.getLexema()) || pertence(0, "T")){
+        if (token != null && pertence(0, "T")){
             T();
             E2();
-
         }
-        else if (token != null && conjunto_P_S.primeiro("IdentificadorAritmetico").contains(token.getLexema()) || token.getTipo() == 3){
+        else if (token != null && pertence(0, "IdentificadorAritmetico")){
             IdentificadorAritmetico();
-
         }
         else if (token != null && token.getTipo() == 9){
+            nextToken();
             IdentificadorSemFuncao();
             T2();
             E2();
@@ -355,18 +351,11 @@ public class AnalisadorSintatico {
     //<ExpressaoAritmetica2> ::= '++' <T2> <E2> | '--' <T2> <E2> | <T2> <E2>
     private void ExpressaoAritmetica2() {
         if(token != null) {
-            if(token.getTipo() == 9){
+            if(token.getTipo() == 9) {
                 nextToken();
-                T2();
-                E2();
             }
-            else if (conjunto_P_S.primeiro("T2").contains(token.getLexema())){
-                T2();
-                E2();
-
-            }
-
-
+            T2();
+            E2();
         }
         else addErroSintatico(new ErroSintatico("ExpressaoAritmetica2","EOF inesperado", linhaErroEOF));
     }
@@ -375,7 +364,7 @@ public class AnalisadorSintatico {
 
     public void IdentificadorSemFuncao(){
 
-        if(token != null && conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
+        if(token != null && pertence(0, "Escopo")){
             Escopo();
             if (token != null && token.getTipo() == 3){
                 nextToken();
@@ -404,13 +393,13 @@ public class AnalisadorSintatico {
 
 
 
-
+    // <IndiceVetor> ::= IntPos | <Identificador>
     public void IndiceVetor(){
 
         if (token != null && token.getTipo() == 2 && Integer.parseInt(token.getLexema()) >= 0) {
             nextToken();
         }
-        else if (token != null && conjunto_P_S.primeiro("Identificador").contains(token.getLexema())){
+        else if (token != null && pertence(0, "Identificador")){
             Identificador();
         }
         else if (token != null) {
@@ -885,6 +874,7 @@ public void Procedimento(){
         }
     }
 
+    // <Print> ::= 'print' '(' <Print1>
     public void Print(){
         if(token != null && token.getLexema().equals("print")){
             nextToken();
@@ -912,8 +902,9 @@ public void Procedimento(){
         }
     }
 
+    // <Print1> ::= String <AuxPrint> | <Identificador> <AuxPrint> | Numero <AuxPrint>
     public void Print1(){
-        if(token != null && pertence(0, "Print1")){
+        if(token != null && token.getTipo() == 11 || token.getTipo() == 1 || token.getTipo() == 2){
             nextToken();
             AuxPrint();
         }else if(token != null && pertence(0, "Identificador")){
@@ -921,9 +912,13 @@ public void Procedimento(){
             AuxPrint();
         }else if (token != null){
             addErroSintatico(new ErroSintatico("Print1", token.getLexema() +" não esperado", token.getnLinha()));
-            sincronizar("AuxPrint", "Print1", null);
+            sincronizar("AuxPrint#Print1", "Print1", null);
+
             if (token != null && pertence(0, "AuxPrint")){
                 AuxPrint();
+            }
+            else if (token != null && pertence(0, "Print1")) {
+                Print1();
             }
         }
         if (token == null){
@@ -931,6 +926,7 @@ public void Procedimento(){
         }
     }
 
+    //
     public void AuxPrint(){
         if(token != null && token.getLexema().equals(",")){
             nextToken();
@@ -1179,15 +1175,16 @@ public void Vetor2(){
 
     }
 
-    //<Vetor> ::= '[' <IndiceVetor> ']' <Vetor2> <Identificador4>
-    //    | <Identificador4>
+    //<Vetor> ::= '[' <IndiceVetor> ']' <Vetor2> <Identificador4> | <Identificador4>
     public void Vetor(){
 
-        if(token != null && token.equals("[")){
+        if(token != null && token.getLexema().equals("[")){
             nextToken();
             IndiceVetor();
-            if (token != null && token.equals("]")){
+            System.out.println("HELLO " + token.toString());
+            if (token != null && token.getLexema().equals("]")){
                 nextToken();
+                System.out.println("HELLO2 " + token.toString());
                 Vetor2();
                 Identificador4();
             }
@@ -1276,7 +1273,7 @@ public void Vetor2(){
         else if (token != null) {
             addErroSintatico(new ErroSintatico("Escopo", "Esperava local ou global mas encontrou "+token.getLexema(),token.getnLinha()));
             sincronizar(null, "Escopo", ".");
-            if (token != null && token.equals(".")){
+            if (token != null && token.getLexema().equals(".")){
                 nextToken();
             }
             else if (token != null) {
@@ -1311,7 +1308,7 @@ public void Vetor2(){
                 }
 
             }
-        }else if (token != null && conjunto_P_S.primeiro("Vetor").contains(token.getLexema())){
+        } else if (token != null && conjunto_P_S.primeiro("Vetor").contains(token.getLexema())){
             Vetor();
         }
 
@@ -1320,8 +1317,8 @@ public void Vetor2(){
         }
     }
 
+    // <Identificador3> ::= <Identificador2> | '(' <ListaParametros> ')'
     public void Identificador3(){
-
         if (token != null && pertence(0, "Identificador2")){
             Identificador2();
         }
@@ -1374,7 +1371,7 @@ public void Vetor2(){
 
     }
 
-
+    // <Identificador> ::= <Escopo> Id <Identificador2> | Id <Identificador3>
     public void Identificador(){
 
         if (token != null && conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
@@ -1392,8 +1389,6 @@ public void Vetor2(){
                         Identificador2();
                     }
                 }
-
-
             }
         }
         else if (token != null && token.getTipo() == 3){
@@ -2323,7 +2318,7 @@ public void Vetor2(){
             nextToken();
         else if (token != null) {
             addErroSintatico(new ErroSintatico("IdentificadorComandos", "Esperava um ; mas encontrou " + token.getLexema(), token.getnLinha()));
-            sincronizar("", "IdentificadorComandos", ";");
+            sincronizar(null, "IdentificadorComandos", ";");
 
             if (token != null) {
                 if (token.getLexema().equals(";"))
