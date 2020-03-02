@@ -1,0 +1,260 @@
+[1mdiff --cc .idea/workspace.xml[m
+[1mindex 3c0e727,4faceaa..0000000[m
+[1m--- a/.idea/workspace.xml[m
+[1m+++ b/.idea/workspace.xml[m
+[36m@@@ -2,41 -2,11 +2,14 @@@[m
+  <project version="4">[m
+    <component name="ChangeListManager">[m
+      <list default="true" id="39ab9ca6-bff4-40ef-be53-bff73e582c6c" name="Default" comment="">[m
+[31m-       <change afterPath="$PROJECT_DIR$/input/entrada4.txt" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/input/entrada5.txt" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/AnalisadorLexico.class" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/AnalisadorSintatico.class" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/Conjunto.class" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/ConstrutorConjunto.class" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/Erro.class" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/ErroSintatico.class" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/GerenciadorTokens.class" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/Principal.class" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/Token.class" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/output/saida4.txt" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/output/saida5.txt" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/output/saida_lexica4.txt" afterDir="false" />[m
+[31m-       <change afterPath="$PROJECT_DIR$/output/saida_lexica5.txt" afterDir="false" />[m
+[32m +      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />[m
+        <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/input/entrada1.txt" beforeDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/input/entrada2.txt" beforeDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorLexico.class" beforeDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorSintatico.class" beforeDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Conjunto.class" beforeDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/ConstrutorConjunto.class" beforeDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Erro.class" beforeDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/ErroSintatico.class" beforeDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/GerenciadorTokens.class" beforeDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Principal.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/Principal.class" afterDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Token.class" beforeDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/output/saida1.txt" beforeDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/output/saida2.txt" beforeDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/src/AnalisadorLexico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorLexico.java" afterDir="false" />[m
+[32m+       <change beforePath="$PROJECT_DIR$/input/entrada4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input/entrada4.txt" afterDir="false" />[m
+[32m++      <change beforePath="$PROJECT_DIR$/output/saida3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida3.txt" afterDir="false" />[m
+[32m+       <change beforePath="$PROJECT_DIR$/output/saida4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida4.txt" afterDir="false" />[m
+[32m++      <change beforePath="$PROJECT_DIR$/output/saida5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida5.txt" afterDir="false" />[m
+[32m+       <change beforePath="$PROJECT_DIR$/output/saida_lexica4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida_lexica4.txt" afterDir="false" />[m
+        <change beforePath="$PROJECT_DIR$/src/AnalisadorSintatico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorSintatico.java" afterDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/src/Conjunto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Conjunto.java" afterDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/src/ConstrutorConjunto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ConstrutorConjunto.java" afterDir="false" />[m
+[31m-       <change beforePath="$PROJECT_DIR$/src/Principal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Principal.java" afterDir="false" />[m
+      </list>[m
+      <option name="SHOW_DIALOG" value="false" />[m
+      <option name="HIGHLIGHT_CONFLICTS" value="true" />[m
+[36m@@@ -62,11 -31,11 +34,12 @@@[m
+    </component>[m
+    <component name="PropertiesComponent">[m
+      <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />[m
+[32m++    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JAVA" />[m
+      <property name="last_opened_file_path" value="$PROJECT_DIR$" />[m
+      <property name="project.structure.last.edited" value="Project" />[m
+      <property name="project.structure.proportion" value="0.0" />[m
+      <property name="project.structure.side.proportion" value="0.2" />[m
+[31m--    <property name="settings.editor.selected.configurable" value="MavenSettings" />[m
+[32m++    <property name="settings.editor.selected.configurable" value="com.intellij.jarRepository.settings.RemoteRepositoriesConfigurable" />[m
+    </component>[m
+    <component name="RunManager" selected="Application.Principal">[m
+      <configuration default="true" type="Applet" factoryName="Applet">[m
+[36m@@@ -152,54 -119,49 +123,49 @@@[m
+        <screen x="0" y="0" width="1366" height="728" />[m
+      </state>[m
+      <state x="275" y="22" key="#Project_Structure/0.0.1366.728@0.0.1366.728" timestamp="1582571936037" />[m
+[31m-     <state x="197" y="46" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583188017553">[m
+[31m-       <screen x="67" y="27" width="1299" height="741" />[m
+[32m+     <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582572499467">[m
+[32m+       <screen x="0" y="0" width="1366" height="728" />[m
+      </state>[m
+      <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1582572499467" />[m
+[31m-     <state x="197" y="46" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1299.741@67.27.1299.741" timestamp="1583188017553" />[m
+[31m-     <state x="572" y="285" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1583180834790">[m
+[31m -    <state x="722" y="376" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1583173295652">[m
+[31m -      <screen x="0" y="0" width="1858" height="1080" />[m
+[32m++    <state x="572" y="285" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1583190307637">[m
+[32m +      <screen x="67" y="27" width="1299" height="741" />[m
+      </state>[m
+      <state x="531" y="253" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1366.728@0.0.1366.728" timestamp="1583081678486" />[m
+      <state x="722" y="376" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1858.1080@0.0.1858.1080" timestamp="1583173295652" />[m
+[31m-     <state x="572" y="285" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/67.27.1299.741@67.27.1299.741" timestamp="1583180834790" />[m
+[31m -    <state x="572" y="285" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/67.27.1299.741@67.27.1299.741" timestamp="1583083926596" />[m
+[32m++    <state x="572" y="285" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/67.27.1299.741@67.27.1299.741" timestamp="1583190307637" />[m
+      <state x="463" y="105" key="FileChooserDialogImpl" timestamp="1582572434894">[m
+        <screen x="0" y="0" width="1366" height="728" />[m
+      </state>[m
+      <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1582572434894" />[m
+[31m-     <state width="1253" height="175" key="GridCell.Tab.0.bottom" timestamp="1583186477325">[m
+[31m-       <screen x="67" y="27" width="1299" height="741" />[m
+[32m+     <state width="1815" height="295" key="GridCell.Tab.0.bottom" timestamp="1583185384914">[m
+[32m+       <screen x="0" y="0" width="1858" height="1080" />[m
+      </state>[m
+      <state width="1323" height="179" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />[m
+[31m-     <state width="1815" height="295" key="GridCell.Tab.0.bottom/0.0.1858.1080@0.0.1858.1080" timestamp="1583180433012" />[m
+[31m-     <state width="1253" height="175" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1583186477325" />[m
+[31m-     <state width="1253" height="175" key="GridCell.Tab.0.center" timestamp="1583186477324">[m
+[31m-       <screen x="67" y="27" width="1299" height="741" />[m
+[32m+     <state width="1815" height="295" key="GridCell.Tab.0.bottom/0.0.1858.1080@0.0.1858.1080" timestamp="1583185384914" />[m
+[32m+     <state width="1253" height="175" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1583091917499" />[m
+[32m+     <state width="1815" height="295" key="GridCell.Tab.0.center" timestamp="1583185384914">[m
+[32m+       <screen x="0" y="0" width="1858" height="1080" />[m
+      </state>[m
+      <state width="1323" height="179" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />[m
+[31m-     <state width="1815" height="295" key="GridCell.Tab.0.center/0.0.1858.1080@0.0.1858.1080" timestamp="1583180433012" />[m
+[31m-     <state width="1253" height="175" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1583186477324" />[m
+[31m-     <state width="1253" height="175" key="GridCell.Tab.0.left" timestamp="1583186477324">[m
+[31m-       <screen x="67" y="27" width="1299" height="741" />[m
+[32m+     <state width="1815" height="295" key="GridCell.Tab.0.center/0.0.1858.1080@0.0.1858.1080" timestamp="1583185384914" />[m
+[32m+     <state width="1253" height="175" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1583091917498" />[m
+[32m+     <state width="1815" height="295" key="GridCell.Tab.0.left" timestamp="1583185384913">[m
+[32m+       <screen x="0" y="0" width="1858" height="1080" />[m
+      </state>[m
+      <state width="1323" height="179" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />[m
+[31m-     <state width="1815" height="295" key="GridCell.Tab.0.left/0.0.1858.1080@0.0.1858.1080" timestamp="1583180433012" />[m
+[31m-     <state width="1253" height="175" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1583186477324" />[m
+[31m-     <state width="1253" height="175" key="GridCell.Tab.0.right" timestamp="1583186477325">[m
+[31m-       <screen x="67" y="27" width="1299" height="741" />[m
+[32m+     <state width="1815" height="295" key="GridCell.Tab.0.left/0.0.1858.1080@0.0.1858.1080" timestamp="1583185384913" />[m
+[32m+     <state width="1253" height="175" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1583091917497" />[m
+[32m+     <state width="1815" height="295" key="GridCell.Tab.0.right" timestamp="1583185384914">[m
+[32m+       <screen x="0" y="0" width="1858" height="1080" />[m
+      </state>[m
+      <state width="1323" height="179" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />[m
+[31m-     <state width="1815" height="295" key="GridCell.Tab.0.right/0.0.1858.1080@0.0.1858.1080" timestamp="1583180433012" />[m
+[31m-     <state width="1253" height="175" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1583186477325" />[m
+[31m-     <state x="421" y="114" width="580" height="564" key="MultipleFileMergeDialog" timestamp="1583187925499">[m
+[31m-       <screen x="67" y="27" width="1299" height="741" />[m
+[31m-     </state>[m
+[31m-     <state x="421" y="114" width="580" height="564" key="MultipleFileMergeDialog/67.27.1299.741@67.27.1299.741" timestamp="1583187925499" />[m
+[31m-     <state x="242" y="33" key="SettingsEditor" timestamp="1582741121217">[m
+[32m+     <state width="1815" height="295" key="GridCell.Tab.0.right/0.0.1858.1080@0.0.1858.1080" timestamp="1583185384914" />[m
+[32m+     <state width="1253" height="175" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1583091917498" />[m
+[31m -    <state x="242" y="33" key="SettingsEditor" timestamp="1582741121217">[m
+[32m++    <state x="242" y="27" width="1024" height="741" key="SettingsEditor" timestamp="1583188497943">[m
+        <screen x="67" y="27" width="1299" height="741" />[m
+      </state>[m
+      <state x="184" y="6" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1582572384161" />[m
+[31m--    <state x="242" y="33" key="SettingsEditor/67.27.1299.741@67.27.1299.741" timestamp="1582741121217" />[m
+[32m++    <state x="242" y="27" width="1024" height="741" key="SettingsEditor/67.27.1299.741@67.27.1299.741" timestamp="1583188497943" />[m
+      <state x="437" y="289" key="com.intellij.ide.util.TipDialog" timestamp="1583173283380">[m
+        <screen x="0" y="0" width="1858" height="1080" />[m
+      </state>[m
+[36m@@@ -215,91 -173,91 +177,4 @@@[m
+      </state>[m
+      <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1583082915291" />[m
+    </component>[m
+[31m--  <component name="masterDetails">[m
+[31m--    <states>[m
+[31m--      <state key="ArtifactsStructureConfigurable.UI">[m
+[31m--        <settings>[m
+[31m--          <artifact-editor />[m
+[31m--          <splitter-proportions>[m
+[31m--            <option name="proportions">[m
+[31m--              <list>[m
+[31m--                <option value="0.2" />[m
+[31m--              </list>[m
+[31m--            </option>[m
+[31m--          </splitter-proportions>[m
+[31m--        </settings>[m
+[31m--      </state>[m
+[31m--      <state key="FacetStructureConfigurable.UI">[m
+[31m--        <settings>[m
+[31m--          <last-edited>No facets are configured</last-edited>[m
+[31m--          <splitter-proportions>[m
+[31m--            <option name="proportions">[m
+[31m--              <list>[m
+[31m--                <option value="0.2" />[m
+[31m--              </list>[m
+[31m--            </option>[m
+[31m--          </splitter-proportions>[m
+[31m--        </settings>[m
+[31m--      </state>[m
+[31m--      <state key="GlobalLibrariesConfigurable.UI">[m
+[31m--        <settings>[m
+[31m--          <splitter-proportions>[m
+[31m--            <option name="proportions">[m
+[31m--              <list>[m
+[31m--                <option value="0.2" />[m
+[31m--              </list>[m
+[31m--            </option>[m
+[31m--          </splitter-proportions>[m
+[31m--        </settings>[m
+[31m--      </state>[m
+[31m--      <state key="JdkListConfigurable.UI">[m
+[31m--        <settings>[m
+[31m--          <last-edited>1.8</last-edited>[m
+[31m--          <splitter-proportions>[m
+[31m--            <option name="proportions">[m
+[31m--              <list>[m
+[31m--                <option value="0.2" />[m
+[31m--              </list>[m
+[31m--            </option>[m
+[31m--          </splitter-proportions>[m
+[31m--        </settings>[m
+[31m--      </state>[m
+[31m--      <state key="ModuleStructureConfigurable.UI">[m
+[31m--        <settings>[m
+[31m--          <last-edited>Analisador Léxico</last-edited>[m
+[31m--          <splitter-proportions>[m
+[31m--            <option name="proportions">[m
+[31m--              <list>[m
+[31m--                <option value="0.2" />[m
+[31m--                <option value="0.6" />[m
+[31m--              </list>[m
+[31m--            </option>[m
+[31m--          </splitter-proportions>[m
+[31m--        </settings>[m
+[31m--      </state>[m
+[31m--      <state key="ProjectJDKs.UI">[m
+[31m--        <settings>[m
+[31m--          <last-edited>1.8</last-edited>[m
+[31m--          <splitter-proportions>[m
+[31m--            <option name="proportions">[m
+[31m--              <list>[m
+[31m--                <option value="0.2" />[m
+[31m--              </list>[m
+[31m--            </option>[m
+[31m--          </splitter-proportions>[m
+[31m--        </settings>[m
+[31m--      </state>[m
+[31m--      <state key="ProjectLibrariesConfigurable.UI">[m
+[31m--        <settings>[m
+[31m--          <splitter-proportions>[m
+[31m--            <option name="proportions">[m
+[31m--              <list>[m
+[31m--                <option value="0.2" />[m
+[31m--              </list>[m
+[31m--            </option>[m
+[31m--          </splitter-proportions>[m
+[31m--        </settings>[m
+[31m--      </state>[m
+[31m--    </states>[m
+[31m--  </component>[m
+  </project>[m
+[1mdiff --git a/.idea/misc.xml b/.idea/misc.xml[m
+[1mindex a10797c..4e3b6e7 100644[m
+[1m--- a/.idea/misc.xml[m
+[1m+++ b/.idea/misc.xml[m
+[36m@@ -1,6 +1,6 @@[m
+ <?xml version="1.0" encoding="UTF-8"?>[m
+ <project version="4">[m
+[31m-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_9" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">[m
+[32m+[m[32m  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_9" default="false" project-jdk-name="11.0.6 (2)" project-jdk-type="JavaSDK">[m
+     <output url="file://$PROJECT_DIR$/out/production/Analisador Léxico" />[m
+   </component>[m
+ </project>[m
+\ No newline at end of file[m
+[1mdiff --git a/output/saida3.txt b/output/saida3.txt[m
+[1mindex cfcbebe..9c60a66 100644[m
+[1m--- a/output/saida3.txt[m
+[1m+++ b/output/saida3.txt[m
+[36m@@ -1,3 +1,2 @@[m
+ 1 Const Esperava { mas encontrou var;[m
+[31m-2 Var4 3 não esperado;[m
+[31m-2 Var3 EOF inesperado;[m
+[32m+[m[32m4 Var3 EOF inesperado;[m

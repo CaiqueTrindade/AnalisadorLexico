@@ -1,0 +1,10 @@
+Lista de Tokens
+
+1 var Palavra Reservada;
+1 { Delimitador {;
+2 int Palavra Reservada;
+2 a Identificador;
+2 = Operador Relacional de Atribuição;
+2 3 Número Inteiro;
+2 ; Delimitador ;;
+4 } Delimitador };

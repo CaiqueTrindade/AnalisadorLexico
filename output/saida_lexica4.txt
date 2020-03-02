@@ -156,7 +156,10 @@ Lista de Tokens
 42 ) Delimitador );
 42 ; Delimitador ;;
 43 i Identificador;
-43 ++ Operador Aritmético de incremento/decremento;
+43 = Operador Relacional de Atribuição;
+43 i Identificador;
+43 + Operador Aritmético;
+43 1 Número Inteiro;
 43 ; Delimitador ;;
 44 } Delimitador };
 45 } Delimitador };
@@ -170,6 +173,8 @@ Lista de Tokens
 48 } Delimitador };
 49 } Delimitador };
 51 start Palavra Reservada;
+51 ( Delimitador (;
+51 ) Delimitador );
 51 { Delimitador {;
 52 var Palavra Reservada;
 52 { Delimitador {;
@@ -207,13 +212,7 @@ Lista de Tokens
 61 { Delimitador {;
 62 print Palavra Reservada;
 62 ( Delimitador (;
-62 o Identificador;
-62 e Identificador;
-62 telefone Identificador;
-62 da Identificador;
-62 pessoa Identificador;
-62 que Identificador;
-62 deseja Identificador;
+62 "Digite o nome, endereco e telefone da pessoa que deseja cadastrar:" Cadeia de Caracteres;
 62 ) Delimitador );
 62 ; Delimitador ;;
 63 read Palavra Reservada;
@@ -254,8 +253,9 @@ Lista de Tokens
 68 { Delimitador {;
 69 print Palavra Reservada;
 69 ( Delimitador (;
-69 cheia Identificador;
-69 . Delimitador .;
+69 "A lista esta cheia." Cadeia de Caracteres;
+69 ) Delimitador );
+69 ; Delimitador ;;
 70 } Delimitador };
 71 } Delimitador };
 72 else Palavra Reservada;
@@ -277,23 +277,11 @@ Lista de Tokens
 76 { Delimitador {;
 77 print Palavra Reservada;
 77 ( Delimitador (;
-77 lida Identificador;
-77 , Delimitador ,;
-77 tente Identificador;
-77 novamente Identificador;
-77 . Delimitador .;
+77 "Entrada invalida, tente novamente." Cadeia de Caracteres;
+77 ) Delimitador );
+77 ; Delimitador ;;
 78 } Delimitador };
 79 } Delimitador };
 80 } Delimitador };
 81 } Delimitador };
 83 // teste de comentário Delimitador de Comentário;
-
-
-Lista de Erros
-
-62 "Digite o nome, endereç Mal formação de Cadeia de Caracteres;
-62 cadastrar:" Mal formação de Identificador;
-69 "A lista está Mal formação de Cadeia de Caracteres;
-69 "); Mal formação de Cadeia de Caracteres;
-77 "Entrada invá Mal formação de Cadeia de Caracteres;
-77 "); Mal formação de Cadeia de Caracteres;

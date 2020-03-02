@@ -145,7 +145,7 @@ public class AnalisadorSintatico {
             else if (conjunto.contains("Numero"))
                 return true;
         } else if (token.getTipo() == 0 && token.getLexema().matches("^(true|false)$")) {
-            if (conjunto.contains("Boolean"))
+            if (conjunto.contains("Boolean") || conjunto.contains("true") || conjunto.contains("false"))
                 return true;
         } else if (token.getTipo() == 11) {
             if (conjunto.contains("String"))
@@ -262,7 +262,6 @@ public class AnalisadorSintatico {
         else if (token != null && token.getTipo() == 3) {
             nextToken();
             IdentificadorAritmetico3();
-
         }
         else if (token != null) {
             addErroSintatico(new ErroSintatico("IdentificadorAritmetico", token.getLexema()+" não esperado", token.getnLinha()));
@@ -279,11 +278,7 @@ public class AnalisadorSintatico {
     //<IdentificadorAritmetico3> ::= <Identificador2> <ExpressaoAritmetica2> | '(' <ListaParametros> ')' <T2> <E2>
     public void IdentificadorAritmetico3(){
 
-        if (token != null && pertence(0, "Identificador2")){
-            Identificador2();
-            ExpressaoAritmetica2();
-        }
-        else if (token != null && token.getLexema().equals("(")){
+        if (token != null && token.getLexema().equals("(")) {
             nextToken();
             ListaParametros();
             if (token != null && token.getLexema().equals(")")){
@@ -305,14 +300,11 @@ public class AnalisadorSintatico {
                 }
             }
         }
-
-
-        if (token == null){
-            addErroSintatico(new ErroSintatico("F","EOF inesperado", linhaErroEOF));
+        else if (token != null) {
+            Identificador2(); // Permite vazio
+            ExpressaoAritmetica2();
         }
-
-
-
+        else addErroSintatico(new ErroSintatico("IdentificadorAritmetico3","EOF inesperado", linhaErroEOF));
     }
 
     // <ExpressaoAritmetica> ::= <T> <E2> | <IdentificadorAritmetico> | '++' <IdentificadorSemFuncao> <T2> <E2> | '--' <IdentificadorSemFuncao> <T2> <E2>
@@ -640,15 +632,15 @@ public class AnalisadorSintatico {
                     }
                 } else if (token != null) {
                     addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
-                    sincronizar("Corpo", "Laco", "{");
+                    sincronizar("Corpo2", "Laco", "{");
                     if (token != null && token.getLexema().equals("{")) {
                         nextToken();
                         Corpo2();
                         if (token != null && token.getLexema().equals("}")) {
                             nextToken();
-                        } else {
+                        } else if (token != null){
                             addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
-                            sincronizar("Corpo", "Laco", null);
+                            sincronizar("Corpo2", "Laco", null);
                         }
                     } else if (token != null && pertence(0, "Corpo2")) {
                         Corpo2();
@@ -1390,33 +1382,22 @@ public void Vetor2(){
 
 
     public void ContListaParametros(){
-
         if (token != null && token.getLexema().equals(",")){
             nextToken();
             ListaParametros();
         }
-//        else if (token != null && !conjunto_P_S.seguinte("ListaParametros").contains(token.getLexema()) && !pertence(1,"ListaParametros")){
-//            addErroSintatico(new ErroSintatico("ContListaParametros", token.idToToken(token.getTipo())+" não esperado",token.getnLinha()));
-//            sincronizar("ContListaParametros", "ListaParametros", null);
-//
-//            if (token != null){
-//                if (conjunto_P_S.primeiro("ContListaParametros").contains(token.getLexema())){
-//                    ContListaParametros();
-//                }
-//            }
-//        }
         if (token == null){
             addErroSintatico(new ErroSintatico("ContListaParametros","EOF inesperado", linhaErroEOF));
         }
-
-
     }
 
+    // <ListaParametros2> ::= <Identificador> | Numero | String
     public void ListaParametros2(){
 
-        if (token != null && pertence(0, "ListaParametros2")){
+        if (token != null && pertence(0, "Identificador"))
+            Identificador();
+        else if (token != null && token.getTipo() == 11 || token.getTipo() == 1 || token.getTipo() == 2)
             nextToken();
-        }
         else if (token != null){
             addErroSintatico(new ErroSintatico("ListaParametros2", token.idToToken(token.getTipo())+" não esperado",token.getnLinha()));
             sincronizar("ContListaParametros", null, null);
@@ -1436,30 +1417,10 @@ public void Vetor2(){
 
     }
 
-
+    // <ListaParametros> ::= <ListaParametros2> <ContListaParametros>
     public void ListaParametros(){
-        if (token!= null && conjunto_P_S.primeiro("ListaParametros2").contains(token.getLexema())){
-            ListaParametros2();
-            ContListaParametros();
-        }
-        else if (token!= null){
-            addErroSintatico(new ErroSintatico("ListaParametros", token.getLexema()+" não esperado",token.getnLinha()));
-            sincronizar("ContListaParametros#Start", null, null);
-
-            if (token != null){
-                if (conjunto_P_S.primeiro("ContListaParametros").contains(token.getLexema())){
-                    ContListaParametros();
-                }
-                else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                    Start(0);
-                }
-            }
-        }
-
-        if (token == null){
-            addErroSintatico(new ErroSintatico("ListaParametros","EOF inesperado", linhaErroEOF));
-        }
-
+        ListaParametros2();
+        ContListaParametros();
     }
 
     public void Matriz(){
@@ -1908,8 +1869,12 @@ public void Vetor2(){
     // <ExpressaoLogicaRelacional> ::= <ExpressaoLR> | '(' <ExpressaoLR> ')' <ExpressaoLR3>
     private void ExpressaoLogicaRelacional() {
 
-        if (token != null && pertence(0, "ExpressaoLR"))
+        System.out.println(conjunto_P_S.primeiro("ExpressaoLR").contains("true"));
+        System.out.println(conjunto_P_S.primeiro("ExpressaoLR").contains(token.getLexema()));
+        if (token != null && pertence(0, "ExpressaoLR")) {
+            System.out.println("ENTROOOU1 "+token.toString());
             ExpressaoLR();
+        }
         else if (token != null && token.getLexema().equals("(")) {
             nextToken();
             ExpressaoLR();
@@ -1932,6 +1897,23 @@ public void Vetor2(){
                     else return;
                 }
                 else addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "EOF inesperado", linhaErroEOF));
+            }
+            else addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "EOF inesperado", linhaErroEOF));
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "" + token.getLexema() + " inesperado", token.getnLinha()));
+            sincronizar("ExpressaoLogicaRelacional#ExpressaoLR3", "ExpressaoLogicaRelacional", ")");
+
+            if (token != null) {
+                if (pertence(0, "ExpressaoLR3"))
+                    ExpressaoLR3();
+                else if(pertence(0, "ExpressaoLogicaRelacional"))
+                    ExpressaoLogicaRelacional();
+                else if (token.getLexema().equals(")")) {
+                    nextToken();
+                    ExpressaoLR3();
+                }
+                else return;
             }
             else addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "EOF inesperado", linhaErroEOF));
         }
@@ -1986,23 +1968,8 @@ public void Vetor2(){
             ArgumentoLR();
             ExpressaoLR3();
         }
-        else if (token != null && pertence(0, "ExpressaoLR3")) {
-            ExpressaoLR3();
-        }
         else if (token != null) {
-            addErroSintatico(new ErroSintatico("ExpressaoLR2", "" + token.getLexema() +" inesperado", token.getnLinha()));
-            sincronizar("ExpressaoLR2#ArgumentoLR", "ExpressaoLR2", "");
-
-            if (token != null) {
-                if (pertence(0, "ExpressaoLR2"))
-                    ExpressaoLR2();
-                else if (pertence(0, "ArgumentoLR")) {
-                    ArgumentoLR();
-                    ExpressaoLR3();
-                }
-                else return;
-            }
-            else addErroSintatico(new ErroSintatico("ExpressaoLR2", "EOF inesperado", linhaErroEOF));
+            ExpressaoLR3();
         }
         else addErroSintatico(new ErroSintatico("ExpressaoLR2", "EOF inesperado", linhaErroEOF));
     }
@@ -2447,43 +2414,55 @@ public void Vetor2(){
     private void Start(int estagio) {
 
         int estagio_atual = estagio;
+        boolean erro = false;
 
-        if (token!= null) {
+        if (token!= null && estagio_atual <= 5) {
             switch (estagio) {
                 case 0:
-                    if (token != null && token.getLexema().equals("start")) {
+                    if (token.getLexema().equals("start")) {
                         nextToken();
                         estagio_atual ++;
                     }
+                    else erro = true;
+                    break;
                 case 1:
-                    if (token != null && token.getLexema().equals("(") && estagio_atual == 1) {
+                    if (token.getLexema().equals("(")) {
                         nextToken();
                         estagio_atual ++;
                     }
+                    else erro = true;
+                    break;
                 case 2:
-                    if (token != null && token.getLexema().equals(")") && estagio_atual == 2) {
+                    if (token.getLexema().equals(")")) {
                         nextToken();
                         estagio_atual ++;
                     }
+                    else erro = true;
+                    break;
                 case 3:
-                    if (token != null && token.getLexema().equals("{") && estagio_atual == 3) {
+                    if (token.getLexema().equals("{")) {
                         nextToken();
                         estagio_atual ++;
                     }
+                    else erro = true;
+                    break;
                 case 4:
-                    if (token != null && estagio_atual == 4) {
-                        Corpo();
-                        estagio_atual ++;
-                    }
+                    Corpo();
+                    estagio_atual ++;
+                    break;
                 case 5:
-                    if (token != null && token.getLexema().equals("}") && estagio_atual == 5) {
+                    if (token.getLexema().equals("}")) {
                         nextToken();
                         estagio_atual ++;
                     }
+                    else erro = true;
+                    break;
             }
 
-            if (token != null) addErroSintatico(new ErroSintatico("Start", "EOF inesperado", linhaErroEOF));
-            else if (estagio_atual < 6) {
+            if (token != null && !erro && estagio_atual <= 5) {
+                Start(estagio_atual);
+            }
+            else if (token != null && erro && estagio_atual <= 5) {
                 String lexemas = null;
                 String conjuntos_primeiro = null;
                 switch (estagio_atual) {
@@ -2529,6 +2508,8 @@ public void Vetor2(){
                 }
                 else addErroSintatico(new ErroSintatico("Start", "EOF inesperado", linhaErroEOF));
             }
+            else if (token != null && estagio_atual > 5) addErroSintatico(new ErroSintatico("Start", "Tokens inesperado após a declaração do Start.", linhaErroEOF));
+            else addErroSintatico(new ErroSintatico("Start", "EOF inesperado", linhaErroEOF));
         }
         else addErroSintatico(new ErroSintatico("Start", "EOF inesperado", linhaErroEOF));
     }

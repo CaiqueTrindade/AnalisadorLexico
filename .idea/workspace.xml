@@ -2,40 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="39ab9ca6-bff4-40ef-be53-bff73e582c6c" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/input/entrada4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input/entrada5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/AnalisadorLexico.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/AnalisadorSintatico.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/Conjunto.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/ConstrutorConjunto.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/Erro.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/ErroSintatico.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/GerenciadorTokens.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/Principal.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/Token.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/saida4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/saida5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/saida_lexica4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/saida_lexica5.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/entrada1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/entrada2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorLexico.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorSintatico.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Conjunto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/ConstrutorConjunto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Erro.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/ErroSintatico.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/GerenciadorTokens.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Principal.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/Principal.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/Token.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/saida1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/saida2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AnalisadorLexico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorLexico.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/entrada4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input/entrada4.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/saida4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida4.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/saida5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida5.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/saida_lexica4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida_lexica4.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AnalisadorSintatico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorSintatico.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Conjunto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Conjunto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ConstrutorConjunto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ConstrutorConjunto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Principal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Principal.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,7 +24,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="MERGE" />
   </component>
   <component name="ProjectId" id="1XrJpf5ACad9k4v7IkAdrY8C8uD" />
   <component name="ProjectViewState">
@@ -73,17 +44,15 @@
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
     </configuration>
     <configuration name="ConstrutorConjunto" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="11" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="ConstrutorConjunto" />
       <module name="Analisador Léxico" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="Principal" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="11" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Principal" />
       <module name="Analisador Léxico" />
       <method v="2">
@@ -152,49 +121,44 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="22" key="#Project_Structure/0.0.1366.728@0.0.1366.728" timestamp="1582571936037" />
-    <state x="197" y="46" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583188017553">
-      <screen x="67" y="27" width="1299" height="741" />
+    <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582572499467">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1582572499467" />
-    <state x="197" y="46" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1299.741@67.27.1299.741" timestamp="1583188017553" />
-    <state x="572" y="285" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1583180834790">
-      <screen x="67" y="27" width="1299" height="741" />
+    <state x="722" y="376" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1583173295652">
+      <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state x="531" y="253" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1366.728@0.0.1366.728" timestamp="1583081678486" />
     <state x="722" y="376" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1858.1080@0.0.1858.1080" timestamp="1583173295652" />
-    <state x="572" y="285" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/67.27.1299.741@67.27.1299.741" timestamp="1583180834790" />
+    <state x="572" y="285" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/67.27.1299.741@67.27.1299.741" timestamp="1583083926596" />
     <state x="463" y="105" key="FileChooserDialogImpl" timestamp="1582572434894">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1582572434894" />
-    <state width="1253" height="175" key="GridCell.Tab.0.bottom" timestamp="1583186477325">
-      <screen x="67" y="27" width="1299" height="741" />
+    <state width="1815" height="295" key="GridCell.Tab.0.bottom" timestamp="1583190277828">
+      <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
-    <state width="1815" height="295" key="GridCell.Tab.0.bottom/0.0.1858.1080@0.0.1858.1080" timestamp="1583180433012" />
-    <state width="1253" height="175" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1583186477325" />
-    <state width="1253" height="175" key="GridCell.Tab.0.center" timestamp="1583186477324">
-      <screen x="67" y="27" width="1299" height="741" />
+    <state width="1815" height="295" key="GridCell.Tab.0.bottom/0.0.1858.1080@0.0.1858.1080" timestamp="1583190277828" />
+    <state width="1253" height="175" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1583091917499" />
+    <state width="1815" height="295" key="GridCell.Tab.0.center" timestamp="1583190277828">
+      <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
-    <state width="1815" height="295" key="GridCell.Tab.0.center/0.0.1858.1080@0.0.1858.1080" timestamp="1583180433012" />
-    <state width="1253" height="175" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1583186477324" />
-    <state width="1253" height="175" key="GridCell.Tab.0.left" timestamp="1583186477324">
-      <screen x="67" y="27" width="1299" height="741" />
+    <state width="1815" height="295" key="GridCell.Tab.0.center/0.0.1858.1080@0.0.1858.1080" timestamp="1583190277828" />
+    <state width="1253" height="175" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1583091917498" />
+    <state width="1815" height="295" key="GridCell.Tab.0.left" timestamp="1583190277828">
+      <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
-    <state width="1815" height="295" key="GridCell.Tab.0.left/0.0.1858.1080@0.0.1858.1080" timestamp="1583180433012" />
-    <state width="1253" height="175" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1583186477324" />
-    <state width="1253" height="175" key="GridCell.Tab.0.right" timestamp="1583186477325">
-      <screen x="67" y="27" width="1299" height="741" />
+    <state width="1815" height="295" key="GridCell.Tab.0.left/0.0.1858.1080@0.0.1858.1080" timestamp="1583190277828" />
+    <state width="1253" height="175" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1583091917497" />
+    <state width="1815" height="295" key="GridCell.Tab.0.right" timestamp="1583190277828">
+      <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
-    <state width="1815" height="295" key="GridCell.Tab.0.right/0.0.1858.1080@0.0.1858.1080" timestamp="1583180433012" />
-    <state width="1253" height="175" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1583186477325" />
-    <state x="421" y="114" width="580" height="564" key="MultipleFileMergeDialog" timestamp="1583187925499">
-      <screen x="67" y="27" width="1299" height="741" />
-    </state>
-    <state x="421" y="114" width="580" height="564" key="MultipleFileMergeDialog/67.27.1299.741@67.27.1299.741" timestamp="1583187925499" />
+    <state width="1815" height="295" key="GridCell.Tab.0.right/0.0.1858.1080@0.0.1858.1080" timestamp="1583190277828" />
+    <state width="1253" height="175" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1583091917498" />
     <state x="242" y="33" key="SettingsEditor" timestamp="1582741121217">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
@@ -206,10 +170,6 @@
     <state x="321" y="195" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1583151506222" />
     <state x="437" y="289" key="com.intellij.ide.util.TipDialog/0.0.1858.1080@0.0.1858.1080" timestamp="1583173283380" />
     <state x="372" y="225" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1582048455652" />
-    <state x="484" y="316" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1583188036083">
-      <screen x="67" y="27" width="1299" height="741" />
-    </state>
-    <state x="484" y="316" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/67.27.1299.741@67.27.1299.741" timestamp="1583188036083" />
     <state x="339" y="162" key="run.anything.popup" timestamp="1583082915291">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
