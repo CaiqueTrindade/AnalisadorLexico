@@ -20,7 +20,7 @@ public class Principal {
     public static void main(String[] args) {
 
         File input_diretorio = new File("input");
-
+        AnalisadorSintatico as;
         // Verifica se a pasta "input" existe no diretório do projeto
         if (input_diretorio.exists()) {
 
@@ -53,11 +53,11 @@ public class Principal {
                             // Solicita que o AnalisadorLexico faça a escrita do arquivo de saída com os tokens e os erros encontrados
                             al.escreverEmArquivo();
 
-                            //as = new AnalisadorSintatico(al.getTokens());
+                            as = new AnalisadorSintatico(al.getTokens());
 
-                            //as.executarAnalise();
+                            as.executarAnalise();
 
-                            //as.escreverEmArquivo(input.getName());
+                            as.escreverEmArquivo(input.getName());
 
                             if(al.errosIsVazio())
                                 System.out.println("O arquivo "+ input.getName() +" não possui erro! Análise feita com sucesso!");

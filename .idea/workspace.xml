@@ -3,8 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="39ab9ca6-bff4-40ef-be53-bff73e582c6c" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conjunto" beforeDir="false" afterPath="$PROJECT_DIR$/conjunto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ConstrutorConjunto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ConstrutorConjunto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorSintatico.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/AnalisadorSintatico.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/saida1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AnalisadorSintatico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorSintatico.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Principal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Principal.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +23,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-65" />
+    <option name="y" value="139" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
+  </component>
   <component name="ProjectId" id="1XrJpf5ACad9k4v7IkAdrY8C8uD" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -35,7 +43,7 @@
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
-  <component name="RunManager" selected="Application.ConstrutorConjunto">
+  <component name="RunManager" selected="Application.Principal">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
     </configuration>
@@ -49,7 +57,6 @@
     </configuration>
     <configuration name="Principal" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="11" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Principal" />
       <module name="Analisador Léxico" />
       <method v="2">
@@ -95,8 +102,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ConstrutorConjunto" />
         <item itemvalue="Application.Principal" />
+        <item itemvalue="Application.ConstrutorConjunto" />
       </list>
     </recent_temporary>
   </component>
@@ -131,30 +138,35 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="105" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1582572434894" />
-    <state width="1253" height="175" key="GridCell.Tab.0.bottom" timestamp="1583091917499">
+    <state width="1253" height="175" key="GridCell.Tab.0.bottom" timestamp="1583180519117">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state width="1253" height="175" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1583091917499" />
-    <state width="1253" height="175" key="GridCell.Tab.0.center" timestamp="1583091917498">
+    <state width="1323" height="179" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
+    <state width="1253" height="175" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1583180519117" />
+    <state width="1253" height="175" key="GridCell.Tab.0.center" timestamp="1583180519116">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state width="1253" height="175" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1583091917498" />
-    <state width="1253" height="175" key="GridCell.Tab.0.left" timestamp="1583091917497">
+    <state width="1323" height="179" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
+    <state width="1253" height="175" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1583180519116" />
+    <state width="1253" height="175" key="GridCell.Tab.0.left" timestamp="1583180519115">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state width="1253" height="175" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1583091917497" />
-    <state width="1253" height="175" key="GridCell.Tab.0.right" timestamp="1583091917498">
+    <state width="1323" height="179" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
+    <state width="1253" height="175" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1583180519115" />
+    <state width="1253" height="175" key="GridCell.Tab.0.right" timestamp="1583180519116">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state width="1253" height="175" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1583091917498" />
+    <state width="1323" height="179" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1583125293231" />
+    <state width="1253" height="175" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1583180519116" />
     <state x="242" y="33" key="SettingsEditor" timestamp="1582741121217">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
     <state x="184" y="6" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1582572384161" />
     <state x="242" y="33" key="SettingsEditor/67.27.1299.741@67.27.1299.741" timestamp="1582741121217" />
-    <state x="372" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1582048455652">
-      <screen x="67" y="27" width="1299" height="741" />
+    <state x="321" y="195" key="com.intellij.ide.util.TipDialog" timestamp="1583151506222">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state x="321" y="195" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1583151506222" />
     <state x="372" y="225" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1582048455652" />
     <state x="339" y="162" key="run.anything.popup" timestamp="1583082915291">
       <screen x="0" y="0" width="1366" height="728" />
