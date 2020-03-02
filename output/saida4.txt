@@ -1,2 +1,1 @@
-64 ListaParametros pessoa não esperado;
-83 ListaParametros EOF inesperado;
+Análise Sintática realizada com Sucesso!
