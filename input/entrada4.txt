@@ -27,7 +27,7 @@ function boolean cadastrarPessoas(pessoa pessoa) {
 	}
 }
 
-procedore imprimirPessoas(string vetor) {
+procedure imprimirPessoas(string vetor) {
 
 	var {
 		int i = 0;
