@@ -400,6 +400,7 @@ public class AnalisadorSintatico {
             nextToken();
         }
         else if (token != null && pertence(0, "Identificador")){
+            System.out.println("HELLOOOO INDICEVETOR " + token.toString());
             Identificador();
         }
         else if (token != null) {
@@ -1179,12 +1180,13 @@ public void Vetor2(){
     public void Vetor(){
 
         if(token != null && token.getLexema().equals("[")){
+            System.out.println("HELLO1 " + token.toString());
             nextToken();
             IndiceVetor();
-            System.out.println("HELLO " + token.toString());
+            System.out.println("HELLO2 " + token.toString());
             if (token != null && token.getLexema().equals("]")){
                 nextToken();
-                System.out.println("HELLO2 " + token.toString());
+                System.out.println("HELLO3 " + token.toString());
                 Vetor2();
                 Identificador4();
             }
@@ -1319,10 +1321,7 @@ public void Vetor2(){
 
     // <Identificador3> ::= <Identificador2> | '(' <ListaParametros> ')'
     public void Identificador3(){
-        if (token != null && pertence(0, "Identificador2")){
-            Identificador2();
-        }
-        else if (token != null && token.getLexema().equals("(")){
+        if (token != null && token.getLexema().equals("(")) {
             nextToken();
             ListaParametros();
             if (token != null && token.getLexema().equals(")")){
@@ -1336,45 +1335,18 @@ public void Vetor2(){
                         Identificador();
                     }
                 }
-
             }
         }
-        else if (token != null){
-            addErroSintatico(new ErroSintatico("Identificador3", "Esperava ( mas encontrou "+token.getLexema(),token.getnLinha()));
-            sincronizar("ListaParametros", "Identificador3", null);
-            if (token != null){
-                if (conjunto_P_S.primeiro("ListaParametros").contains(token.getLexema())){
-                    ListaParametros();
-                    if (token != null && token.getLexema().equals(")")){
-                        nextToken();
-                    }
-                    else if (token != null) {
-                        addErroSintatico(new ErroSintatico("Identificador3", "Esperava ) mas encontrou "+token.getLexema(),token.getnLinha()));
-                        sincronizar("Identificador", "Identificador3", null);
-                        if (token != null){
-                            if (conjunto_P_S.primeiro("Identificador").contains(token.getLexema())){
-                                Identificador();
-                            }
-                        }
-
-                    }
-                }
-            }
-
+        else if (token != null) { //Permite vazio
+            Identificador2();
         }
-        if (token == null){
-            addErroSintatico(new ErroSintatico("Identificador3","EOF inesperado", linhaErroEOF));
-        }
-
-
-
-
+        else addErroSintatico(new ErroSintatico("Identificador3","EOF inesperado", linhaErroEOF));
     }
 
     // <Identificador> ::= <Escopo> Id <Identificador2> | Id <Identificador3>
     public void Identificador(){
 
-        if (token != null && conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
+        if (token != null && pertence(0, "Escopo")){
             Escopo();
             if (token != null  && token.getTipo() == 3){
                 nextToken();
@@ -1393,6 +1365,7 @@ public void Vetor2(){
         }
         else if (token != null && token.getTipo() == 3){
             nextToken();
+            System.out.println("Hello identificador 3 " + token.toString());
             Identificador3();
         }
         else if (token != null){

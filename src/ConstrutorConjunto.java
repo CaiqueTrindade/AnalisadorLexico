@@ -210,8 +210,8 @@ public class ConstrutorConjunto {
         conjunto = nTerminalToTerminal(conjunto, chamadas);
         LinkedHashSet conjuntoSemRepeticao = new LinkedHashSet<>(conjunto);
         if(checkNTerminal(conjuntoSemRepeticao)){
-            System.out.println(nTerminal);
-            System.out.println(conjuntoSemRepeticao);
+            //.println(nTerminal);
+            //System.out.println(conjuntoSemRepeticao);
         }
         conjuntoFinal.put(nTerminal, conjuntoSemRepeticao);
 
