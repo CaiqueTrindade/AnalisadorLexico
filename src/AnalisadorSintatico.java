@@ -56,8 +56,9 @@ public class AnalisadorSintatico {
      */
     private void addErroSintatico(ErroSintatico erro){
         System.out.println(erro.toString());
-        if (erro.getMensagem().split(" ")[0].equals("EOF")){
-             if (FLAGERRO !=1 ){
+        String erroMensagem [] = erro.getMensagem().split(" ");
+        if (erroMensagem[0].equals("EOF")){
+             if (FLAGERRO != 1){
                 FLAGERRO = 1;
                 this.errosSintaticos.add(erro);
             }

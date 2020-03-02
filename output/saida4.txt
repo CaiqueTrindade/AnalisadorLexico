@@ -1,1 +1,3 @@
-Análise Sintática realizada com Sucesso!
+1 Const Esperava { mas encontrou var;
+1 Var Esperava { mas encontrou ;;
+1 Var EOF inesperado;
