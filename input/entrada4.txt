@@ -48,7 +48,7 @@ procedure imprimirPessoas(string vetor) {
 	}
 }
 
-start {
+start () {
 	var {
 		int entrada, retorno;
 		pessoa pessoa;

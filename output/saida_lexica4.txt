@@ -173,6 +173,8 @@ Lista de Tokens
 48 } Delimitador };
 49 } Delimitador };
 51 start Palavra Reservada;
+51 ( Delimitador (;
+51 ) Delimitador );
 51 { Delimitador {;
 52 var Palavra Reservada;
 52 { Delimitador {;

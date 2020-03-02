@@ -632,15 +632,15 @@ public class AnalisadorSintatico {
                     }
                 } else if (token != null) {
                     addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
-                    sincronizar("Corpo", "Laco", "{");
+                    sincronizar("Corpo2", "Laco", "{");
                     if (token != null && token.getLexema().equals("{")) {
                         nextToken();
                         Corpo2();
                         if (token != null && token.getLexema().equals("}")) {
                             nextToken();
-                        } else {
+                        } else if (token != null){
                             addErroSintatico(new ErroSintatico("Laco", token.getLexema() + " não esperado", token.getnLinha()));
-                            sincronizar("Corpo", "Laco", null);
+                            sincronizar("Corpo2", "Laco", null);
                         }
                     } else if (token != null && pertence(0, "Corpo2")) {
                         Corpo2();
@@ -1924,6 +1924,23 @@ public void Vetor2(){
                     else return;
                 }
                 else addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "EOF inesperado", linhaErroEOF));
+            }
+            else addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "EOF inesperado", linhaErroEOF));
+        }
+        else if (token != null) {
+            addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "" + token.getLexema() + " inesperado", token.getnLinha()));
+            sincronizar("ExpressaoLogicaRelacional#ExpressaoLR3", "ExpressaoLogicaRelacional", ")");
+
+            if (token != null) {
+                if (pertence(0, "ExpressaoLR3"))
+                    ExpressaoLR3();
+                else if(pertence(0, "ExpressaoLogicaRelacional"))
+                    ExpressaoLogicaRelacional();
+                else if (token.getLexema().equals(")")) {
+                    nextToken();
+                    ExpressaoLR3();
+                }
+                else return;
             }
             else addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "EOF inesperado", linhaErroEOF));
         }
