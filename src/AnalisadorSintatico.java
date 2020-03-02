@@ -35,6 +35,9 @@ public class AnalisadorSintatico {
             linhaErroEOF = token.getnLinha();
         }
         else token = null;
+	
+	// ignora blocos de comentários
+	if (token != null && token.getTipo() == 10) nextToken();
     }
 
      /**
