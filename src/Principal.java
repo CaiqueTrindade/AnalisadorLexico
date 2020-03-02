@@ -20,7 +20,7 @@ public class Principal {
     public static void main(String[] args) {
 
         File input_diretorio = new File("input");
-        AnalisadorSintatico as;
+
         // Verifica se a pasta "input" existe no diretório do projeto
         if (input_diretorio.exists()) {
 
@@ -44,7 +44,7 @@ public class Principal {
                         File input = (File) it.next();
                         System.out.println("Lendo e analisando lexicalmente o arquivo: " + input.getName());
                         AnalisadorLexico al = null;
-                        //AnalisadorSintatico as = null;
+                        AnalisadorSintatico as = null;
                         try {
                             // Passa o arquivo de entrada para a classe que fará a leitura e a análise léxica do código-fonte
                             al = new AnalisadorLexico(input);
@@ -53,10 +53,11 @@ public class Principal {
                             // Solicita que o AnalisadorLexico faça a escrita do arquivo de saída com os tokens e os erros encontrados
                             al.escreverEmArquivo();
 
+                            // Passa a lista de tokens provenientes da análise léxica para o analisador sintático
                             as = new AnalisadorSintatico(al.getTokens());
-
+                            // Solicita que o AnalisadorSintatico faça a análise
                             as.executarAnalise();
-
+                            // Solicita que o AnalisadorSintatico faça a escrita do arquivo de saída
                             as.escreverEmArquivo(input.getName());
 
                             if(al.errosIsVazio())

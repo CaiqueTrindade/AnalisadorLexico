@@ -1,0 +1,3 @@
+43 IdentificadorComandos2 ++ inesperado;
+43 IdentificadorSemFuncao ; não esperado;
+51 Start EOF inesperado;

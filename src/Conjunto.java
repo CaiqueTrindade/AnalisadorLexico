@@ -20,17 +20,17 @@ public class Conjunto {
     }
     public ArrayList<String> primeiro(String nTerminal) {
         nTerminal = "P".concat(nTerminal);
-        System.out.println(nTerminal);
+        //System.out.println(nTerminal);
         LinkedHashSet<String> conjunto = conjuntos.get(nTerminal);
-        System.out.println(conjunto);
+        //System.out.println(conjunto);
         return new ArrayList<String>(conjunto);
     }
 
     public ArrayList<String> seguinte(String nTerminal) {
         nTerminal = "S".concat(nTerminal);
-        System.out.println(nTerminal);
+        //System.out.println(nTerminal);
         LinkedHashSet<String> conjunto = conjuntos.get(nTerminal);
-        System.out.println(conjunto);
+        //System.out.println(conjunto);
         return new ArrayList<>(conjunto);
     }
 

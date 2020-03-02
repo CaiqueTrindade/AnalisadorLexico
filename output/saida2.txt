@@ -1,2 +1,0 @@
-1 Const Esperava { mas encontrou =;
-13 Valor = não esperado;
