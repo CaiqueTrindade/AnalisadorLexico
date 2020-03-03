@@ -1392,7 +1392,7 @@ public void Vetor2(){
 
 
 
-
+    //<ContListaParametros> ::= ',' <ListaParametros> | <>
     public void ContListaParametros(){
         if (token != null && token.getLexema().equals(",")){
             nextToken();
@@ -1406,7 +1406,7 @@ public void Vetor2(){
     // <ListaParametros2> ::= <Identificador> | Numero | String
     public void ListaParametros2(){
 
-        if (token != null && pertence(0, "Identificador"))
+        if (token != null && pertence(0, "Identificador") || conjunto_P_S.primeiro("Escopo").contains(token.getLexema()))
             Identificador();
         else if (token != null && token.getTipo() == 11 || token.getTipo() == 1 || token.getTipo() == 2)
             nextToken();
@@ -1435,6 +1435,7 @@ public void Vetor2(){
         ContListaParametros();
     }
 
+    //<Matriz> ::= '[' <ValorVetor> ']' <Var4> | <Var4>
     public void Matriz(){
 
         if (token != null && token.getLexema().equals("[")){
@@ -1624,7 +1625,7 @@ public void Vetor2(){
 
     }
 
-    //<Var2> ::= ',' <IdVar> | ';' <Var3> | '=' <Valor> <Var4> | <Vetor3> <Var4>
+    //<Var2> ::= ',' <IdVar> | ';' <Var3> | '=' <Valor> <Var4> | <Vetor3>
     public void Var2(){
 
         if (token != null && conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
@@ -1644,7 +1645,7 @@ public void Vetor2(){
             }
             else if (token != null && token.getLexema().equals("[")) {
                 Vetor3();
-                //Var4();
+
             }
             else if (token != null) {
                 addErroSintatico(new ErroSintatico("Var2", token.getLexema() +" não esperado", token.getnLinha() ));
