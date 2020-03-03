@@ -1236,6 +1236,7 @@ public void Procedimento(){
         }
     }
 
+    //<Escopo> ::= 'local' '.' | 'global' '.'
     public void Escopo(){
         if (token != null && (token.getLexema().equals("local") || token.getLexema().equals("global"))){
             nextToken();
