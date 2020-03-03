@@ -364,10 +364,11 @@ public class AnalisadorSintatico {
     }
 
 
-
+    //<IdentificadorSemFuncao> ::= <Escopo> Id <Identificador2>
+    //    | Id <Identificador2>
     public void IdentificadorSemFuncao(){
 
-        if(token != null && pertence(0, "Escopo")){
+        if(token != null && pertence(0, "Escopo") || conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
             Escopo();
             if (token != null && token.getTipo() == 3){
                 nextToken();
