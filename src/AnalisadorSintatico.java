@@ -236,6 +236,9 @@ public class AnalisadorSintatico {
 
     }
 
+    //<E2> ::= '+' <ExpressaoAritmetica>
+    //| '-' <ExpressaoAritmetica>
+    //|  <>
     public void E2(){
         if (token != null) {
             if (token.getLexema().equals("+") || token.getLexema().equals("-")) {
@@ -243,7 +246,7 @@ public class AnalisadorSintatico {
                 ExpressaoAritmetica();
             }
         }
-        else addErroSintatico(new ErroSintatico("T2","EOF inesperado", linhaErroEOF));
+        else addErroSintatico(new ErroSintatico("E2","EOF inesperado", linhaErroEOF));
     }
 
     //<IdentificadorAritmetico> ::= <Escopo> Id <Identificador2> <ExpressaoAritmetica2>
