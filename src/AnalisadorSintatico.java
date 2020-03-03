@@ -321,11 +321,11 @@ public class AnalisadorSintatico {
     // <ExpressaoAritmetica> ::= <T> <E2> | <IdentificadorAritmetico> | '++' <IdentificadorSemFuncao> <T2> <E2> | '--' <IdentificadorSemFuncao> <T2> <E2>
     public void ExpressaoAritmetica (){
 
-        if (token != null && pertence(0, "T")){
+        if (token != null && pertence(0, "T") || conjunto_P_S.primeiro("T").contains(token.getLexema())){
             T();
             E2();
         }
-        else if (token != null && pertence(0, "IdentificadorAritmetico")){
+        else if (token != null && pertence(0, "IdentificadorAritmetico") || conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
             IdentificadorAritmetico();
         }
         else if (token != null && token.getTipo() == 9){
