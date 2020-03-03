@@ -1223,7 +1223,8 @@ public void Vetor2(){
 
 
     }
-
+    //<Identificador4> ::= '.' Id <VetorDeclaracao>
+    //    | <>
     public void Identificador4() {
 
         if (token != null && token.getLexema().equals(".")) {
@@ -1243,16 +1244,6 @@ public void Vetor2(){
 
             }
         }
-//        else if (token != null && !conjunto_P_S.seguinte("Identificador4").contains(token.getLexema()) && !pertence(1,"Identificador4")){
-//            addErroSintatico(new ErroSintatico("Identificador4", token.getLexema()+"  não esperado", token.getnLinha()));
-//            sincronizar("Vetor", "Identificador2", null);
-//            if (token != null) {
-//                if (conjunto_P_S.primeiro("Vetor").contains(token.getLexema())) {
-//                    Vetor();
-//                }
-//            }
-//
-//        }
 
         if (token == null){
             addErroSintatico(new ErroSintatico("Identificador4","EOF inesperado", linhaErroEOF));
@@ -1290,7 +1281,7 @@ public void Vetor2(){
         }
 
     }
-  //<Identificador2> ::= '.' Id <VetorDeclaracao> | <VetorDeclaracao> | <>
+  //<Identificador2> ::= '.' Id <Vetor> | <Vetor> | <>
     public void Identificador2(){
 
         if (token != null && token.getLexema().equals(".")){
