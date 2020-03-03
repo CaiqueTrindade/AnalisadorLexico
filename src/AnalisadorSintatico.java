@@ -55,7 +55,7 @@ public class AnalisadorSintatico {
      * @param erro sintático.
      */
     private void addErroSintatico(ErroSintatico erro){
-        System.out.println(erro.toString());
+
         String erroMensagem [] = erro.getMensagem().split(" ");
         if (erroMensagem[0].equals("EOF")){
              if (FLAGERRO != 1){
@@ -176,6 +176,8 @@ public class AnalisadorSintatico {
 
     }
 
+    //<F> ::= '(' <ExpressaoAritmetica> ')'
+    //| Numero
     public void F(){
 
         if (token != null && token.getLexema().equals("(")){
@@ -199,6 +201,7 @@ public class AnalisadorSintatico {
 
     }
 
+    //<T> ::= <F> <T2>
     public void T(){
 
         if (token != null && conjunto_P_S.primeiro("F").contains(token.getLexema()) || pertence(0,"F")){
@@ -252,7 +255,7 @@ public class AnalisadorSintatico {
     //<IdentificadorAritmetico> ::= <Escopo> Id <Identificador2> <ExpressaoAritmetica2>
     //    | Id <IdentificadorAritmetico3>
     public void IdentificadorAritmetico(){
-        if (token != null && pertence(0, "Escopo")){
+        if (token != null && pertence(0, "Escopo") || conjunto_P_S.primeiro("IdentificadorAritmetico").contains(token.getLexema())){
             Escopo();
             if (token != null && token.getTipo() == 3){
                 nextToken();
