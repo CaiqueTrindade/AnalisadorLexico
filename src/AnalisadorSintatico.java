@@ -1778,25 +1778,26 @@ public void Vetor2(){
                 nextToken();
                 TipoConst();
             }
-        }
-		else if (token != null) {
-            addErroSintatico(new ErroSintatico("Const", "Esperava { mas encontrou "+token.getLexema(),token.getnLinha()));
-            sincronizar("TipoConst#IdConst#Const2#Const3", "Const", null);
-            if (token != null) {
-                if (pertence(0, "TipoConst"))
-                    TipoConst();
-                else if (pertence(0, "IdConst"))
-                    IdConst();
-                else if (pertence(0, "Const2"))
-                    Const2();
-                else if (pertence(0, "Const3"))
-                    Const3();
-                else return;
+            else if (token != null) {
+                addErroSintatico(new ErroSintatico("Const", "Esperava { mas encontrou "+token.getLexema(),token.getnLinha()));
+                sincronizar("TipoConst#IdConst#Const2#Const3", "Const", null);
+                if (token != null) {
+                    if (pertence(0, "TipoConst"))
+                        TipoConst();
+                    else if (pertence(0, "IdConst"))
+                        IdConst();
+                    else if (pertence(0, "Const2"))
+                        Const2();
+                    else if (pertence(0, "Const3"))
+                        Const3();
+                    else return;
+                }
+                else addErroSintatico(new ErroSintatico("Const", "EOF inesperado", linhaErroEOF));
             }
             else addErroSintatico(new ErroSintatico("Const", "EOF inesperado", linhaErroEOF));
         }
-        else addErroSintatico(new ErroSintatico("Const", "EOF inesperado", linhaErroEOF));
     }
+
 
     // <TipoConst> ::= <Tipo> <IdConst>
     private void TipoConst() {
