@@ -808,9 +808,9 @@ public class AnalisadorSintatico {
 
                 if(!buscar(token.getLexema())){
                    inserir(token.getLexema());
-
                 }
                 else{
+                    addErroSemantico(new ErroSemantico("Identificador já foi declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
 
                 }
 
