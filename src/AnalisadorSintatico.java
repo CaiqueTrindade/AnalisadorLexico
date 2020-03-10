@@ -770,10 +770,13 @@ public class AnalisadorSintatico {
             String tipo = Tipo();
             if(token != null && token.getTipo() == 3){
                 if(tabela.containsVar(token.getLexema())){
-                    //erro;
+                    addErroSemantico(new ErroSemantico("Identificador já foi declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
+
                 }else{
                     tabela.setInfo(token.getLexema(), "tipo_identificador", "funcao");
-                    tabela.setInfo(token.getLexema(), "tipo_retorno", tipo);
+                    if(!tipo.equals("erro")) {
+                        tabela.setInfo(token.getLexema(), "tipo_retorno", tipo);
+                    }
                 }
                 nextToken();
                 if(token != null && token.getLexema().equals("(")){
@@ -860,7 +863,7 @@ public class AnalisadorSintatico {
     }
     //<Parametro> ::=  <Tipo> Id <Para2> <Para1>
     public void Parametro(){
-        Tipo();
+        String tipo = Tipo();
         if(token != null && token.getTipo() == 3){
             nextToken();
             Para2();
