@@ -15,6 +15,7 @@ public class AnalisadorSintatico {
     private Conjunto conjunto_P_S; // Conjuntos primeiro e seguinte de todos os não-terminais
     private static  int linhaErroEOF; // Linha onde foi encontrado EOF
     private TabelaSimbolos tabela = new TabelaSimbolos();
+    private int ordem = 1;
 
     /**
      * Construtor da classe do AnalisadorSintatico.
@@ -765,6 +766,7 @@ public class AnalisadorSintatico {
 
     // <Funcao> ::= 'function' <Tipo> Id '(' <Parametro>
     public void Funcao(){
+        ordem = 1;
         if(token != null && token.getLexema().equals("function")){
             nextToken();
             String tipo = Tipo();
@@ -820,6 +822,7 @@ public class AnalisadorSintatico {
 
     //<Procedimento> ::= 'procedure' Id '(' <Parametro>
     public void Procedimento(){
+        ordem = 1;
         if(token != null && token.getLexema().equals("procedure")){
             nextToken();
             if(token != null && token.getTipo() == 3){
@@ -865,6 +868,9 @@ public class AnalisadorSintatico {
     public void Parametro(){
         String tipo = Tipo();
         if(token != null && token.getTipo() == 3){
+            tabela.setFuncProc(token.getLexema(), "tipo_identificador", tipo);
+            tabela.setFuncProc(token.getLexema(), "ordem", Integer.toString(ordem));
+            ordem = ordem + 1;
             nextToken();
             Para2();
             Para1();
