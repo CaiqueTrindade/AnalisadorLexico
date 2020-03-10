@@ -769,7 +769,7 @@ public class AnalisadorSintatico {
             nextToken();
             String tipo = Tipo();
             if(token != null && token.getTipo() == 3){
-                if(tabela.contaisVar(token.getLexema())){
+                if(tabela.containsVar(token.getLexema())){
                     //erro;
                 }else{
                     tabela.setInfo(token.getLexema(), "tipo_identificador", "funcao");

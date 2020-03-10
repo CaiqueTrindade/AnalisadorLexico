@@ -73,7 +73,7 @@ public class TabelaSimbolos {
         local.put(info, valor);
     }
 
-    public boolean contaisVar(String var){
+    public boolean containsVar(String var){
         return tabela.containsKey(var);
     }
 
