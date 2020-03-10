@@ -9,6 +9,7 @@ public class AnalisadorSintatico {
 
     private List<Token> tokens; // Lista de tokens
     private List<ErroSintatico> errosSintaticos; // Lista de erros sintáticos
+    private  List<ErroSemantico> errosSemanticos; // Lista de erros semânticos
     private Token token; // Token atual
     private static int FLAGERRO = 0; // Flag para identificar se foi encontrado EOF no meio da análise
     private Conjunto conjunto_P_S; // Conjuntos primeiro e seguinte de todos os não-terminais
@@ -23,6 +24,7 @@ public class AnalisadorSintatico {
 
         this.tokens = tokens;
         this.errosSintaticos = new ArrayList<>();
+        this.errosSemanticos = new ArrayList<>();
         this.conjunto_P_S = new Conjunto("conjunto");
     }
 
@@ -68,6 +70,13 @@ public class AnalisadorSintatico {
             this.errosSintaticos.add(erro);
 
 
+    }
+    /**
+     * Acrescenta um erro semântico na lista de erros semânticos.
+     * @param erro semântico.
+     */
+    private void addErroSemantico(ErroSemantico erro){
+        errosSemanticos.add(erro);
     }
 
     /**
@@ -174,12 +183,12 @@ public class AnalisadorSintatico {
 
 
 
-    public boolean buscar(){
+    public boolean buscar(String s){
 
         return true;
     }
 
-    public void inserir(){
+    public void inserir(String s){
 
     }
 
@@ -796,11 +805,30 @@ public class AnalisadorSintatico {
         }
     }
 
+//<Procedimento> ::= 'procedure' Id '(' <Parametro>
+//
+//<Parametro> ::=  <Tipo> Id <Para2> <Para1>
+//<Para1> ::= ',' <Parametro> | ')' <F2>
+//<Para2>  ::= '[' ']'<Para3> |<>
+//<Para3>  ::= '[' ']' | <>
+//<F2> ::= '{' <Corpo>
+
+
+
     //<Procedimento> ::= 'procedure' Id '(' <Parametro>
     public void Procedimento(){
         if(token != null && token.getLexema().equals("procedure")){
             nextToken();
             if(token != null && token.getTipo() == 3){
+
+                if(!buscar(token.getLexema())){
+                   inserir(token.getLexema());
+                }
+                else{
+                    addErroSemantico(new ErroSemantico("Identificador já foi declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
+
+                }
+
                 nextToken();
                 if(token != null && token.getLexema().equals("(")){
                     nextToken();
