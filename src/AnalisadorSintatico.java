@@ -640,7 +640,6 @@ public class AnalisadorSintatico {
         } else if (token != null){
             addErroSintatico(new ErroSintatico("Tipo", token.getLexema() +" não esperado", token.getnLinha()));
             sincronizar(null, "Tipo", null);
-
         }
         if (token == null){
             addErroSintatico(new ErroSintatico("Tipo","EOF inesperado", linhaErroEOF));
@@ -1689,9 +1688,9 @@ public class AnalisadorSintatico {
             }
             else if (token != null && token.getLexema().equals("=")){
                 nextToken();
-                String aux = Valor();
-                if (!tipo.equals(aux)) {
-                    // erro semântico, tipos incompatíveis
+                String valor_tipo = Valor();
+                if (tipo != null && valor_tipo != null && !tipo.equals(valor_tipo)) {
+                    addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis de atribuição (esperava um valor do tipo " + tipo + " mas encontrou "+ valor_tipo+").", token.getnLinha()));
                 }
                 Var4(tipo);
             }
@@ -1764,8 +1763,6 @@ public class AnalisadorSintatico {
         if (token == null){
             addErroSintatico(new ErroSintatico("IdVar", "EOF inesperado", linhaErroEOF));
         }
-
-
     }
 
     //<TipoVar> ::= <Tipo> <IdVar>
@@ -1858,9 +1855,9 @@ public class AnalisadorSintatico {
         if (token != null && token.getTipo() == 3) {
             // Verificar se o identificador não existe
             nextToken();
-            String tipo_valor = Valor();
-            if (!tipo_valor.equals(tipo)) {
-                // erro semântico, incompatibilidade de tipos
+            String valor_tipo = Valor();
+            if (tipo != null && valor_tipo != null && !tipo.equals(valor_tipo)) {
+                addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis de atribuição (esperava um valor do tipo " + tipo + " mas encontrou "+ valor_tipo+").", token.getnLinha()));
             }
             Const2(tipo);
         }
