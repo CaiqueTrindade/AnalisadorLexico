@@ -1489,15 +1489,15 @@ public class AnalisadorSintatico {
         ContListaParametros();
     }
 
-    //<Matriz> ::= '[' <ValorVetor> ']' <Var4> | <Var4>
-    public void Matriz(){
+//<Matriz> ::= '[' <ValorVetor> ']' <Var4> | <Var4>
+    public void Matriz(String tipo){
 
         if (token != null && token.getLexema().equals("[")){
             nextToken();
             ValorVetor();
             if (token != null && token.getLexema().equals("]")){
                 nextToken();
-                Var4();
+                Var4(tipo);
             }
             else if (token != null){
                 addErroSintatico(new ErroSintatico("Matriz", "Esperava ] mas encontrou "+token.getLexema(),token.getnLinha()));
@@ -1508,7 +1508,7 @@ public class AnalisadorSintatico {
                         ValorVetor();
                     }
                     else if (conjunto_P_S.seguinte("Var4").contains(token.getLexema())){
-                        Var4();
+                        Var4(tipo);
                     }
                     else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
                         GeraFuncaoeProcedure();
@@ -1521,7 +1521,7 @@ public class AnalisadorSintatico {
 
         }
         else if (token != null && conjunto_P_S.primeiro("Var4").contains(token.getLexema())) {
-            Var4();
+            Var4(tipo);
         }
         else if (token != null) {
             addErroSintatico(new ErroSintatico("Matriz", token.getLexema()+ " não esperado", token.getnLinha()));
@@ -1530,7 +1530,7 @@ public class AnalisadorSintatico {
 
             if (token != null){
                 if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
-                    Var2();
+                    Var2(tipo);
                 }
                 else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
                     GeraFuncaoeProcedure();
@@ -1550,14 +1550,14 @@ public class AnalisadorSintatico {
 
 
     //<Vetor3> ::= '[' <ValorVetor> ']' <Matriz>
-    public void Vetor3(){
+    public void Vetor3(String tipo){
 
         if (token != null && token.getLexema().equals("[")){
             nextToken();
             ValorVetor();
             if (token != null && token.getLexema().equals("]")){
                 nextToken();
-                Matriz();
+                Matriz(tipo);
             }
             else if (token != null){
                 addErroSintatico(new ErroSintatico("Vetor3", "Esperava ] mas encontrou "+token.getLexema(),token.getnLinha()));
@@ -1565,7 +1565,7 @@ public class AnalisadorSintatico {
 
                 if (token != null){
                     if (conjunto_P_S.primeiro("Matriz").contains(token.getLexema())){
-                        Matriz();
+                        Matriz(tipo);
                     }
                     else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
                         GeraFuncaoeProcedure();
@@ -1586,7 +1586,7 @@ public class AnalisadorSintatico {
                     ValorVetor();
                 }
                 if (conjunto_P_S.primeiro("Matriz").contains(token.getLexema())){
-                    Matriz();
+                    Matriz(tipo);
                 }
                 else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
                     GeraFuncaoeProcedure();
@@ -1606,11 +1606,11 @@ public class AnalisadorSintatico {
 
 
     //<Var4> ::= ',' <IdVar> | ';' <Var3>
-    public void Var4(){
+    public void Var4(String tipo){
 
         if (token != null && token.getLexema().equals(",")){
             nextToken();
-            IdVar();
+            IdVar(tipo);
 
         }
         else if (token != null && token.getLexema().equals(";")){
@@ -1623,13 +1623,13 @@ public class AnalisadorSintatico {
             sincronizar("IdVar#Var3#Var2#GeraFuncaoeProcedure#Start","Var4", null);
             if (token != null){
                 if (conjunto_P_S.primeiro("IdVar").contains(token.getLexema())){
-                    IdVar();
+                    IdVar(tipo);
                 }
                 else if (conjunto_P_S.primeiro("Var3").contains(token.getLexema())){
                     Var3();
                 }
                 else if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
-                    Var2();
+                    Var2(tipo);
                 }
                 else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
                     GeraFuncaoeProcedure();
@@ -1661,7 +1661,7 @@ public class AnalisadorSintatico {
             sincronizar("Var2#GeraFuncaoeProcedure#Start","Var3", null);
             if (token != null){
                 if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
-                    Var2();
+                    Var2(null);
                 }
                 else if (pertence(0, "GeraFuncaoeProcedure")){
                     GeraFuncaoeProcedure();
@@ -1680,12 +1680,12 @@ public class AnalisadorSintatico {
     }
 
     //<Var2> ::= ',' <IdVar> | ';' <Var3> | '=' <Valor> <Var4> | <Vetor3>
-    public void Var2(){
+    public void Var2(String tipo){
 
         if (token != null && conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
             if (token != null && token.getLexema().equals(",")){
                 nextToken();
-                IdVar();
+                IdVar(tipo);
             }
             else if (token != null &&  token.getLexema().equals(";")){
                 nextToken();
@@ -1693,12 +1693,14 @@ public class AnalisadorSintatico {
             }
             else if (token != null && token.getLexema().equals("=")){
                 nextToken();
-                Valor();
-
-                Var4();
+                String aux = Valor();
+                if (!tipo.equals(aux)) {
+                    // erro semântico, tipos incompatíveis
+                }
+                Var4(tipo);
             }
             else if (token != null && token.getLexema().equals("[")) {
-                Vetor3();
+                Vetor3(tipo);
 
             }
             else if (token != null) {
@@ -1706,7 +1708,7 @@ public class AnalisadorSintatico {
                 sincronizar("Var2#GeraFuncaoeProcedure#Start","Var2", null);
                 if (token != null){
                     if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
-                        Var2();
+                        Var2(tipo);
                     }
                     else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
                         GeraFuncaoeProcedure();
@@ -1721,7 +1723,7 @@ public class AnalisadorSintatico {
             sincronizar("Var2#GeraFuncaoeProcedure#Start","Var2", null);
             if (token != null){
                 if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
-                    Var2();
+                    Var2(tipo);
                 }
                 else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
                     GeraFuncaoeProcedure();
@@ -1740,18 +1742,19 @@ public class AnalisadorSintatico {
 
     }
     //<IdVar> ::= Id <Var2>
-    public void IdVar(){
+    public void IdVar(String tipo){
 
         if (token != null && token.getTipo() == 3){
+            // Verifica se o identificador já foi declarado no escopo atual.
             nextToken();
-            Var2();
+            Var2(tipo);
         }
         else if (token != null){
             addErroSintatico(new ErroSintatico("IdVar", "Esperava um identificador mas encontrou "+token.getLexema(),  token.getnLinha()));
             sincronizar("Var2#GeraFuncaoeProcedure#Start","IdVar", null);
             if (token != null){
                 if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
-                    Var2();
+                    Var2(tipo);
                 }
                 else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
                     GeraFuncaoeProcedure();
@@ -1771,8 +1774,8 @@ public class AnalisadorSintatico {
 
     //<TipoVar> ::= <Tipo> <IdVar>
     public void TipoVar(){
-        Tipo();
-        IdVar();
+        String tipo = Tipo();
+        IdVar(tipo);
     }
 
     //<Var> ::= 'var' '{' <TipoVar> | <>
@@ -1805,10 +1808,7 @@ public class AnalisadorSintatico {
         if (token == null){
             addErroSintatico(new ErroSintatico("Var", "EOF inesperado", linhaErroEOF));
         }
-
     }
-
-
 
 
     public void executarAnalise() {
@@ -1825,7 +1825,7 @@ public class AnalisadorSintatico {
             System.out.println("A lista de tokens está vazia!");
     }
 
-    // <Const> ::= 'const' ' { ' <TipoConst> | <>
+        // <Const> ::= 'const' ' { ' <TipoConst> | <>
     private void Const() {
 
         if (token != null && token.getLexema().equals("const")) {
@@ -1840,9 +1840,9 @@ public class AnalisadorSintatico {
                     if (pertence(0, "TipoConst"))
                         TipoConst();
                     else if (pertence(0, "IdConst"))
-                        IdConst();
+                        IdConst(null);
                     else if (pertence(0, "Const2"))
-                        Const2();
+                        Const2(null);
                     else if (pertence(0, "Const3"))
                         Const3();
                     else return;
@@ -1853,16 +1853,20 @@ public class AnalisadorSintatico {
 
     // <TipoConst> ::= <Tipo> <IdConst>
     private void TipoConst() {
-        Tipo();
-        IdConst();
+        String tipo = Tipo();
+        IdConst(tipo);
     }
 
     // <IdConst> ::= Id <Valor> <Const2>
-    private void IdConst() {
+    private void IdConst(String tipo) {
         if (token != null && token.getTipo() == 3) {
+            // Verificar se o identificador não existe
             nextToken();
-            Valor();
-            Const2();
+            String tipo_valor = Valor();
+            if (!tipo_valor.equals(tipo)) {
+                // erro semântico, incompatibilidade de tipos
+            }
+            Const2(tipo);
         }
         else if (token != null) {
             sincronizar("IdConst#Valor#Const2", "IdConst", null);
@@ -1870,11 +1874,11 @@ public class AnalisadorSintatico {
 
             if (token != null) {
                 if (pertence(0, "IdConst"))
-                    IdConst();
+                    IdConst(tipo);
                 else if (pertence(0, "Valor"))
                     Valor();
                 else if (pertence(0, "Const2"))
-                    Const2();
+                    Const2(tipo);
                 else return;
             }
             else addErroSintatico(new ErroSintatico("IdConst", "EOF inesperado", linhaErroEOF));
@@ -1883,10 +1887,10 @@ public class AnalisadorSintatico {
     }
 
     // <Const2> ::= ' , ' <IdConst> | ' ; ' <Const3>
-    private void Const2() {
+    private void Const2(String tipo) {
         if (token != null && token.getLexema().equals(",")) {
             nextToken();
-            IdConst();
+            IdConst(tipo);
         }
         else if (token != null && token.getLexema().equals(";")) {
             nextToken();
@@ -1898,9 +1902,9 @@ public class AnalisadorSintatico {
 
             if (token != null) {
                 if (pertence(0, "Const2"))
-                    Const2();
+                    Const2(tipo);
                 else if (pertence(0, "IdConst"))
-                    IdConst();
+                    IdConst(tipo);
                 else if (pertence(0, "Const3"))
                     Const3();
                 else return;
