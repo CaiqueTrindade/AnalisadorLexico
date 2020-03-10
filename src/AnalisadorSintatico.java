@@ -600,10 +600,15 @@ public class AnalisadorSintatico {
         }
     }
 
-    public void Valor(){
+    private String Valor(){
+        String tipo_valor = null;
         if(token != null && pertence(0, "Valor")){
+            if (token.getLexema().matches("^(true|false)$")) tipo_valor = "boolean";
+            else if (token.getTipo() == 1) tipo_valor = "real";
+            else if (token.getTipo() == 2) tipo_valor = "int";
+            else if (token.getTipo() == 11) tipo_valor = "string";
+            else if (token.getTipo() == 3) // retornar o tipo do identificador ;
             nextToken();
-
         } else if (token != null){
             addErroSintatico(new ErroSintatico("Valor", token.getLexema() +" não esperado", token.getnLinha()));
             sincronizar(null, "Valor", null);
@@ -611,6 +616,7 @@ public class AnalisadorSintatico {
         if (token == null){
             addErroSintatico(new ErroSintatico("Valor","EOF inesperado", linhaErroEOF));
         }
+        return tipo_valor;
     }
     //<ValorVetor> ::= IntPos | Id
     public void ValorVetor(){
@@ -625,22 +631,12 @@ public class AnalisadorSintatico {
         }
     }
 
-    public String Tipo(){
-        if(token != null && token.getLexema().equals("int")){
+    private String Tipo(){
+        String tipo = null;
+        if(token != null && token.getLexema().equals("int") || token.getLexema().equals("boolean") || token.getLexema().equals("string") || token.getLexema().equals("real") || token.getTipo() == 3){
+            tipo = token.getLexema();
             nextToken();
-            return "int";
-        } else if(token != null && token.getLexema().equals("boolean")){
-            nextToken();
-            return "boolean";
-        } else if (token != null && token.getLexema().equals("string")){
-            nextToken();
-            return "string";
-        } else if (token != null && token.getLexema().equals("real")){
-            nextToken();
-            return "real";
-        } else if(token != null && token.getTipo() == 3){
-            nextToken();
-            return "identificador";
+            return tipo;
         } else if (token != null){
             addErroSintatico(new ErroSintatico("Tipo", token.getLexema() +" não esperado", token.getnLinha()));
             sincronizar(null, "Tipo", null);
@@ -650,7 +646,7 @@ public class AnalisadorSintatico {
             addErroSintatico(new ErroSintatico("Tipo","EOF inesperado", linhaErroEOF));
 
         }
-        return "erro";
+        return tipo;
     }
 
     public void Laco() {
