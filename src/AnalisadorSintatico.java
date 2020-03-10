@@ -171,6 +171,23 @@ public class AnalisadorSintatico {
         return false;
     }
 
+
+
+    public boolean buscar(){
+
+        return true;
+    }
+
+    public void inserir(){
+
+    }
+
+
+
+
+
+
+
     public List<ErroSintatico> getListaErrosSintaticos(){
         return this.errosSintaticos;
 
