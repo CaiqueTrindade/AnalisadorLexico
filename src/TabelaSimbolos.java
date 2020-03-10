@@ -48,9 +48,17 @@ public class TabelaSimbolos {
             tabela.get(var).put(info, valor);
 
         }else{
+
             HashMap<String, Object> infos = new HashMap<String, Object>();
             infos.put(info, valor);
             tabela.put(var, infos);
+            if(info.equals("tipo_identificador")){
+                // se o tipo da variavel global eh funcao ou procedimento
+                if(valor.equals("funcao") || valor.equals("procedimento")){
+                    // em valor eh adicionado uma hashmap para valores local
+                    tabela.get(var).put("valor", new HashMap<String, Object>());
+                }
+            }
         }
     }
 
@@ -63,6 +71,10 @@ public class TabelaSimbolos {
     public void setFuncProc(String name, String info, String valor){
         HashMap local = (HashMap) tabela.get(name).get("valor");
         local.put(info, valor);
+    }
+
+    public boolean contaisVar(String var){
+        return tabela.containsKey(var);
     }
 
 }

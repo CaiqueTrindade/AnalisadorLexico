@@ -13,6 +13,7 @@ public class AnalisadorSintatico {
     private static int FLAGERRO = 0; // Flag para identificar se foi encontrado EOF no meio da análise
     private Conjunto conjunto_P_S; // Conjuntos primeiro e seguinte de todos os não-terminais
     private static  int linhaErroEOF; // Linha onde foi encontrado EOF
+    private TabelaSimbolos tabela = new TabelaSimbolos();
 
     /**
      * Construtor da classe do AnalisadorSintatico.
@@ -614,24 +615,32 @@ public class AnalisadorSintatico {
         }
     }
 
-    public void Tipo(){
+    public String Tipo(){
         if(token != null && token.getLexema().equals("int")){
             nextToken();
+            return "int";
         } else if(token != null && token.getLexema().equals("boolean")){
             nextToken();
+            return "boolean";
         } else if (token != null && token.getLexema().equals("string")){
             nextToken();
+            return "string";
         } else if (token != null && token.getLexema().equals("real")){
             nextToken();
+            return "real";
         } else if(token != null && token.getTipo() == 3){
             nextToken();
+            return "identificador";
         } else if (token != null){
             addErroSintatico(new ErroSintatico("Tipo", token.getLexema() +" não esperado", token.getnLinha()));
             sincronizar(null, "Tipo", null);
+
         }
         if (token == null){
             addErroSintatico(new ErroSintatico("Tipo","EOF inesperado", linhaErroEOF));
+
         }
+        return "erro";
     }
 
     public void Laco() {
@@ -749,8 +758,14 @@ public class AnalisadorSintatico {
     public void Funcao(){
         if(token != null && token.getLexema().equals("function")){
             nextToken();
-            Tipo();
+            String tipo = Tipo();
             if(token != null && token.getTipo() == 3){
+                if(tabela.contaisVar(token.getLexema())){
+                    //erro;
+                }else{
+                    tabela.setInfo(token.getLexema(), "tipo_identificador", "funcao");
+                    tabela.setInfo(token.getLexema(), "tipo_retorno", tipo);
+                }
                 nextToken();
                 if(token != null && token.getLexema().equals("(")){
                     nextToken();
