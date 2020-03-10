@@ -71,8 +71,8 @@ public class AnalisadorSintatico {
 
     }
     /**
-     * Acrescenta um erro sintático na lista de erros sintáticos.
-     * @param erro sintático.
+     * Acrescenta um erro semântico na lista de erros semânticos.
+     * @param erro semântico.
      */
     private void addErroSemantico(ErroSemantico erro){
         errosSemanticos.add(erro);
