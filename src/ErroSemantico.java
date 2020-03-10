@@ -1,3 +1,16 @@
+
+//    Padrão de Saída: LINHA MENSAGEM
+//
+//        Significado: Mensagem
+//
+//        Atribuição a constantes: Atribuição Indevida na constante {lexema}
+//        Identificador não declarado: {lexema} não declarado
+//        Identificador já foi declarado: {lexema} já declarado
+//        Tipos incompatíveis: Tipos Incompatíveis: {atribuição || expressão || retorno || ... }
+//        Parâmetros Incompatíveis: Parâmetro Incompatível : {tipo || quantidade}
+
+
+
 public class ErroSemantico {
 
 
