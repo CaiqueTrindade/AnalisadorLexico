@@ -1,80 +1,74 @@
 import java.util.HashMap;
 
-
+/***
+ * Essa classe representa a tabela de simbolos que será utilizada para armazenar os identificadores
+ * do código fonte utilizado na análise semântica
+ */
 public class TabelaSimbolos {
 
-    private HashMap<String, HashMap<String, Object>> tabela;
+    private HashMap<String, Simbolo> tabela;
 
     public TabelaSimbolos(){
-        tabela = new HashMap<String, HashMap<String, Object>>();
+        tabela = new HashMap<String, Simbolo>();
     }
 
     /***
-     * Acessa informacao global
-     * @param var
-     * @param info
+     * Verifica a existência de um identificador na tabela, este caso para variáveis, constantes e Structs
+     * @param identificador a chave de busca
+     * @return true se o objeto estiver presente na tabela ou false caso contrário
+     */
+    public boolean buscarGeneral(String identificador){
+        return tabela.containsKey(identificador);
+    }
+
+    /***
+     * Verifica a existência de um identificador na tabela, este caso para funções e procedimentos
+     * @param simbolo a chave de busca
+     * @return true se o objeto estiver presente na tabela ou false caso contrário
+     */
+    public boolean buscarFunctioneProcedure(Simbolo simbolo){
+
+        return tabela.containsKey(simbolo.getkey());
+    }
+
+    /***
+     * Insere um um entrada na tabela de simbolos, por meio de um mapeamento utilizando o identificador e o simbolo
+     * Este método deve ser utilizado para variáveis, constantes e Structs
+     * @param simbolo objeto a ser inserido na tabela de simbolos
+     */
+    public void inserirGeneral(Simbolo simbolo){
+        this.tabela.put(simbolo.getIdentificador(),simbolo);
+
+    }
+
+    /***
+     * Insere um um entrada na tabela de simbolos, por meio de um mapeamento utilizando o identificador e o simbolo
+     * Este método deve ser utilizado para funções e procedimentos
+     * @param simbolo objeto a ser inserido na tabela de simbolos
+     */
+    public void inserirFunctionProcedure(Simbolo simbolo){
+        this.tabela.put(simbolo.getkey(),simbolo);
+
+    }
+
+    /***
+     * Busca um simbolo na tabela e o retorna para ser comparado de acordo com o desejado. Por exemplo, verificar o tipo.
+     * @param identificador Chave de busca na tabela.
      * @return
      */
-    public String getInfo(String var, String info){
-        return (String)tabela.get(var).get(info);
+    public Simbolo getIdentificadorGeneral(String identificador){
+        return  this.tabela.get(identificador);
     }
 
-    /**
-     * Acessa informacao local, dentro de uma funcao ou procedimento name
-     * @param name
-     * @param info
+    /***
+     * Busca um simbolo na tabela e o retorna para ser comparado de acordo com o desejado. Por exemplo, verificar o tipo.
+     * @param simbolo Chave de busca na tabela.
      * @return
      */
-    public String getFuncProcInfo(String name, String info){
-        HashMap local = (HashMap) tabela.get(name).get("valor");
-        return (String)local.get(info);
+    public Simbolo getIdentificadorFunctionProcedure(Simbolo simbolo){
+        return  this.tabela.get(simbolo.getkey());
     }
 
-    /**
-     * Insere informações globais
-     * @param var
-     * @param info
-     * @param valor
-     */
-    public void setInfo(String var, String info, String valor){
-        if(tabela.containsKey(var)){
-            if(info.equals("tipo_identificador")){
-                // se o tipo da variavel global eh funcao ou procedimento
-                if(valor.equals("funcao") || valor.equals("procedimento")){
-                    // em valor eh adicionado uma hashmap para valores local
-                    tabela.get(var).put("valor", new HashMap<String, Object>());
-                }
-            }
-            tabela.get(var).put(info, valor);
 
-        }else{
-
-            HashMap<String, Object> infos = new HashMap<String, Object>();
-            infos.put(info, valor);
-            tabela.put(var, infos);
-            if(info.equals("tipo_identificador")){
-                // se o tipo da variavel global eh funcao ou procedimento
-                if(valor.equals("funcao") || valor.equals("procedimento")){
-                    // em valor eh adicionado uma hashmap para valores local
-                    tabela.get(var).put("valor", new HashMap<String, Object>());
-                }
-            }
-        }
-    }
-
-    /**
-     * Adiciona informacao local, dentro de uma funcao ou procedimento
-     * @param name
-     * @param info
-     * @param valor
-     */
-    public void setFuncProc(String name, String info, String valor){
-        HashMap local = (HashMap) tabela.get(name).get("valor");
-        local.put(info, valor);
-    }
-
-    public boolean containsVar(String var){
-        return tabela.containsKey(var);
-    }
 
 }

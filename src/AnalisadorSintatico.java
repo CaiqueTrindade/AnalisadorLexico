@@ -14,7 +14,9 @@ public class AnalisadorSintatico {
     private static int FLAGERRO = 0; // Flag para identificar se foi encontrado EOF no meio da análise
     private Conjunto conjunto_P_S; // Conjuntos primeiro e seguinte de todos os não-terminais
     private static  int linhaErroEOF; // Linha onde foi encontrado EOF
-    private TabelaSimbolos tabela = new TabelaSimbolos();
+    private TabelaSimbolos constVar = new TabelaSimbolos(); //Tabela para constantes e variáveis
+    private TabelaSimbolos struct = new TabelaSimbolos(); //Tabela para Structs
+    private  TabelaSimbolos functionProcedure = new TabelaSimbolos(); //Tabela para funçõres e procedimentos
     private int ordem = 1;
 
     /**
