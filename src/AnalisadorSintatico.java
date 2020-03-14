@@ -821,7 +821,7 @@ public class AnalisadorSintatico {
         if(token != null && token.getLexema().equals("procedure")){
             nextToken();
             if(token != null && token.getTipo() == 3){
-
+                String func = token.getLexema();
                 if(!buscar(token.getLexema())){
                    inserir(token.getLexema());
                 }
@@ -833,12 +833,12 @@ public class AnalisadorSintatico {
                 nextToken();
                 if(token != null && token.getLexema().equals("(")){
                     nextToken();
-                    Parametro();
+                    Parametro(func);
                 }else if(token != null){
                     addErroSintatico(new ErroSintatico("Procedimento", token.getLexema() +" não esperado", token.getnLinha()));
                     sincronizar("Parametro", "Procedimento", null);
                     if (token != null && pertence(0, "Parametro")){
-                        Parametro();
+                        Parametro(func);
                     }
                 }
             }else if (token != null){
@@ -860,11 +860,12 @@ public class AnalisadorSintatico {
         }
     }
     //<Parametro> ::=  <Tipo> Id <Para2> <Para1>
-    public void Parametro(){
+    public void Parametro(String name){
         String tipo = Tipo();
         if(token != null && token.getTipo() == 3){
-            tabela.setFuncProc(token.getLexema(), "tipo_identificador", tipo);
-            tabela.setFuncProc(token.getLexema(), "ordem", Integer.toString(ordem));
+            tabela.setFuncProc(name, "identificador", token.getLexema());
+            tabela.setFuncProc(name, "tipo_identificador", tipo);
+            tabela.setFuncProc(name, "ordem", Integer.toString(ordem));
             ordem = ordem + 1;
             nextToken();
             Para2();
