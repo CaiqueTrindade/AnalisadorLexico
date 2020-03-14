@@ -13,11 +13,11 @@ public class TabelaSimbolos {
     }
 
     /***
-     * Verifica a existência de um identificador na tabela, este caso para variáveis e constantes
+     * Verifica a existência de um identificador na tabela, este caso para variáveis, constantes e Structs
      * @param identificador a chave de busca
      * @return true se o objeto estiver presente na tabela ou false caso contrário
      */
-    public boolean buscar(String identificador){
+    public boolean buscarGeneral(String identificador){
         return tabela.containsKey(identificador);
     }
 
@@ -28,16 +28,26 @@ public class TabelaSimbolos {
      */
     public boolean buscarFunctioneProcedure(Simbolo simbolo){
 
-
-        return tabela.containsKey(simbolo.getIdentificador());
+        return tabela.containsKey(simbolo.getkey());
     }
 
     /***
      * Insere um um entrada na tabela de simbolos, por meio de um mapeamento utilizando o identificador e o simbolo
+     * Este método deve ser utilizado para variáveis, constantes e Structs
      * @param simbolo objeto a ser inserido na tabela de simbolos
      */
-    public void inserir(Simbolo simbolo){
+    public void inserirGeneral(Simbolo simbolo){
         this.tabela.put(simbolo.getIdentificador(),simbolo);
+
+    }
+
+    /***
+     * Insere um um entrada na tabela de simbolos, por meio de um mapeamento utilizando o identificador e o simbolo
+     * Este método deve ser utilizado para funções e procedimentos
+     * @param simbolo objeto a ser inserido na tabela de simbolos
+     */
+    public void inserirFunctionProcedure(Simbolo simbolo){
+        this.tabela.put(simbolo.getkey(),simbolo);
 
     }
 
@@ -46,9 +56,19 @@ public class TabelaSimbolos {
      * @param identificador Chave de busca na tabela.
      * @return
      */
-    public Simbolo getIdentificador(String identificador){
+    public Simbolo getIdentificadorGeneral(String identificador){
         return  this.tabela.get(identificador);
     }
+
+    /***
+     * Busca um simbolo na tabela e o retorna para ser comparado de acordo com o desejado. Por exemplo, verificar o tipo.
+     * @param simbolo Chave de busca na tabela.
+     * @return
+     */
+    public Simbolo getIdentificadorFunctionProcedure(Simbolo simbolo){
+        return  this.tabela.get(simbolo.getkey());
+    }
+
 
 
 }

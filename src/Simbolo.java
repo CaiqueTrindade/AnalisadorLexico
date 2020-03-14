@@ -15,7 +15,7 @@ public class Simbolo {
     private String parametros;                      // Lista de parâmetros (Ex: "int:a,real:b,string:c")
     private String tipo_retorno;                    // Tipo do retorno da função, void se for um procedimento
     private Map<String, String> var_local;          // Hash Map com as variáveis ou campos pertencentes a função/procedimento/estrutura
-
+    private String parametrosCon;
     // Constantes referentes ao tipo do “símbolo”
     public static final int START = 0, FUNCTION = 1, PROCEDURE = 2, STRUCT = 3;
 
@@ -36,6 +36,7 @@ public class Simbolo {
         this.tipo = tipo;
         this.tipo_retorno = tipo_retorno;
         this.var_local = new HashMap<String, String>();
+        this.parametrosCon = "";
     }
 
     /**
@@ -115,6 +116,7 @@ public class Simbolo {
         if (!var_local.containsKey(id_parametro)) {
             var_local.put(id_parametro, "tipo:" + tipo_parametro);
             parametros = (parametros == null) ? "" + tipo_parametro + ":" + id_parametro : parametros + ";" + tipo_parametro + ":" + id_parametro;
+            parametrosCon+= tipo_parametro;
             return true;
         }
         return false;
@@ -127,6 +129,10 @@ public class Simbolo {
      */
     public String getParametros() {
         return parametros;
+    }
+
+    public String getkey (){
+        return this.identificador+"#"+parametrosCon;
     }
 
 }
