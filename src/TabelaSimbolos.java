@@ -13,12 +13,23 @@ public class TabelaSimbolos {
     }
 
     /***
-     * Verifica a existência de um identificador na tabela
+     * Verifica a existência de um identificador na tabela, este caso para variáveis e constantes
      * @param identificador a chave de busca
      * @return true se o objeto estiver presente na tabela ou false caso contrário
      */
     public boolean buscar(String identificador){
         return tabela.containsKey(identificador);
+    }
+
+    /***
+     * Verifica a existência de um identificador na tabela, este caso para funções e procedimentos
+     * @param simbolo a chave de busca
+     * @return true se o objeto estiver presente na tabela ou false caso contrário
+     */
+    public boolean buscarFunctioneProcedure(Simbolo simbolo){
+
+
+        return tabela.containsKey(simbolo.getIdentificador());
     }
 
     /***
