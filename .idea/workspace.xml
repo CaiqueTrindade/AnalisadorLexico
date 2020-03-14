@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c3c607b7-3fd0-47b6-a64d-071a03a184e2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/AnalisadorSintatico.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/AnalisadorSintatico.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/TabelaSimbolos.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Analisador Léxico/production/Analisador Léxico/TabelaSimbolos.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/saida3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida3.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/saida_lexica3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/saida_lexica3.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TabelaSimbolos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TabelaSimbolos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AnalisadorSintatico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnalisadorSintatico.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
