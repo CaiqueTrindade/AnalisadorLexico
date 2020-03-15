@@ -18,7 +18,7 @@ public class Simbolo {
                             FUNCTION        = 1,    // Funções
                             PROCEDURE       = 2,    // Procedimentos
                             STRUCT          = 3,    // Definição de estruturas
-                            CONSTANTE       = 4,    // Constantes
+                            CONSTANTE       = 4,    // Constantes unitárias (quando não são vetores, matrizes e estruturas)
                             CONST_VETOR     = 6,    // Vetores constantes
                             CONST_MATRIZ    = 7,    // Matrizes constantes
                             CONST_STRUCT    = 8,    // Estruturas declaradas como constantes
