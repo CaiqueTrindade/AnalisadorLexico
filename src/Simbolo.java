@@ -50,13 +50,13 @@ public class Simbolo {
      * Construtor rápido para variáveis e constantes.
      *
      * @param identificador identificador (nome) do símbolo
-     * @param categoria 4 se for constante ou 9 se for variável
+     * @param categoria categoria da variável/constante
      * @param tipo tipo (primitivo ou definido) da variável/constante
      */
     public Simbolo(String identificador, int categoria, String tipo) {
         this.identificador = identificador;
         this.categoria = categoria;
-        if (categoria == 4 || categoria == 9) this.tipo = tipo;
+        if (categoria > 3) this.tipo = tipo;
     }
 
     /**
