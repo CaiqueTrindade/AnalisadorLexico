@@ -31,7 +31,7 @@ public class Simbolo {
     private String tipo;                            // Tipo (primitivo ou definido por um typedef) de constante ou variável
 
     private String tipo_retorno;                    // Tipo de retorno (primitivo ou definido) de função (void para procedimentos e null para demais casos)
-    private String parametros;                      // Lista de parâmetros de função ou procedimento (Ex: "int#real#string)
+    private String parametros;                      // Lista de parâmetros de função ou procedimento (Ex: "int#real#string")
 
     private Map<String,Simbolo> simbolos_local;     // Hash Map que armazenará símbolos pertencentes a funções e procedimentos (variáveis) ou a estruturas (campos)
 
