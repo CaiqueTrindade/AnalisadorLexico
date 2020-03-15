@@ -62,9 +62,6 @@ public class Simbolo {
     /**
      * Construtor rápido para funções e procedimentos.
      *
-     * Exemplo de criação de um símbolo função: new Simbolo("funcao_a", 1, "int", "int:para_1;real:para_2")
-     * Exemplo de criação de um símbolo procedimento: new Simbolo("procedimento_b", 2, "void", null)
-     *
      * @param identificador identificador (nome) do símbolo
      * @param categoria 1 se for função ou 2 se for procedimento
      * @param tipo_retorno tipo do retorno da função/procedimento (primitivo ou definido)
