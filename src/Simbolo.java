@@ -1,138 +1,144 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Classe que representa um “símbolo” (estruturas, funções, procedimentos) da tabela de símbolos de uma análise semântica.
- * Serve para armazenar informações como: variáveis pertencentes a um escopo de uma função ou procedimento, os seus parâmetros,
- * os campos de uma estrutura, bem como os seus respectivos tipos.
+ * Classe que representa um “símbolo” (elementos da linguagem que são nomeadas por identificadores) na análise semântica.
  *
  * @author Caique Trindade, Felipe Damasceno e Solenir Figuerêdo
  */
 public class Simbolo {
 
     private String identificador;                   // Identificador da função/procedimento/estrutura
-    private int tipo;                               // Tipo (START = 0, FUNCTION = 1, PROCEDURE = 2, STRUCT = 3)
-    private String parametros;                      // Lista de parâmetros (Ex: "int:a,real:b,string:c")
-    private String tipo_retorno;                    // Tipo do retorno da função, void se for um procedimento
-    private Map<String, String> var_local;          // Hash Map com as variáveis ou campos pertencentes a função/procedimento/estrutura
-    private String parametrosCon;
-    // Constantes referentes ao tipo do “símbolo”
-    public static final int START = 0, FUNCTION = 1, PROCEDURE = 2, STRUCT = 3;
+
+    private int categoria;                          // Categoria do símbolo (conferir as constantes abaixo)
+
+    public static final int START           = 0,    // Procedimento start
+                            FUNCTION        = 1,    // Funções
+                            PROCEDURE       = 2,    // Procedimentos
+                            STRUCT          = 3,    // Definição de estruturas
+                            CONSTANTE       = 4,    // Constantes
+                            CONST_VETOR     = 6,    // Vetores constantes
+                            CONST_MATRIZ    = 7,    // Matrizes constantes
+                            CONST_STRUCT    = 8,    // Estruturas declaradas como constantes
+                            VARIAVEL        = 9,    // Variáveis unitárias (quando não são vetores, matrizes e estruturas)
+                            VAR_VETOR       = 10,   // Vetores
+                            VAR_MATRIZ      = 11,   // Matrizes
+                            VAR_STRUCT      = 12;   // Estruturas declaradas como variáveis
+
+
+    private String tipo;                            // Tipo (primitivo ou definido por um typedef) de constante ou variável
+
+    private String tipo_retorno;                    // Tipo de retorno (primitivo ou definido) de função (void para procedimentos e null para demais casos)
+    private String parametros;                      // Lista de parâmetros de função ou procedimento (Ex: "int#real#string)
+
+    private Map<String,Simbolo> simbolos_local;     // Hash Map que armazenará símbolos pertencentes a funções e procedimentos (variáveis) ou a estruturas (campos)
 
     /**
-     * Construtor da classe Simbolo
-     * @param identificador identificador (lexema) do “símbolo”
-     * @param tipo tipo do “símbolo” (START = 0, FUNCTION = 1, PROCEDURE = 2, STRUCT = 3)
+     * Construtor simples da classe Simbolo.
+     *
+     * @param identificador identificador (nome) do símbolo
+     * @param categoria categoria do símbolo, conforme definido pelas constantes da classe
      */
-    public Simbolo(String identificador, int tipo) {
+    public Simbolo(String identificador, int categoria) {
         this.identificador = identificador;
-        this.tipo = tipo;
-        this.tipo_retorno = (tipo == PROCEDURE)?"void":null;
-        this.var_local = new HashMap<String, String>();
+        this.categoria = categoria;
     }
 
-    public Simbolo(String identificador, int tipo, String tipo_retorno) {
+    /**
+     * Construtor rápido para variáveis e constantes.
+     *
+     * @param identificador identificador (nome) do símbolo
+     * @param categoria 4 se for constante ou 9 se for variável
+     * @param tipo tipo (primitivo ou definido) da variável/constante
+     */
+    public Simbolo(String identificador, int categoria, String tipo) {
         this.identificador = identificador;
-        this.tipo = tipo;
-        this.tipo_retorno = tipo_retorno;
-        this.var_local = new HashMap<String, String>();
-        this.parametrosCon = "";
+        this.categoria = categoria;
+        if (categoria == 4 || categoria == 9) this.tipo = tipo;
     }
 
     /**
-     * Atribui um tipo de retorno para símbolos que sejam funções ou procedimentos. Nesse último caso o retorno deve ser
-     * void.
+     * Construtor rápido para funções e procedimentos.
      *
-     * @param tipo_retorno tipo do retorno (primitivo ou definido por um typedef), void para procedimentos.
+     * Exemplo de criação de um símbolo função: new Simbolo("funcao_a", 1, "int", "int:para_1;real:para_2")
+     * Exemplo de criação de um símbolo procedimento: new Simbolo("procedimento_b", 2, "void", null)
+     *
+     * @param identificador identificador (nome) do símbolo
+     * @param categoria 1 se for função ou 2 se for procedimento
+     * @param tipo_retorno tipo do retorno da função/procedimento (primitivo ou definido)
+     * @param parametros ArrayList de símbolos dos parâmetros da função/procedimento
      */
-    public void setTipo_retorno(String tipo_retorno) {
-        this.tipo_retorno = tipo_retorno;
+    public Simbolo(String identificador, int categoria, String tipo_retorno, ArrayList<Simbolo> parametros) {
+        this.identificador = identificador;
+        this.categoria = categoria;
+        if (categoria == 1 || categoria == 2) {
+            this.tipo_retorno = (categoria == 1)?tipo_retorno:"void";
+            if (parametros != null) {
+                Iterator it = parametros.iterator();
+                while (it.hasNext()) addParametro((Simbolo) it.next());
+            }
+        }
     }
 
-    /**
-     * Retorna o tipo do retorno da função (void para procedimentos).
-     *
-     * @return tipo do retorno (void para procedimentos)
-     */
-    public String getTipo_retorno() {
-        return tipo_retorno;
-    }
+    public String getIdentificador() { return identificador; }
+
+    public int getCategoria() { return categoria; }
+
+    public void setTipo(String tipo) { if (categoria > 3)this.tipo = tipo; }
+
+    public String getTipo() { return tipo; }
+
+    public void setTipo_retorno(String tipo_retorno) { if (categoria == 1 || categoria == 2) this.tipo_retorno = tipo_retorno; }
+
+    public String getTipo_retorno() { return tipo_retorno; }
+
+    public void setParametros(String parametros) { if (categoria == 1 || categoria == 2) this.parametros = parametros; }
+
+    public String getParametros() { return parametros; }
 
     /**
-     * Retorna o tipo do “símbolo”.
+     * Adiciona um símbolo (variável ou campo) pertencente a função/procedimento/estrutura.
      *
-     * @return (START = 0, FUNCTION = 1, PROCEDURE = 2, STRUCT = 3)
-     */
-    public int getTipo() {
-        return tipo;
-    }
-
-    /**
-     * Retorna o identificador (nome) do “símbolo”.
-     *
-     * @return o identificador do “símbolo”
-     */
-    public String getIdentificador() {
-        return identificador;
-    }
-
-    /**
-     * Método para adicionar uma variável ou campo pertencente a função/procedimento/estrutura.
-     *
-     * Exemplo de chamada para inserção de uma variável do tipo int: addVariavel("nome_da_variavel","tipo:int;categoria:variavel")
-     * Exemplo de chamada para inserção de uma variável que é um vetor de inteiros: addVariavel("nome_da_variavel","tipo:int;categoria:vetor")
-     * Exemplo de chamada para inserção de uma variável que é uma matriz de inteiros: addVariavel("nome_da_variavel","tipo:int;categoria:matriz")
-     *
-     * @param id_variavel identificador (nome) da variável ou campo
-     * @param atributos_variavel atributos pertinentes à variável (tipo, categoria, entre outros), devem seguir o exemplo descrito na documentação
+     * @param simbolo Simbolo da variável/constante/campo
      * @return true se inserido com sucesso, false se já houver alguma variável/campo com mesmo nome (identificador)
      */
-    public boolean addVariavel(String id_variavel, String atributos_variavel) {
-        if (!var_local.containsKey(id_variavel)) {
-            var_local.put(id_variavel, atributos_variavel);
-            return true;
+    public boolean addSimbolo(Simbolo simbolo) {
+        if (categoria < 4) {
+            if (simbolos_local == null) simbolos_local = new HashMap<String,Simbolo>();
+
+            if (!simbolos_local.containsKey(simbolo.getIdentificador())) {
+                simbolos_local.put(simbolo.getIdentificador(), simbolo);
+                return true;
+            }
         }
         return false;
     }
 
     /**
-     * Retorna uma string com os atributos de uma variável ou campo da função/procedimento/estrutura.
+     * Retorna uma string com os atributos de uma variável/campo da função/procedimento/estrutura.
      *
      * @param identificador identificador (nome) do campo ou variável
-     * @return string com os atributos dessa variável ou campo, ou null caso não tenha sido declarada (inserida)
+     * @return Simbolo referente ao identificador, null caso não exista
      */
-    public String getVariavel(String identificador) {
-        return var_local.get(identificador);
+    public Simbolo getSimbolo(String identificador) {
+        return (simbolos_local != null)?simbolos_local.get(identificador):null;
     }
 
     /**
-     * Método para adicionar um parâmetro da função ou procedimento
+     * Adiciona um parâmetro na lista de parâmetros da função/procedimento (ordenada por inserção)
      *
-     * @param tipo_parametro tipo (primitivo ou definido por um typedef) do parâmetro
-     * @param  id_parametro identificador (nome) do parâmetro
+     * @param simbolo Simbolo do parâmetro
      * @return true se inserido com sucesso, false se já houver algum parâmetro com mesmo nome (identificador)
      */
-    public boolean addParametro(String tipo_parametro, String id_parametro) {
-        if (!var_local.containsKey(id_parametro)) {
-            var_local.put(id_parametro, "tipo:" + tipo_parametro);
-            parametros = (parametros == null) ? "" + tipo_parametro + ":" + id_parametro : parametros + ";" + tipo_parametro + ":" + id_parametro;
-            parametrosCon+= tipo_parametro;
-            return true;
+    public boolean addParametro(Simbolo simbolo) {
+        if (categoria == 1 || categoria == 2) {
+            if (addSimbolo(simbolo)) {
+                parametros = (parametros == null) ? simbolo.getTipo() : parametros + "#" + simbolo.getTipo();
+                return true;
+            }
         }
         return false;
     }
-
-    /**
-     * Retorna uma string com os parâmetros da função ou procedimento.
-     *
-     * @return string com os parâmetros ou null caso não haja
-     */
-    public String getParametros() {
-        return parametros;
-    }
-
-    public String getkey (){
-        return this.identificador+"#"+parametrosCon;
-    }
-
 }
