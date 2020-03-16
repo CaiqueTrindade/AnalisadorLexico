@@ -5,12 +5,14 @@ import java.util.Map;
 
 /**
  * Classe que representa um “símbolo” (elementos da linguagem que são nomeadas por identificadores) na análise semântica.
+ * O símbolo pode se referir a uma constante, variável, struct, campo de uma struct, função, procedimento, entre outros descritos
+ * pela categoria definida abaixo.
  *
  * @author Caique Trindade, Felipe Damasceno e Solenir Figuerêdo
  */
 public class Simbolo {
 
-    private String identificador;                   // Identificador da função/procedimento/estrutura
+    private String identificador;                   // Identificador (nome) do símbolo
 
     private int categoria;                          // Categoria do símbolo (conferir as constantes abaixo)
 
@@ -28,12 +30,12 @@ public class Simbolo {
                             VAR_STRUCT      = 12;   // Estruturas declaradas como variáveis
 
 
-    private String tipo;                            // Tipo (primitivo ou definido por um typedef) de constante ou variável
+    private String tipo;                            // Tipo, primitivo ou definido por um typedef, para constantes e variáveis
 
-    private String tipo_retorno;                    // Tipo de retorno (primitivo ou definido) de função (void para procedimentos e null para demais casos)
-    private String parametros;                      // Lista de parâmetros de função ou procedimento (Ex: "int#real#string")
+    private String tipo_retorno;                    // Tipo de retorno, primitivo ou definido por um typedef, para funções (void para procedimentos e null para demais casos)
+    private String parametros;                      // Lista dos tipos de parâmetros, em uma string, em ordem de posicionamento, para funções e procedimentos (Ex: "int#real#string")
 
-    private Map<String,Simbolo> simbolos_local;     // Hash Map que armazenará símbolos pertencentes a funções e procedimentos (variáveis) ou a estruturas (campos)
+    private Map<String,Simbolo> simbolos_local;     // Hash Map que armazenará símbolos pertencentes a funções ou procedimentos (variáveis) ou a estruturas (campos)
 
     /**
      * Construtor simples da classe Simbolo.
