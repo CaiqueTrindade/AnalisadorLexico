@@ -21,13 +21,11 @@ public class Simbolo {
                             PROCEDURE       = 2,    // Procedimentos
                             STRUCT          = 3,    // Definição de estruturas
                             CONSTANTE       = 4,    // Constantes unitárias (quando não são vetores, matrizes e estruturas)
-                            CONST_VETOR     = 6,    // Vetores constantes
-                            CONST_MATRIZ    = 7,    // Matrizes constantes
-                            CONST_STRUCT    = 8,    // Estruturas declaradas como constantes
-                            VARIAVEL        = 9,    // Variáveis unitárias (quando não são vetores, matrizes e estruturas)
-                            VAR_VETOR       = 10,   // Vetores
-                            VAR_MATRIZ      = 11,   // Matrizes
-                            VAR_STRUCT      = 12;   // Estruturas declaradas como variáveis
+                            CONST_VETOR     = 5,    // Vetores constantes
+                            CONST_MATRIZ    = 6,    // Matrizes constantes
+                            VARIAVEL        = 7,    // Variáveis unitárias (quando não são vetores, matrizes e estruturas)
+                            VAR_VETOR       = 8,   // Vetores
+                            VAR_MATRIZ      = 9;   // Matrizes
 
 
     private String tipo;                            // Tipo, primitivo ou definido por um typedef, para constantes e variáveis
