@@ -120,7 +120,12 @@ public class Simbolo {
      * @return Simbolo referente ao identificador, null caso não exista
      */
     public Simbolo getSimbolo(String identificador) {
-        return (simbolos_local != null)?simbolos_local.get(identificador):null;
+        if (simbolos_local != null) {
+            if (simbolos_local.containsKey(identificador)) {
+                return simbolos_local.get(identificador);
+            }
+        }
+        return null;
     }
 
     /**

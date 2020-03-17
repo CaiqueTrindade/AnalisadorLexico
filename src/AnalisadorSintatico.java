@@ -1222,7 +1222,7 @@ public class AnalisadorSintatico {
 
     //<Vetor2> ::= '[' <IndiceVetor> ']'
 //    | <>
-    public boolean Vetor2(){
+    public int Vetor2(){
 
         if (token != null && token.getLexema().equals("[")){
             nextToken();
@@ -1230,48 +1230,66 @@ public class AnalisadorSintatico {
             if (token != null && token.getLexema().equals("]")) {
                 nextToken();
             }
-            return true;
+            return 9;
         }
-        return false;
+        return 8;
 
     }
 
     //<Vetor> ::= '[' <IndiceVetor> ']' <Vetor2> <Identificador4> | <Identificador4>
-    public String Vetor(){
+    public Simbolo Vetor(Simbolo s){
 
         if(token != null && token.getLexema().equals("[")){
             nextToken();
             IndiceVetor();
             if (token != null && token.getLexema().equals("]")) {
                 nextToken();
-                boolean matriz = Vetor2();
-                Identificador4();
-                if (matriz){
-                    return "matriz";
+                int matriz = Vetor2();
+                if(s.getCategoria() == matriz){
+                    Simbolo n = Identificador4(s);
+                    if (n != null){
+                        return n;
+                    }else{
+                        return null;
+                    }
+                }else{
+                    // erro tipo diferente
                 }
-                else{
-                    return "vetor";
-                }
+
+
             }
 
 
         } else if ( token != null && conjunto_P_S.primeiro("Identificador4").contains(token.getLexema())){
-            Identificador4();
+            Simbolo n = Identificador4(s);
+            if (n != null){
+                return n;
+            }else{
+                return null;
+            }
         }
 
 
     }
     //<Identificador4> ::= '.' Id <VetorDeclaracao>
     //    | <>
-    public void Identificador4() {
+    public Simbolo Identificador4(Simbolo s) {
 
         if (token != null && token.getLexema().equals(".")) {
             nextToken();
             if (token != null && token.getTipo() == 3) {
-                nextToken();
-                Vetor();
+                Simbolo var = s.getSimbolo(token.getLexema());
+                if(var != null) {
+                    nextToken();
+                    Vetor(var);
+
+                }else{
+                    //erro;
+                    return null;
+                }
             }
         }
+        return s;
     }
 
     //<Escopo> ::= 'local' '.' | 'global' '.'
@@ -1295,21 +1313,46 @@ public class AnalisadorSintatico {
 
     }
     //<Identificador2> ::= '.' Id <Vetor> | <Vetor> | <>
-    public HashMap<String, String> Identificador2(HashMap<String, String> entrada){
+    public Simbolo Identificador2(Simbolo entrada){
 
         if (token != null && token.getLexema().equals(".")){
             nextToken();
             if (token!= null && token.getTipo() == 3){
-                entrada.put("tabela", "struct");
-                nextToken();
-                String tipo = Vetor();
-                entrada.put("tipo", tipo);
+                if(entrada.getCategoria() == 3) {
+                    String id = token.getLexema();
+                    nextToken();
+                    Simbolo var = struct.getIdentificadorGeneral(entrada.getIdentificador());
+                    var = var.getSimbolo(id);
+                    if (var != null) {
+                        var = Vetor(var);
+                        if (var != null) {
+                            return var;
+                        } else {
+                            return null;
+                        }
+
+                    } else {
+                        //erro
+                        return null;
+                    }
+                }
+
+
             }
 
+
         } else if (token != null && conjunto_P_S.primeiro("Vetor").contains(token.getLexema())){
-            String tipo = Vetor();
-            entrada.put("tipo", tipo);
+
+            Simbolo var = Vetor(entrada);
+            if (var != null) {
+                return var;
+            } else {
+                return null;
+            }
+
+
         }
+
         return entrada;
 
     }
@@ -1341,27 +1384,45 @@ public class AnalisadorSintatico {
     }
 
     // <Identificador> ::= <Escopo> Id <Identificador2> | Id <Identificador3>
-    public HashMap<String, String> Identificador(){
-        HashMap<String, String> entrada = new HashMap<String, String>();
+    public Simbolo Identificador(){
         if (token != null && pertence(0, "Escopo")){
-            entrada.put("escopo", Escopo());
+            String escopo = Escopo();
             if (token != null  && token.getTipo() == 3){
                 String id = token.getLexema();
-                entrada.put("identificador", id);
                 nextToken();
-                entrada = Identificador2(entrada);
+                if (escopo.equals("local") || escopo == null){
+                    Simbolo s = functionProcedure.getIdentificadorGeneral(escopo_atual);
+                    Simbolo str = s.getSimbolo(id);
+                    if (str != null){
+                        s = Identificador2(str);
+                        return s;
+                    }else{
+                        //erro, nao declarado
+                        return null;
+                    }
+                }if(escopo.equals("global") || escopo == null) {
+                    if (constVar.buscarGeneral(id)) {
+                        Simbolo s = constVar.getIdentificadorGeneral(id);
+                        s = Identificador2(s);
+                        return s;
+                    }else{
+                        //erro
+                        return null;
+                    }
+                }
+
+
             }
 
         }
         else if (token != null && token.getTipo() == 3){
             String id = token.getLexema();
-            entrada.put("identificador", id);
             nextToken();
             entrada = Identificador3(entrada);
         }
-        return entrada;
 
 
+        return null;
     }
 
 
