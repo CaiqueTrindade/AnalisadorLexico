@@ -1214,9 +1214,7 @@ public class AnalisadorSintatico {
                 Condicional();
             }
         }
-        if (token == null){
-            addErroSintatico(new ErroSintatico("Condicional","EOF inesperado", linhaErroEOF));
-        }
+
     }
 
 
@@ -1249,11 +1247,10 @@ public class AnalisadorSintatico {
                     Simbolo n = Identificador4(s);
                     if (n != null){
                         return n;
-                    }else{
-                        return null;
                     }
                 }else{
-                    // erro tipo diferente
+                    addErroSemantico(new ErroSemantico("Identificador não declarado", s.getIdentificador() + " não declarado", token.getnLinha()));
+
                 }
 
 
@@ -1281,10 +1278,11 @@ public class AnalisadorSintatico {
                 Simbolo var = s.getSimbolo(token.getLexema());
                 if(var != null) {
                     nextToken();
-                    Vetor(var);
+                    s = Vetor(var);
 
                 }else{
-                    //erro;
+                    addErroSemantico(new ErroSemantico("Identificador não declarado", var.getIdentificador() + " não declarado", token.getnLinha()));
+
                     return null;
                 }
             }
@@ -1300,11 +1298,7 @@ public class AnalisadorSintatico {
             if (token != null && token.getLexema().equals(".")){
                 nextToken();
             }
-            else if (token != null) {
-                addErroSintatico(new ErroSintatico("Escopo", "Esperava . mas encontrou "+token.getLexema(),token.getnLinha()));
-                sincronizar(null, "Escopo", null);
 
-            }
             return escopo;
 
         }
@@ -1332,7 +1326,7 @@ public class AnalisadorSintatico {
                         }
 
                     } else {
-                        //erro
+                        addErroSemantico(new ErroSemantico("Identificador não declarado", var.getIdentificador() + " não declarado", token.getnLinha()));
                         return null;
                     }
                 }
@@ -1357,24 +1351,67 @@ public class AnalisadorSintatico {
 
     }
 
-    private String IdentificadorExtra() {
-        String lParametros = null;
+    //<ContListaParametros> ::= ',' <ListaParametros> | <>
+    public ArrayList<Simbolo> ContListaParametros(ArrayList<Simbolo> simbolos){
+        if (token != null && token.getLexema().equals(",")){
+            nextToken();
+            simbolos = ListaParametros(simbolos);
+        }
+       return simbolos;
+    }
+
+    // <ListaParametros2> ::= <Identificador> | Numero | String
+    public Simbolo ListaParametros2(){
+        Simbolo s = null;
+        if (token != null && pertence(0, "Identificador") || conjunto_P_S.primeiro("Escopo").contains(token.getLexema()))
+            s = Identificador();
+        else if (token != null && token.getTipo() == 11 || token.getTipo() == 1 || token.getTipo() == 2) {
+            if (token.getTipo() == 11) {
+                s = new Simbolo(token.getLexema(), 7, "string");
+            } else if (token.getTipo() == 1) {
+                s = new Simbolo(token.getLexema(), 7, "real");
+            } else if (token.getTipo() == 2) {
+                s = new Simbolo(token.getLexema(), 7, "int");
+            }
+
+            nextToken();
+        }
+        return s;
+    }
+
+    // <ListaParametros> ::= <ListaParametros2> <ContListaParametros>
+    public ArrayList<Simbolo> ListaParametros(ArrayList<Simbolo> simbolos){
+        Simbolo s = ListaParametros2();
+        if (s != null) {
+            simbolos.add(s);
+        }
+        ContListaParametros(simbolos);
+        return simbolos;
+    }
+
+    private ArrayList<Simbolo> IdentificadorExtra() {
+        ArrayList<Simbolo> lParametros = null;
         if (token!= null && pertence(0, "ListaParametros")) {
-            lParametros = ListaParametros();
+            lParametros = new ArrayList<Simbolo>();
+            lParametros = ListaParametros(lParametros);
         }
         return lParametros;
     }
 
     // <Identificador3> ::= <Identificador2> | '(' <IdentificadorExtra> ')'
-    public HashMap<String, String> Identificador3(HashMap<String, String> entrada){
+    public Simbolo Identificador3(Simbolo entrada){
         if (token != null && token.getLexema().equals("(")) {
             nextToken();
-            String lParametros = IdentificadorExtra();
-            if (token != null && token.getLexema().equals(")")){
-                nextToken();
+            if(entrada.getCategoria() == 1 || entrada.getCategoria() == 2){
+                ArrayList<Simbolo> lParametros = IdentificadorExtra();
+                // checar se os parametros estao corretos com a entrada
+                if (token != null && token.getLexema().equals(")")){
+                    nextToken();
+                }
+            }else{
+                addErroSemantico(new ErroSemantico("Identificador não declarado", entrada.getIdentificador() + " não declarado", token.getnLinha()));
+                return null;
             }
-            entrada.put("parametros", lParametros);
-            entrada.put("tabela", "functionProcedure");
 
         }
         else if (token != null) { //Permite vazio
@@ -1397,7 +1434,7 @@ public class AnalisadorSintatico {
                         s = Identificador2(str);
                         return s;
                     }else{
-                        //erro, nao declarado
+                        addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
                         return null;
                     }
                 }if(escopo.equals("global") || escopo == null) {
@@ -1405,8 +1442,13 @@ public class AnalisadorSintatico {
                         Simbolo s = constVar.getIdentificadorGeneral(id);
                         s = Identificador2(s);
                         return s;
+                    }else if(functionProcedure.buscarGeneral(id)){
+                        Simbolo s = functionProcedure.getIdentificadorGeneral(id);
+                        s = Identificador2(s);
+                        return s;
                     }else{
-                        //erro
+                        addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
+
                         return null;
                     }
                 }
@@ -1418,7 +1460,27 @@ public class AnalisadorSintatico {
         else if (token != null && token.getTipo() == 3){
             String id = token.getLexema();
             nextToken();
-            entrada = Identificador3(entrada);
+            Simbolo f = functionProcedure.getIdentificadorGeneral(escopo_atual);
+            if (constVar.buscarGeneral(id)) {
+                Simbolo s = constVar.getIdentificadorGeneral(id);
+                s = Identificador3(s);
+                return s;
+
+            } else if(f.getSimbolo(id) != null) {
+                Simbolo str = f.getSimbolo(id);
+                Simbolo s = Identificador3(str);
+                return s;
+
+            }else if(functionProcedure.buscarGeneral(id)){
+                f = functionProcedure.getIdentificadorGeneral(id);
+                Simbolo s = Identificador3(f);
+                return s;
+            }else{
+                addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
+                return null;
+            }
+
+
         }
 
 
@@ -1426,48 +1488,6 @@ public class AnalisadorSintatico {
     }
 
 
-    //<ContListaParametros> ::= ',' <ListaParametros> | <>
-    public void ContListaParametros(){
-        if (token != null && token.getLexema().equals(",")){
-            nextToken();
-            ListaParametros();
-        }
-        if (token == null){
-            addErroSintatico(new ErroSintatico("ContListaParametros","EOF inesperado", linhaErroEOF));
-        }
-    }
-
-    // <ListaParametros2> ::= <Identificador> | Numero | String
-    public void ListaParametros2(){
-
-        if (token != null && pertence(0, "Identificador") || conjunto_P_S.primeiro("Escopo").contains(token.getLexema()))
-            Identificador();
-        else if (token != null && token.getTipo() == 11 || token.getTipo() == 1 || token.getTipo() == 2)
-            nextToken();
-        else if (token != null){
-            addErroSintatico(new ErroSintatico("ListaParametros2", token.idToToken(token.getTipo())+" não esperado",token.getnLinha()));
-            sincronizar("ContListaParametros", null, null);
-
-            if (token != null){
-                if (conjunto_P_S.primeiro("ContListaParametros").contains(token.getLexema())){
-                    ContListaParametros();
-                }
-
-            }
-
-        }
-
-        if (token == null){
-            addErroSintatico(new ErroSintatico("ListaParametros2","EOF inesperado", linhaErroEOF));
-        }
-
-    }
-
-    // <ListaParametros> ::= <ListaParametros2> <ContListaParametros>
-    public String ListaParametros(){
-        ListaParametros2();
-        ContListaParametros();
-    }
 
 //<Matriz> ::= '[' <ValorVetor> ']' <Var4> | <Var4>
     public void Matriz(String tipo){
