@@ -2085,7 +2085,6 @@ public class AnalisadorSintatico {
                         nextToken();
                         ExpressaoLR3();
                     }
-                    else return;
                 }
                 else addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "EOF inesperado", linhaErroEOF));
             }
@@ -2116,12 +2115,15 @@ public class AnalisadorSintatico {
 
         if (token != null && pertence(0, "ArgumentoLR2")) {
             ArgumentoLR2();
-            ExpressaoLR2();
+            ExpressaoLR2("boolean");
         }
         else if (token != null && pertence(0, "ArgumentoLR3")) {
-            ArgumentoLR3();
+            String tipo = ArgumentoLR3();
             OperadorRelacional();
-            ArgumentoLR();
+            String tipo2 = ArgumentoLR();
+
+            if (tipo != null && tipo2 != null && !tipo.equals(tipo2)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão lógica e relacional (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo2 +").", token.getnLinha()));
+
             ExpressaoLR3();
         }
         else if (token != null){
@@ -2152,11 +2154,14 @@ public class AnalisadorSintatico {
     }
 
     // <ExpressaoLR2> ::= <OperadorRelacional> <ArgumentoLR> <ExpressaoLR3> | <ExpressaoLR3>
-    private void ExpressaoLR2() {
+    private void ExpressaoLR2(String tipo) {
 
         if (token != null && pertence(0, "OperadorRelacional")) {
             OperadorRelacional();
-            ArgumentoLR();
+            String tipo2 = ArgumentoLR();
+
+            if (tipo != null && tipo2 != null && !tipo.equals(tipo2)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão lógica e relacional (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo2 +").", token.getnLinha()));
+
             ExpressaoLR3();
         }
         else if (token != null) {
@@ -2176,12 +2181,14 @@ public class AnalisadorSintatico {
     }
 
     // <ArgumentoLR> ::= <ArgumentoLR2> | <ArgumentoLR3>
-    private void ArgumentoLR() {
+    private String ArgumentoLR() {
+        String tipo = "boolean";
+
         if (token != null && pertence(0, "ArgumentoLR2")) {
             ArgumentoLR2();
         }
         else if (token != null && pertence(0, "ArgumentoLR3")) {
-            ArgumentoLR3();
+            tipo = ArgumentoLR3();
         }
         else if (token != null) {
             addErroSintatico(new ErroSintatico("ArgumentoLR", "" + token.getLexema() +" inesperado", token.getnLinha()));
@@ -2190,11 +2197,12 @@ public class AnalisadorSintatico {
             if (token != null) {
                 if (pertence(0, "ArgumentoLR"))
                     ArgumentoLR();
-                else return;
             }
             else addErroSintatico(new ErroSintatico("ExpressaoLR2", "EOF inesperado", linhaErroEOF));
         }
         else addErroSintatico(new ErroSintatico("ArgumentoLR", "EOF inesperado", linhaErroEOF));
+
+        return tipo;
     }
 
     // <ArgumentoLR2> ::= '!' <ArgumentoLR2_1> | true | false
@@ -2228,7 +2236,11 @@ public class AnalisadorSintatico {
     private void ArgumentoLR2_1() {
 
         if (token != null) {
-            if (token.getTipo() == 3 || token.getLexema().matches("^(true|false)$"))
+            if (token.getTipo() == 3) {
+                Simbolo simbolo = Identificador();
+                if (simbolo != null && !simbolo.getTipo().equals("boolean")) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo boolean mas encontrou do tipo "+ simbolo.getTipo() +").", token.getnLinha()));;
+            }
+            else if (token.getLexema().matches("^(true|false)$"))
                 nextToken();
             else {
                 addErroSintatico(new ErroSintatico("ArgumentoLR2_1", "Esperava identificador, true ou false mas encontrou " + token.getLexema(), token.getnLinha()));
@@ -2246,12 +2258,15 @@ public class AnalisadorSintatico {
     }
 
     // <ArgumentoLR3> ::= String | <ExpressaoAritmetica>
-    private void ArgumentoLR3() {
+    private String ArgumentoLR3() {
+        String tipo = null;
 
-        if (token != null && token.getTipo() == 11)
+        if (token != null && token.getTipo() == 11) {
+            tipo = "string";
             nextToken();
+        }
         else if (token != null && pertence(0, "ExpressaoAritmetica"))
-            ExpressaoAritmetica();
+            tipo = ExpressaoAritmetica();
         else if (token != null) {
             addErroSintatico(new ErroSintatico("ArgumentoLR3", "" + token.getLexema() +" inesperado", token.getnLinha()));
             sincronizar("ArgumentoLR3", "ArgumentoLR3", "");
@@ -2259,11 +2274,12 @@ public class AnalisadorSintatico {
             if (token != null) {
                 if (pertence(0, "ArgumentoLR3"))
                     ArgumentoLR3();
-                else return;
             }
             else addErroSintatico(new ErroSintatico("ArgumentoLR3", "EOF inesperado", linhaErroEOF));
         }
         else addErroSintatico(new ErroSintatico("ArgumentoLR3", "EOF inesperado", linhaErroEOF));
+
+        return tipo;
     }
 
     // <OperadorRelacional> ::= '!=' | '==' | '<' | '>' | '<=' | '>='
