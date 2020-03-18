@@ -18,6 +18,7 @@ public class AnalisadorSintatico {
     private TabelaSimbolos struct = new TabelaSimbolos(); //Tabela para Structs
     private  TabelaSimbolos functionProcedure = new TabelaSimbolos(); //Tabela para funçõres e procedimentos
     private int ordem = 1;
+    private Simbolo escopo_atual;
 
     /**
      * Construtor da classe do AnalisadorSintatico.
@@ -601,7 +602,12 @@ public class AnalisadorSintatico {
             else if (token.getTipo() == 1) tipo_valor = "real";
             else if (token.getTipo() == 2) tipo_valor = "int";
             else if (token.getTipo() == 11) tipo_valor = "string";
-            else if (token.getTipo() == 3) // retornar o tipo do identificador ;
+            else if (token.getTipo() == 3) {
+                if (escopo_atual != null && escopo_atual.getSimbolo(token.getLexema()) == null) addErroSemantico(new ErroSemantico("Identificador não declarado", token.getLexema() + " não foi declarado", token.getnLinha()));
+                else if (escopo_atual != null) tipo_valor = escopo_atual.getSimbolo(token.getLexema()).getTipo();
+                else if (constVar.getIdentificadorGeneral(token.getLexema()) == null) addErroSemantico(new ErroSemantico("Identificador não declarado", token.getLexema() + " não foi declarado", token.getnLinha()));
+                else tipo_valor = constVar.getIdentificadorGeneral(token.getLexema()).getTipo();
+            }
             nextToken();
         } else if (token != null){
             addErroSintatico(new ErroSintatico("Valor", token.getLexema() +" não esperado", token.getnLinha()));
@@ -1519,14 +1525,20 @@ public class AnalisadorSintatico {
 
 
 
-//<Matriz> ::= '[' <ValorVetor> ']' <Var4> | <Var4>
-    public void Matriz(String tipo){
+    //<Matriz> ::= '[' <ValorVetor> ']' <Var4> | <Var4>
+    public void Matriz(String tipo, String id, String linha){
 
         if (token != null && token.getLexema().equals("[")){
             nextToken();
             ValorVetor();
             if (token != null && token.getLexema().equals("]")){
                 nextToken();
+
+                if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.VAR_MATRIZ, tipo));
+                else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else constVar.inserirGeneral(new Simbolo(id, Simbolo.VAR_MATRIZ, tipo));
+
                 Var4(tipo);
             }
             else if (token != null){
@@ -1551,6 +1563,12 @@ public class AnalisadorSintatico {
 
         }
         else if (token != null && conjunto_P_S.primeiro("Var4").contains(token.getLexema())) {
+
+            if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+            else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.VAR_VETOR, tipo));
+            else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+            else constVar.inserirGeneral(new Simbolo(id, Simbolo.VAR_VETOR, tipo));
+
             Var4(tipo);
         }
         else if (token != null) {
@@ -1580,14 +1598,14 @@ public class AnalisadorSintatico {
 
 
     //<Vetor3> ::= '[' <ValorVetor> ']' <Matriz>
-    public void Vetor3(String tipo){
+    public void Vetor3(String tipo, String id, String linha){
 
         if (token != null && token.getLexema().equals("[")){
             nextToken();
             ValorVetor();
             if (token != null && token.getLexema().equals("]")){
                 nextToken();
-                Matriz(tipo);
+                Matriz(tipo, id, linha);
             }
             else if (token != null){
                 addErroSintatico(new ErroSintatico("Vetor3", "Esperava ] mas encontrou "+token.getLexema(),token.getnLinha()));
@@ -1710,28 +1728,44 @@ public class AnalisadorSintatico {
     }
 
     //<Var2> ::= ',' <IdVar> | ';' <Var3> | '=' <Valor> <Var4> | <Vetor3>
-    public void Var2(String tipo){
-
+    public void Var2(String tipo, String id, int linha){
         if (token != null && conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
             if (token != null && token.getLexema().equals(",")){
                 nextToken();
+
+                if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.VARIAVEL, tipo));
+                else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else constVar.inserirGeneral(new Simbolo(id, Simbolo.VARIAVEL, tipo));
+
                 IdVar(tipo);
             }
             else if (token != null &&  token.getLexema().equals(";")){
                 nextToken();
+
+                if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.VARIAVEL, tipo));
+                else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else constVar.inserirGeneral(new Simbolo(id, Simbolo.VARIAVEL, tipo));
+
                 Var3();
             }
             else if (token != null && token.getLexema().equals("=")){
                 nextToken();
+
+                if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.VARIAVEL, tipo));
+                else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else constVar.inserirGeneral(new Simbolo(id, Simbolo.VARIAVEL, tipo));
+
                 String valor_tipo = Valor();
-                if (tipo != null && valor_tipo != null && !tipo.equals(valor_tipo)) {
-                    addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis de atribuição (esperava um valor do tipo " + tipo + " mas encontrou "+ valor_tipo+").", token.getnLinha()));
-                }
+
+                if (tipo != null && valor_tipo != null && !tipo.equals(valor_tipo)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis de atribuição (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ valor_tipo+").", token.getnLinha()));
+
                 Var4(tipo);
             }
             else if (token != null && token.getLexema().equals("[")) {
-                Vetor3(tipo);
-
+                Vetor3(tipo, id, linha);
             }
             else if (token != null) {
                 addErroSintatico(new ErroSintatico("Var2", token.getLexema() +" não esperado", token.getnLinha() ));
@@ -1767,17 +1801,15 @@ public class AnalisadorSintatico {
         if (token == null){
             addErroSintatico(new ErroSintatico("Var2", "EOF inesperado", linhaErroEOF));
         }
-
-
-
     }
+
     //<IdVar> ::= Id <Var2>
     public void IdVar(String tipo){
-
         if (token != null && token.getTipo() == 3){
-            // Verifica se o identificador já foi declarado no escopo atual.
+            String id = token.getLexema();
+            int linha = token.getnLinha();
             nextToken();
-            Var2(tipo);
+            Var2(tipo, id, linha);
         }
         else if (token != null){
             addErroSintatico(new ErroSintatico("IdVar", "Esperava um identificador mas encontrou "+token.getLexema(),  token.getnLinha()));
@@ -1814,7 +1846,6 @@ public class AnalisadorSintatico {
             if (token != null && token.getLexema().equals("{")){
                 nextToken();
                 TipoVar();
-
             }
             else if (token != null){
                 addErroSintatico(new ErroSintatico("Var", "Esperava { mas encontrou "+token.getLexema(),token.getnLinha()));
@@ -1853,7 +1884,7 @@ public class AnalisadorSintatico {
             System.out.println("A lista de tokens está vazia!");
     }
 
-        // <Const> ::= 'const' ' { ' <TipoConst> | <>
+    // <Const> ::= 'const' ' { ' <TipoConst> | <>
     private void Const() {
 
         if (token != null && token.getLexema().equals("const")) {
@@ -1888,12 +1919,20 @@ public class AnalisadorSintatico {
     // <IdConst> ::= Id <Valor> <Const2>
     private void IdConst(String tipo) {
         if (token != null && token.getTipo() == 3) {
-            // Verificar se o identificador não existe
+            String id = token.getLexema();
+            int linha = token.getnLinha();
+
             nextToken();
+
+            if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+            else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.CONSTANTE, tipo));
+            else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+            else constVar.inserirGeneral(new Simbolo(id, Simbolo.CONSTANTE, tipo));
+
             String valor_tipo = Valor();
-            if (tipo != null && valor_tipo != null && !tipo.equals(valor_tipo)) {
-                addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis de atribuição (esperava um valor do tipo " + tipo + " mas encontrou "+ valor_tipo+").", token.getnLinha()));
-            }
+
+            if (tipo != null && valor_tipo != null && !tipo.equals(valor_tipo)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis de atribuição (esperava um valor do tipo " + tipo + " mas encontrou "+ valor_tipo+").", token.getnLinha()));
+
             Const2(tipo);
         }
         else if (token != null) {
