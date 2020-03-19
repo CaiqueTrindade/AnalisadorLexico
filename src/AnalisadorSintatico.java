@@ -1490,7 +1490,8 @@ public class AnalisadorSintatico {
             ArrayList<Simbolo> lParametros = IdentificadorExtra();
             String id = id_entrada;
             for (Simbolo s: lParametros) {
-                id = id + "#" + s.getTipo();
+                id = id + "#";
+                id = id + s.getTipo();
             }
             if (functionProcedure.buscarGeneral(id)) {
                 Simbolo entrada = functionProcedure.getIdentificadorGeneral(id);
@@ -1515,6 +1516,7 @@ public class AnalisadorSintatico {
                     // checar se os parametros estao corretos com a entrada
                     if (token != null && token.getLexema().equals(")")) {
                         nextToken();
+                        return entrada;
                     }
                     if (erro > 0) {
                         return null;
@@ -1531,7 +1533,7 @@ public class AnalisadorSintatico {
 
         }
 
-        return entrada;
+        return null;
     }
 
 
