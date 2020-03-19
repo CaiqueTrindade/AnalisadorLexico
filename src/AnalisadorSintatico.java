@@ -1411,44 +1411,64 @@ public class AnalisadorSintatico {
 
     // <Identificador3> ::= <Identificador2> | '(' <IdentificadorExtra> ')'
     public Simbolo Identificador3(Simbolo entrada){
-        int erro = 0;
-        if (token != null && token.getLexema().equals("(")) {
-            nextToken();
-            if(entrada.getCategoria() == 1 || entrada.getCategoria() == 2){
-                ArrayList<Simbolo> lParametros = IdentificadorExtra();
-                String[] tipos = entrada.getParametros().split("#");
-                if(lParametros.size() != tipos.length){
-                    addErroSemantico(new ErroSemantico("Parâmetros incompatíveis", "Parâmetros incompatíveis: quantidade", token.getnLinha()));
-                    erro = erro + 1;
-                }
-                int i = 0;
-
-                for (Simbolo s: lParametros) {
-                    if(s.getTipo() != tipos[i]){
-                        addErroSemantico(new ErroSemantico("Parâmetros incompatíveis", "Parâmetros incompatíveis: tipo", token.getnLinha()));
-                        erro = erro + 1;
-                    }
-                    i = i + 1;
-                }
-
-                // checar se os parametros estao corretos com a entrada
-                if (token != null && token.getLexema().equals(")")) {
-                    nextToken();
-                }
-                if(erro > 0){
-                    return null;
-                }
-            }else{
-                addErroSemantico(new ErroSemantico("Identificador não declarado", entrada.getIdentificador() + " não declarado", token.getnLinha()));
-                return null;
-            }
-
-        }
-        else if (token != null) { //Permite vazio
+        if (token != null) { //Permite vazio
             entrada = Identificador2(entrada);
         }
         return entrada;
     }
+
+    // <Identificador3> ::= <Identificador2> | '(' <IdentificadorExtra> ')'
+    public Simbolo Identificador3(String id_entrada){
+        int erro = 0;
+        if (token != null && token.getLexema().equals("(")) {
+            nextToken();
+            ArrayList<Simbolo> lParametros = IdentificadorExtra();
+            String id = id_entrada;
+            for (Simbolo s: lParametros) {
+                id = id + "#" + s.getTipo();
+            }
+            if (functionProcedure.buscarGeneral(id)) {
+                Simbolo entrada = functionProcedure.getIdentificadorGeneral(id);
+
+                if (entrada.getCategoria() == 1 || entrada.getCategoria() == 2) {
+
+                    String[] tipos = entrada.getParametros().split("#");
+                    if (lParametros.size() != tipos.length) {
+                        addErroSemantico(new ErroSemantico("Parâmetros incompatíveis", "Parâmetros incompatíveis: quantidade", token.getnLinha()));
+                        erro = erro + 1;
+                    }
+                    int i = 0;
+
+                    for (Simbolo s : lParametros) {
+                        if (s.getTipo() != tipos[i]) {
+                            addErroSemantico(new ErroSemantico("Parâmetros incompatíveis", "Parâmetros incompatíveis: tipo", token.getnLinha()));
+                            erro = erro + 1;
+                        }
+                        i = i + 1;
+                    }
+
+                    // checar se os parametros estao corretos com a entrada
+                    if (token != null && token.getLexema().equals(")")) {
+                        nextToken();
+                    }
+                    if (erro > 0) {
+                        return null;
+                    }
+
+                } else {
+                    addErroSemantico(new ErroSemantico("Identificador não declarado", id_entrada + " não declarado", token.getnLinha()));
+                    return null;
+                }
+            }else{
+                addErroSemantico(new ErroSemantico("Identificador não declarado", id_entrada + " não declarado", token.getnLinha()));
+                return null;
+            }
+
+        }
+
+        return entrada;
+    }
+
 
     // <Identificador> ::= <Escopo> Id <Identificador2> | Id <Identificador3>
     public Simbolo Identificador(){
@@ -1472,10 +1492,7 @@ public class AnalisadorSintatico {
                         Simbolo s = constVar.getIdentificadorGeneral(id);
                         s = Identificador2(s);
                         return s;
-                    }else if(functionProcedure.buscarGeneral(id)){
-                        Simbolo s = functionProcedure.getIdentificadorGeneral(id);
-                        s = Identificador2(s);
-                        return s;
+
                     }else{
                         addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
 
@@ -1501,13 +1518,14 @@ public class AnalisadorSintatico {
                 Simbolo s = Identificador3(str);
                 return s;
 
-            }else if(functionProcedure.buscarGeneral(id)){
-                f = functionProcedure.getIdentificadorGeneral(id);
-                Simbolo s = Identificador3(f);
-                return s;
             }else{
-                addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
-                return null;
+                Simbolo s = Identificador3(id);
+                if(s != null){
+                    return s;
+                }else {
+                    addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
+                    return null;
+                }
             }
 
 
