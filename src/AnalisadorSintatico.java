@@ -18,6 +18,7 @@ public class AnalisadorSintatico {
     private TabelaSimbolos struct = new TabelaSimbolos(); //Tabela para Structs
     private  TabelaSimbolos functionProcedure = new TabelaSimbolos(); //Tabela para funçõres e procedimentos
     private int ordem = 1;
+    private Simbolo escopo_atual;
 
     /**
      * Construtor da classe do AnalisadorSintatico.
@@ -184,36 +185,21 @@ public class AnalisadorSintatico {
         return false;
     }
 
-
-
-    public boolean buscar(String s){
-
-        return true;
-    }
-
-    public void inserir(String s){
-
-    }
-
-
-
-
-
-
-
     public List<ErroSintatico> getListaErrosSintaticos(){
         return this.errosSintaticos;
-
     }
 
-    //<F> ::= '(' <ExpressaoAritmetica> ')'
-    //| Numero
-    public void F(){
+    //<F> ::= '(' <ExpressaoAritmetica> ')' | Numero
+    public String F(){
+
+        String tipo = null;
 
         if (token != null && token.getLexema().equals("(")){
-            ExpressaoAritmetica();
+            tipo = ExpressaoAritmetica();
         }
         else if (token != null &&  pertence(0,"F")){
+            if (token.getTipo() == 1) tipo = "real";
+            else if (token.getTipo() == 2) tipo = "int";
             nextToken();
         }
         else if (token != null) {
@@ -226,17 +212,18 @@ public class AnalisadorSintatico {
             addErroSintatico(new ErroSintatico("F","EOF inesperado", linhaErroEOF));
         }
 
-
-
-
+        return tipo;
     }
 
     //<T> ::= <F> <T2>
-    public void T(){
+    public String T(){
+        String tipo = null;
+        String tipo2 = null;
 
         if (token != null && conjunto_P_S.primeiro("F").contains(token.getLexema()) || pertence(0,"F")){
-            F();
-            T2();
+            tipo = F();
+            tipo2 = T2();
+            if (tipo != null && tipo2 != null && !tipo.equals(tipo2)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo2 +").", token.getnLinha()));
         }
         else if (token != null) {
             addErroSintatico(new ErroSintatico("T", token.getLexema()+" não esperado", token.getnLinha()));
@@ -252,45 +239,59 @@ public class AnalisadorSintatico {
             addErroSintatico(new ErroSintatico("T","EOF inesperado", linhaErroEOF));
         }
 
-
-
+        return (tipo != null)?tipo:tipo2;
     }
 
     //<T2> ::= '*' <ExpressaoAritmetica> | '/' <ExpressaoAritmetica> | <>
-    public void T2(){
+    public String T2(){
+        String tipo = null;
 
         if (token != null) {
             if (token.getLexema().equals("*") || token.getLexema().equals("/")) {
                 nextToken();
-                ExpressaoAritmetica();
+                tipo = ExpressaoAritmetica();
             }
         }
         else addErroSintatico(new ErroSintatico("T2","EOF inesperado", linhaErroEOF));
 
+        return tipo;
     }
 
     //<E2> ::= '+' <ExpressaoAritmetica>
     //| '-' <ExpressaoAritmetica>
     //|  <>
-    public void E2(){
+    public String E2(){
+        String tipo = null;
+
         if (token != null) {
             if (token.getLexema().equals("+") || token.getLexema().equals("-")) {
                 nextToken();
-                ExpressaoAritmetica();
+                tipo = ExpressaoAritmetica();
             }
         }
         else addErroSintatico(new ErroSintatico("E2","EOF inesperado", linhaErroEOF));
+
+        return tipo;
     }
 
-    //<IdentificadorAritmetico> ::= <Escopo> Id <Identificador2> <ExpressaoAritmetica2>
-    //    | Id <IdentificadorAritmetico3>
-    public void IdentificadorAritmetico(){
+    //<IdentificadorAritmetico> ::= <Escopo> Id <Identificador2> <ExpressaoAritmetica2> | Id <IdentificadorAritmetico3>
+    public String IdentificadorAritmetico(){
+        String tipo = null, tipo2 = null;
+
         if (token != null && pertence(0, "Escopo") || conjunto_P_S.primeiro("IdentificadorAritmetico").contains(token.getLexema())){
-            Escopo();
+            String escopo = Escopo();
             if (token != null && token.getTipo() == 3){
+                String id = token.getLexema();
                 nextToken();
-                Identificador2();
-                ExpressaoAritmetica2();
+
+                Simbolo simbolo = null;
+                if (escopo == null || escopo.equals("local")) simbolo = escopo_atual.getSimbolo(id);
+                if (simbolo == null || escopo.equals("global")) simbolo = constVar.getIdentificadorGeneral(id);
+
+                if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
+
+                tipo = Identificador2(simbolo).getTipo();
+                tipo2 = ExpressaoAritmetica2();
             }
             else if (token != null) {
                 addErroSintatico(new ErroSintatico("IdentificadorAritmetico", "Esperava um Identificador, mas encontrou "+token.getLexema(), token.getnLinha()));
@@ -307,8 +308,10 @@ public class AnalisadorSintatico {
 
         }
         else if (token != null && token.getTipo() == 3) {
+            String id = token.getLexema();
+            int linha = token.getnLinha();
             nextToken();
-            IdentificadorAritmetico3();
+            tipo = IdentificadorAritmetico3(id);
         }
         else if (token != null) {
             addErroSintatico(new ErroSintatico("IdentificadorAritmetico", token.getLexema()+" não esperado", token.getnLinha()));
@@ -319,19 +322,23 @@ public class AnalisadorSintatico {
             addErroSintatico(new ErroSintatico("T2","EOF inesperado", linhaErroEOF));
         }
 
+        if (tipo != null && tipo2 != null && !tipo.equals(tipo2)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo2 +").", token.getnLinha()));
 
+        return tipo;
     }
 
     //<IdentificadorAritmetico3> ::= <Identificador2> <ExpressaoAritmetica2> | '(' <ListaParametros> ')' <T2> <E2>
-    public void IdentificadorAritmetico3(){
+    public String IdentificadorAritmetico3(String id){
+        String tipo = null, tipo2 = null, tipo3 = null;
 
         if (token != null && token.getLexema().equals("(")) {
             nextToken();
-            IdentificadorExtra();
+            ArrayList<Simbolo> lParametros = IdentificadorExtra();
+
             if (token != null && token.getLexema().equals(")")){
                 nextToken();
-                T2();
-                E2();
+                tipo2 = T2();
+                tipo3 = E2();
             }
             else if (token != null) {
                 addErroSintatico(new ErroSintatico("IdentificadorAritmetico3", "Esperava (, mas encontrou "+token.getLexema(), token.getnLinha()));
@@ -348,27 +355,48 @@ public class AnalisadorSintatico {
             }
         }
         else if (token != null) {
-            Identificador2(); // Permite vazio
-            ExpressaoAritmetica2();
+
+            Simbolo simbolo = (escopo_atual.getSimbolo(id) != null)?escopo_atual.getSimbolo(id):constVar.getIdentificadorGeneral(id);
+            if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
+
+            tipo = Identificador2(simbolo).getTipo(); // Permite vazio
+            tipo2 = ExpressaoAritmetica2();
         }
         else addErroSintatico(new ErroSintatico("IdentificadorAritmetico3","EOF inesperado", linhaErroEOF));
+
+        if (tipo != null && tipo2 != null && tipo3 != null && !tipo.equals(tipo2) || !tipo.equals(tipo3)) {
+            String tipo_diferente = (!tipo.equals(tipo2))?tipo2:tipo3;
+            addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo_diferente +").", token.getnLinha()));
+        }
+        else {
+            if (tipo != null && tipo2 != null && !tipo.equals(tipo2)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo2 +").", token.getnLinha()));
+            else if (tipo != null && tipo3 != null && !tipo.equals(tipo3)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo3 +").", token.getnLinha()));
+            else if (tipo2 != null && tipo3 != null && !tipo2.equals(tipo3)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo " + tipo2 + " mas encontrou do tipo "+ tipo3 +").", token.getnLinha()));
+            else if (tipo2 != null && tipo == null && tipo3 == null) tipo = tipo2;
+            else if (tipo3 != null && tipo == null && tipo2 == null) tipo = tipo3;
+        }
+
+        return tipo;
     }
 
     // <ExpressaoAritmetica> ::= <T> <E2> | <IdentificadorAritmetico> | '++' <IdentificadorSemFuncao> <T2> <E2> | '--' <IdentificadorSemFuncao> <T2> <E2>
-    public void ExpressaoAritmetica (){
+    public String ExpressaoAritmetica (){
+        String tipo = null;
+        String tipo2 = null;
+        String tipo3 = null;
 
         if (token != null && pertence(0, "T") || conjunto_P_S.primeiro("T").contains(token.getLexema())){
-            T();
-            E2();
+            tipo = T();
+            tipo2 = E2();
         }
         else if (token != null && pertence(0, "IdentificadorAritmetico") || conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
-            IdentificadorAritmetico();
+            tipo = IdentificadorAritmetico();
         }
         else if (token != null && token.getTipo() == 9){
             nextToken();
-            IdentificadorSemFuncao();
-            T2();
-            E2();
+            tipo = IdentificadorSemFuncao();
+            tipo2 = T2();
+            tipo3 = E2();
         }
         else if (token != null) {
             addErroSintatico(new ErroSintatico("ExpressaoAritmetica", token.getLexema()+" não esperado", token.getnLinha()));
@@ -384,36 +412,67 @@ public class AnalisadorSintatico {
             addErroSintatico(new ErroSintatico("ExpressaoAritmetica","EOF inesperado", linhaErroEOF));
         }
 
+        if (tipo != null && tipo2 != null && tipo3 != null && !tipo.equals(tipo2) || !tipo.equals(tipo3)) {
+            String tipo_diferente = (!tipo.equals(tipo2))?tipo2:tipo3;
+            addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo_diferente +").", token.getnLinha()));
+        }
+        else {
+            if (tipo != null && tipo2 != null && !tipo.equals(tipo2)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo2 +").", token.getnLinha()));
+            else if (tipo != null && tipo3 != null && !tipo.equals(tipo3)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo3 +").", token.getnLinha()));
+            else if (tipo2 != null && tipo3 != null && !tipo2.equals(tipo3)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo " + tipo2 + " mas encontrou do tipo "+ tipo3 +").", token.getnLinha()));
+            else if (tipo2 != null && tipo == null && tipo3 == null) tipo = tipo2;
+            else if (tipo3 != null && tipo == null && tipo2 == null) tipo = tipo3;
+        }
 
+        return tipo;
     }
 
     //<ExpressaoAritmetica2> ::= '++' <T2> <E2> | '--' <T2> <E2> | <T2> <E2>
-    private void ExpressaoAritmetica2() {
+    private String ExpressaoAritmetica2() {
+        String tipo = null, tipo2 = null;
+
         if(token != null) {
             if(token.getTipo() == 9) {
                 nextToken();
             }
-            T2();
-            E2();
+            tipo = T2();
+            tipo = E2();
         }
         else addErroSintatico(new ErroSintatico("ExpressaoAritmetica2","EOF inesperado", linhaErroEOF));
+
+        if (tipo != null && tipo2 != null && !tipo.equals(tipo2)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo2 +").", token.getnLinha()));
+
+        return tipo;
     }
 
 
-    //<IdentificadorSemFuncao> ::= <Escopo> Id <Identificador2>
-    //    | Id <Identificador2>
-    public void IdentificadorSemFuncao(){
+    //<IdentificadorSemFuncao> ::= <Escopo> Id <Identificador2> | Id <Identificador2>
+    public String IdentificadorSemFuncao(){
+        String tipo = null;
 
         if(token != null && pertence(0, "Escopo") || conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
-            Escopo();
+            String escopo = Escopo();
             if (token != null && token.getTipo() == 3){
+                String id = token.getLexema();
                 nextToken();
-                Identificador2();
+
+                Simbolo simbolo = null;
+                if (escopo == null || escopo.equals("local")) simbolo = escopo_atual.getSimbolo(id);
+                if (simbolo == null || escopo.equals("global")) simbolo = constVar.getIdentificadorGeneral(id);
+
+                if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
+
+                tipo = Identificador2(simbolo).getTipo();
             }
         }
         else  if (token != null && token.getTipo() == 3){
+            String id = token.getLexema();
             nextToken();
-            Identificador2();
+
+            Simbolo simbolo = (escopo_atual.getSimbolo(id) != null)?escopo_atual.getSimbolo(id):constVar.getIdentificadorGeneral(id);
+            if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
+
+            tipo = Identificador2(simbolo).getTipo();
         }
         else if (token != null) {
             addErroSintatico(new ErroSintatico("IdentificadorSemFuncao", token.getLexema()+" não esperado", token.getnLinha()));
@@ -428,6 +487,7 @@ public class AnalisadorSintatico {
             addErroSintatico(new ErroSintatico("IdentificadorSemFuncao","EOF inesperado", linhaErroEOF));
         }
 
+        return tipo;
     }
 
 
@@ -601,7 +661,12 @@ public class AnalisadorSintatico {
             else if (token.getTipo() == 1) tipo_valor = "real";
             else if (token.getTipo() == 2) tipo_valor = "int";
             else if (token.getTipo() == 11) tipo_valor = "string";
-            else if (token.getTipo() == 3) // retornar o tipo do identificador ;
+            else if (token.getTipo() == 3) {
+                if (escopo_atual != null && escopo_atual.getSimbolo(token.getLexema()) == null) addErroSemantico(new ErroSemantico("Identificador não declarado", token.getLexema() + " não foi declarado", token.getnLinha()));
+                else if (escopo_atual != null) tipo_valor = escopo_atual.getSimbolo(token.getLexema()).getTipo();
+                else if (constVar.getIdentificadorGeneral(token.getLexema()) == null) addErroSemantico(new ErroSemantico("Identificador não declarado", token.getLexema() + " não foi declarado", token.getnLinha()));
+                else tipo_valor = constVar.getIdentificadorGeneral(token.getLexema()).getTipo();
+            }
             nextToken();
         } else if (token != null){
             addErroSintatico(new ErroSintatico("Valor", token.getLexema() +" não esperado", token.getnLinha()));
@@ -1537,14 +1602,20 @@ public class AnalisadorSintatico {
 
 
 
-//<Matriz> ::= '[' <ValorVetor> ']' <Var4> | <Var4>
-    public void Matriz(String tipo){
+    //<Matriz> ::= '[' <ValorVetor> ']' <Var4> | <Var4>
+    public void Matriz(String tipo, String id, String linha){
 
         if (token != null && token.getLexema().equals("[")){
             nextToken();
             ValorVetor();
             if (token != null && token.getLexema().equals("]")){
                 nextToken();
+
+                if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.VAR_MATRIZ, tipo));
+                else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else constVar.inserirGeneral(new Simbolo(id, Simbolo.VAR_MATRIZ, tipo));
+
                 Var4(tipo);
             }
             else if (token != null){
@@ -1569,6 +1640,12 @@ public class AnalisadorSintatico {
 
         }
         else if (token != null && conjunto_P_S.primeiro("Var4").contains(token.getLexema())) {
+
+            if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+            else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.VAR_VETOR, tipo));
+            else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+            else constVar.inserirGeneral(new Simbolo(id, Simbolo.VAR_VETOR, tipo));
+
             Var4(tipo);
         }
         else if (token != null) {
@@ -1598,14 +1675,14 @@ public class AnalisadorSintatico {
 
 
     //<Vetor3> ::= '[' <ValorVetor> ']' <Matriz>
-    public void Vetor3(String tipo){
+    public void Vetor3(String tipo, String id, String linha){
 
         if (token != null && token.getLexema().equals("[")){
             nextToken();
             ValorVetor();
             if (token != null && token.getLexema().equals("]")){
                 nextToken();
-                Matriz(tipo);
+                Matriz(tipo, id, linha);
             }
             else if (token != null){
                 addErroSintatico(new ErroSintatico("Vetor3", "Esperava ] mas encontrou "+token.getLexema(),token.getnLinha()));
@@ -1728,28 +1805,44 @@ public class AnalisadorSintatico {
     }
 
     //<Var2> ::= ',' <IdVar> | ';' <Var3> | '=' <Valor> <Var4> | <Vetor3>
-    public void Var2(String tipo){
-
+    public void Var2(String tipo, String id, int linha){
         if (token != null && conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
             if (token != null && token.getLexema().equals(",")){
                 nextToken();
+
+                if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.VARIAVEL, tipo));
+                else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else constVar.inserirGeneral(new Simbolo(id, Simbolo.VARIAVEL, tipo));
+
                 IdVar(tipo);
             }
             else if (token != null &&  token.getLexema().equals(";")){
                 nextToken();
+
+                if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.VARIAVEL, tipo));
+                else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else constVar.inserirGeneral(new Simbolo(id, Simbolo.VARIAVEL, tipo));
+
                 Var3();
             }
             else if (token != null && token.getLexema().equals("=")){
                 nextToken();
+
+                if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.VARIAVEL, tipo));
+                else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+                else constVar.inserirGeneral(new Simbolo(id, Simbolo.VARIAVEL, tipo));
+
                 String valor_tipo = Valor();
-                if (tipo != null && valor_tipo != null && !tipo.equals(valor_tipo)) {
-                    addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis de atribuição (esperava um valor do tipo " + tipo + " mas encontrou "+ valor_tipo+").", token.getnLinha()));
-                }
+
+                if (tipo != null && valor_tipo != null && !tipo.equals(valor_tipo)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis de atribuição (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ valor_tipo+").", token.getnLinha()));
+
                 Var4(tipo);
             }
             else if (token != null && token.getLexema().equals("[")) {
-                Vetor3(tipo);
-
+                Vetor3(tipo, id, linha);
             }
             else if (token != null) {
                 addErroSintatico(new ErroSintatico("Var2", token.getLexema() +" não esperado", token.getnLinha() ));
@@ -1785,17 +1878,15 @@ public class AnalisadorSintatico {
         if (token == null){
             addErroSintatico(new ErroSintatico("Var2", "EOF inesperado", linhaErroEOF));
         }
-
-
-
     }
+
     //<IdVar> ::= Id <Var2>
     public void IdVar(String tipo){
-
         if (token != null && token.getTipo() == 3){
-            // Verifica se o identificador já foi declarado no escopo atual.
+            String id = token.getLexema();
+            int linha = token.getnLinha();
             nextToken();
-            Var2(tipo);
+            Var2(tipo, id, linha);
         }
         else if (token != null){
             addErroSintatico(new ErroSintatico("IdVar", "Esperava um identificador mas encontrou "+token.getLexema(),  token.getnLinha()));
@@ -1832,7 +1923,6 @@ public class AnalisadorSintatico {
             if (token != null && token.getLexema().equals("{")){
                 nextToken();
                 TipoVar();
-
             }
             else if (token != null){
                 addErroSintatico(new ErroSintatico("Var", "Esperava { mas encontrou "+token.getLexema(),token.getnLinha()));
@@ -1871,7 +1961,7 @@ public class AnalisadorSintatico {
             System.out.println("A lista de tokens está vazia!");
     }
 
-        // <Const> ::= 'const' ' { ' <TipoConst> | <>
+    // <Const> ::= 'const' ' { ' <TipoConst> | <>
     private void Const() {
 
         if (token != null && token.getLexema().equals("const")) {
@@ -1906,12 +1996,20 @@ public class AnalisadorSintatico {
     // <IdConst> ::= Id <Valor> <Const2>
     private void IdConst(String tipo) {
         if (token != null && token.getTipo() == 3) {
-            // Verificar se o identificador não existe
+            String id = token.getLexema();
+            int linha = token.getnLinha();
+
             nextToken();
+
+            if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+            else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.CONSTANTE, tipo));
+            else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+            else constVar.inserirGeneral(new Simbolo(id, Simbolo.CONSTANTE, tipo));
+
             String valor_tipo = Valor();
-            if (tipo != null && valor_tipo != null && !tipo.equals(valor_tipo)) {
-                addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis de atribuição (esperava um valor do tipo " + tipo + " mas encontrou "+ valor_tipo+").", token.getnLinha()));
-            }
+
+            if (tipo != null && valor_tipo != null && !tipo.equals(valor_tipo)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis de atribuição (esperava um valor do tipo " + tipo + " mas encontrou "+ valor_tipo+").", token.getnLinha()));
+
             Const2(tipo);
         }
         else if (token != null) {
@@ -2005,7 +2103,6 @@ public class AnalisadorSintatico {
                         nextToken();
                         ExpressaoLR3();
                     }
-                    else return;
                 }
                 else addErroSintatico(new ErroSintatico("ExpressaoLogicaRelacional", "EOF inesperado", linhaErroEOF));
             }
@@ -2036,12 +2133,15 @@ public class AnalisadorSintatico {
 
         if (token != null && pertence(0, "ArgumentoLR2")) {
             ArgumentoLR2();
-            ExpressaoLR2();
+            ExpressaoLR2("boolean");
         }
         else if (token != null && pertence(0, "ArgumentoLR3")) {
-            ArgumentoLR3();
+            String tipo = ArgumentoLR3();
             OperadorRelacional();
-            ArgumentoLR();
+            String tipo2 = ArgumentoLR();
+
+            if (tipo != null && tipo2 != null && !tipo.equals(tipo2)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão lógica e relacional (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo2 +").", token.getnLinha()));
+
             ExpressaoLR3();
         }
         else if (token != null){
@@ -2072,11 +2172,14 @@ public class AnalisadorSintatico {
     }
 
     // <ExpressaoLR2> ::= <OperadorRelacional> <ArgumentoLR> <ExpressaoLR3> | <ExpressaoLR3>
-    private void ExpressaoLR2() {
+    private void ExpressaoLR2(String tipo) {
 
         if (token != null && pertence(0, "OperadorRelacional")) {
             OperadorRelacional();
-            ArgumentoLR();
+            String tipo2 = ArgumentoLR();
+
+            if (tipo != null && tipo2 != null && !tipo.equals(tipo2)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão lógica e relacional (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo2 +").", token.getnLinha()));
+
             ExpressaoLR3();
         }
         else if (token != null) {
@@ -2096,12 +2199,14 @@ public class AnalisadorSintatico {
     }
 
     // <ArgumentoLR> ::= <ArgumentoLR2> | <ArgumentoLR3>
-    private void ArgumentoLR() {
+    private String ArgumentoLR() {
+        String tipo = "boolean";
+
         if (token != null && pertence(0, "ArgumentoLR2")) {
             ArgumentoLR2();
         }
         else if (token != null && pertence(0, "ArgumentoLR3")) {
-            ArgumentoLR3();
+            tipo = ArgumentoLR3();
         }
         else if (token != null) {
             addErroSintatico(new ErroSintatico("ArgumentoLR", "" + token.getLexema() +" inesperado", token.getnLinha()));
@@ -2110,11 +2215,12 @@ public class AnalisadorSintatico {
             if (token != null) {
                 if (pertence(0, "ArgumentoLR"))
                     ArgumentoLR();
-                else return;
             }
             else addErroSintatico(new ErroSintatico("ExpressaoLR2", "EOF inesperado", linhaErroEOF));
         }
         else addErroSintatico(new ErroSintatico("ArgumentoLR", "EOF inesperado", linhaErroEOF));
+
+        return tipo;
     }
 
     // <ArgumentoLR2> ::= '!' <ArgumentoLR2_1> | true | false
@@ -2148,7 +2254,11 @@ public class AnalisadorSintatico {
     private void ArgumentoLR2_1() {
 
         if (token != null) {
-            if (token.getTipo() == 3 || token.getLexema().matches("^(true|false)$"))
+            if (token.getTipo() == 3) {
+                Simbolo simbolo = Identificador();
+                if (simbolo != null && !simbolo.getTipo().equals("boolean")) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo boolean mas encontrou do tipo "+ simbolo.getTipo() +").", token.getnLinha()));;
+            }
+            else if (token.getLexema().matches("^(true|false)$"))
                 nextToken();
             else {
                 addErroSintatico(new ErroSintatico("ArgumentoLR2_1", "Esperava identificador, true ou false mas encontrou " + token.getLexema(), token.getnLinha()));
@@ -2166,12 +2276,15 @@ public class AnalisadorSintatico {
     }
 
     // <ArgumentoLR3> ::= String | <ExpressaoAritmetica>
-    private void ArgumentoLR3() {
+    private String ArgumentoLR3() {
+        String tipo = null;
 
-        if (token != null && token.getTipo() == 11)
+        if (token != null && token.getTipo() == 11) {
+            tipo = "string";
             nextToken();
+        }
         else if (token != null && pertence(0, "ExpressaoAritmetica"))
-            ExpressaoAritmetica();
+            tipo = ExpressaoAritmetica();
         else if (token != null) {
             addErroSintatico(new ErroSintatico("ArgumentoLR3", "" + token.getLexema() +" inesperado", token.getnLinha()));
             sincronizar("ArgumentoLR3", "ArgumentoLR3", "");
@@ -2179,11 +2292,12 @@ public class AnalisadorSintatico {
             if (token != null) {
                 if (pertence(0, "ArgumentoLR3"))
                     ArgumentoLR3();
-                else return;
             }
             else addErroSintatico(new ErroSintatico("ArgumentoLR3", "EOF inesperado", linhaErroEOF));
         }
         else addErroSintatico(new ErroSintatico("ArgumentoLR3", "EOF inesperado", linhaErroEOF));
+
+        return tipo;
     }
 
     // <OperadorRelacional> ::= '!=' | '==' | '<' | '>' | '<=' | '>='
