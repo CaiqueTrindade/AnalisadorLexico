@@ -80,7 +80,14 @@ public class AnalisadorSintatico {
      * @param erro semântico.
      */
     private void addErroSemantico(ErroSemantico erro){
-        errosSemanticos.add(erro);
+
+        if (!errosSemanticos.isEmpty()){
+            if (errosSemanticos.get(errosSemanticos.size()-1).getnLinha() != erro.getnLinha()){
+                errosSemanticos.add(erro);
+            }
+        }
+        else
+            errosSemanticos.add(erro);
     }
 
     /**
