@@ -619,18 +619,27 @@ public class AnalisadorSintatico {
 
     // <Funcao> ::= 'function' <Tipo> Id '(' <Parametro>
     public void Funcao(){
-        ordem = 1;
+        int erro = 0;
+        parametros.clear();
         if(token != null && token.getLexema().equals("function")){
             nextToken();
             String tipo = Tipo();
-            if(token != null && token.getTipo() == 3){
-                if(tabela.containsVar(token.getLexema())){
-                    addErroSemantico(new ErroSemantico("Identificador já foi declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
+            String id = null;
+            int cat = Simbolo.FUNCTION;
+            String tipo_retorno = null;
 
+            if(token != null && token.getTipo() == 3){
+                if(functionProcedure.buscarGeneral(token.getLexema())){
+                    addErroSemantico(new ErroSemantico("Identificador já foi declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
+                    erro = 1;
                 }else{
-                    tabela.setInfo(token.getLexema(), "tipo_identificador", "funcao");
-                    if(!tipo.equals("erro")) {
-                        tabela.setInfo(token.getLexema(), "tipo_retorno", tipo);
+                    id = token.getLexema();
+                    cat = 1;
+
+                    if(tipo != null) {
+                        tipo_retorno = tipo;
+                    }else{
+                        erro = 1;
                     }
                 }
                 nextToken();
@@ -638,6 +647,17 @@ public class AnalisadorSintatico {
                     nextToken();
                     Parametro();
                 }
+                if(erro == 0 && parametros != null){
+                    Simbolo sb = new Simbolo(id, cat, tipo_retorno, parametros);
+                    if (!(functionProcedure.buscarFunctioneProcedure(sb) && functionProcedure.getFunctionProcedure(sb).getCategoria() == Simbolo.FUNCTION)){
+                        functionProcedure.inserirFunctionProcedure(sb);
+                        escopo_atual = sb;
+                    }
+                    else  addErroSemantico(new ErroSemantico("Identificador de procedimento já declarado", id + " já foi declarado", token.getnLinha()));
+                }
+
+
+
             }
         }
     }
