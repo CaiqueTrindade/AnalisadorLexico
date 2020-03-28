@@ -1545,7 +1545,7 @@ public class AnalisadorSintatico {
                 String id = token.getLexema();
                 nextToken();
                 if (escopo.equals("local") || escopo == null){
-                    Simbolo s = functionProcedure.getIdentificadorGeneral(escopo_atual);
+                    Simbolo s = escopo_atual;
                     Simbolo str = s.getSimbolo(id);
                     if (str != null){
                         s = Identificador2(str);
@@ -1574,7 +1574,7 @@ public class AnalisadorSintatico {
         else if (token != null && token.getTipo() == 3){
             String id = token.getLexema();
             nextToken();
-            Simbolo f = functionProcedure.getIdentificadorGeneral(escopo_atual);
+            Simbolo f = escopo_atual;
             if (constVar.buscarGeneral(id)) {
                 Simbolo s = constVar.getIdentificadorGeneral(id);
                 s = Identificador3(s);
