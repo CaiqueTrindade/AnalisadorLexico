@@ -128,6 +128,14 @@ public class Simbolo {
         return null;
     }
 
+    public ArrayList<Simbolo> getSimbolos_local() {
+        ArrayList<Simbolo> simbolo = new ArrayList<>();
+        for (Map.Entry<String, Simbolo> entrada : simbolos_local.entrySet()) {
+               simbolo.add(entrada.getValue());
+        }
+        return simbolo;
+    }
+
     /**
      * Adiciona um parâmetro na lista de parâmetros da função/procedimento (ordenada por inserção)
      *

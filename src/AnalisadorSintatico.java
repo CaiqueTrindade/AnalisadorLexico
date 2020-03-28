@@ -21,7 +21,7 @@ public class AnalisadorSintatico {
     private int ordem = 1;
     private Simbolo escopo_atual;
     private ArrayList<Simbolo> parametros = new ArrayList();
-    private ArrayList<Simbolo> campos = new ArrayList();
+    private ArrayList<Simbolo> campos = new ArrayList<>();
 
 
     /**
@@ -452,7 +452,7 @@ public class AnalisadorSintatico {
     }
     //<Struct> ::= 'typedef' 'struct' Id <Extends> <TipoStruct> <Struct> | <>
     public void struct(){
-
+        campos.removeAll(campos);
         Simbolo simbolo = null;
         if(token != null && token.getLexema().equals("typedef")){
             nextToken();
@@ -469,10 +469,9 @@ public class AnalisadorSintatico {
                     nextToken();
                     Extend(identificador);
                     TipoStruct();
-                    Iterator it = campos.iterator();
-                    while (it.hasNext()) {
+                    for (Simbolo campo : campos) {
                         if (simbolo != null)
-                            simbolo.addSimbolo((Simbolo) it.next());
+                            simbolo.addSimbolo(campo);
                         else
                             System.out.println("Erro");
                     }
@@ -484,6 +483,7 @@ public class AnalisadorSintatico {
   }
     //<Extends> ::= 'extends' Id '{' | '{'
     public void Extend(String identificador){
+        campos = new ArrayList();
         if(token != null && token.getLexema().equals("extends")){
             nextToken();
             if (token != null && token.getTipo() == 3){
@@ -494,6 +494,13 @@ public class AnalisadorSintatico {
                 }
                 else if(!struct.buscarGeneral(identificador))
                     addErroSemantico(new ErroSemantico("Identificador de Struct não declarado", token.getLexema()+ " não pode estender", token.getnLinha()));
+
+                else{
+                    Simbolo simbolo_aux = struct.getIdentificadorGeneral(identificador_aux);
+                    campos.addAll(simbolo_aux.getSimbolos_local());
+
+                }
+
                 nextToken();
                 if (token != null && token.getLexema().equals("{")){
                     nextToken();
@@ -507,7 +514,7 @@ public class AnalisadorSintatico {
     }
     //<TipoStruct> ::= <Tipo> <IdStruct>
     public void TipoStruct(){
-        campos.clear();
+        campos.removeAll(campos);
         String tipo = Tipo();
         IdStruct(tipo);
 
@@ -519,19 +526,20 @@ public class AnalisadorSintatico {
         if(token != null && token.getTipo() == 3){
            identificador = token.getLexema();
 
-            if(constVar.buscarGeneral(identificador) && constVar.getIdentificadorGeneral(identificador).getCategoria() == Simbolo.CONSTANTE){
+            if(struct.buscarGeneral(identificador)){
                 if (!campos.isEmpty()) {
-                    Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.CONSTANTE, tipo);
+                    Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.STRUCT, tipo);
                     if (!campos.contains(simbolo_aux)){
                         campos.add(simbolo_aux);
                     }
-                    else addErroSemantico(new ErroSemantico("Constante já utilizada", token.getLexema()+ " já foi declarado", token.getnLinha()));
+                    else addErroSemantico(new ErroSemantico("Identificador Struct já  declardo", token.getLexema()+ " já foi declarado", token.getnLinha()));
 
                 }
             }
+            else  if(!struct.buscarGeneral(identificador)) addErroSemantico(new ErroSemantico("Identificador Struct não declardo", token.getLexema()+ " não foi declarado", token.getnLinha()));
             else{
                 if (!campos.isEmpty()) {
-                    Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.VARIAVEL, constVar.getIdentificadorGeneral(identificador).getTipo());
+                    Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.VARIAVEL, tipo);
                     if (!campos.contains(simbolo_aux)){
                         campos.add(simbolo_aux);
                     }
@@ -540,11 +548,9 @@ public class AnalisadorSintatico {
                 }
 
             }
-            nextToken();
-            Struct2(tipo);
         }
-
-
+        nextToken();
+        Struct2(tipo);
     }
 
     //<Struct2> ::= ',' <IdStruct> | ';' <Struct3>
@@ -639,7 +645,7 @@ public class AnalisadorSintatico {
     // <Funcao> ::= 'function' <Tipo> Id '(' <Parametro>
     public void Funcao(){
         int erro = 0;
-        parametros.clear();
+        parametros.removeAll(parametros);
         if(token != null && token.getLexema().equals("function")){
             nextToken();
             String tipo = Tipo();
@@ -692,7 +698,7 @@ public class AnalisadorSintatico {
     //<Procedimento> ::= 'procedure' Id '(' <Parametro>
  public void Procedimento() {
 
-         parametros.clear();
+         parametros.removeAll(parametros);
          if (token != null && token.getLexema().equals("procedure")) {
             nextToken();
             if (token != null && token.getTipo() == 3) {
