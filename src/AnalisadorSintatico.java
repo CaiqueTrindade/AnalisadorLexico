@@ -1342,7 +1342,7 @@ public class AnalisadorSintatico {
             struct();
             Var();
             GeraFuncaoeProcedure();
-            Start(0);
+            Start();
         }
         else
             System.out.println("A lista de tokens está vazia!");
@@ -1691,94 +1691,21 @@ public class AnalisadorSintatico {
     }
 
     // <Start> ::= 'start' '(' ')' '{' <Corpo> '}'
-    private void Start(int estagio) {
-
-        int estagio_atual = estagio;
-        boolean erro = false;
-
-        if (token!= null && estagio_atual <= 5) {
-            switch (estagio) {
-                case 0:
-                    if (token.getLexema().equals("start")) {
+    private void Start() {
+        if (token != null && token.getLexema().equals("start")) {
+            nextToken();
+            if (token != null && token.getLexema().equals("(")) {
+                nextToken();
+                if (token != null && token.getLexema().equals(")")) {
+                    nextToken();
+                    if (token != null && token.getLexema().equals("{")) {
                         nextToken();
-                        estagio_atual ++;
-                    }
-                    else erro = true;
-                    break;
-                case 1:
-                    if (token.getLexema().equals("(")) {
-                        nextToken();
-                        estagio_atual ++;
-                    }
-                    else erro = true;
-                    break;
-                case 2:
-                    if (token.getLexema().equals(")")) {
-                        nextToken();
-                        estagio_atual ++;
-                    }
-                    else erro = true;
-                    break;
-                case 3:
-                    if (token.getLexema().equals("{")) {
-                        nextToken();
-                        estagio_atual ++;
-                    }
-                    else erro = true;
-                    break;
-                case 4:
-                    escopo_atual = new Simbolo("start", Simbolo.START);
-                    Corpo();
-                    estagio_atual ++;
-                    break;
-            }
-
-            if (token != null && !erro && estagio_atual <= 4) {
-                Start(estagio_atual);
-            }
-            else if (token != null && erro && estagio_atual <= 4) {
-                String lexemas = null;
-                String conjuntos_primeiro = null;
-                switch (estagio_atual) {
-                    case 0:
-                        lexemas = "start";
-                    case 1:
-                        lexemas = (lexemas != null)?lexemas + "#(":"(";
-                    case 2:
-                        lexemas = (lexemas != null)?lexemas + "#)":")";
-                    case 3:
-                        lexemas = (lexemas != null)?lexemas + "#{":"{";
-                    case 4:
-                        conjuntos_primeiro = "Corpo";
-                }
-
-
-                sincronizar(conjuntos_primeiro, null, lexemas);
-
-                if (token != null) {
-                    if (pertence(0, "Corpo"))
-                        Start(4);
-                    else {
-                        switch (token.getLexema()) {
-                            case "start":
-                                Start(0);
-                                break;
-                            case "(":
-                                Start(1);
-                                break;
-                            case ")":
-                                Start(2);
-                                break;
-                            case "{":
-                                Start(3);
-                                break;
-                        }
+                        escopo_atual = new Simbolo("start", Simbolo.START);
+                        Corpo();
                     }
                 }
-
             }
         }
-
     }
 
     /**
