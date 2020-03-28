@@ -47,7 +47,7 @@ public class TabelaSimbolos {
      * @param simbolo objeto a ser inserido na tabela de simbolos
      */
     public void inserirFunctionProcedure(Simbolo simbolo){
-        this.tabela.put(simbolo.getIdentificador(),simbolo);
+        this.tabela.put(simbolo.getIdentificador()+simbolo.getParametros(),simbolo);
 
     }
 
@@ -65,8 +65,8 @@ public class TabelaSimbolos {
      * @param simbolo Chave de busca na tabela.
      * @return
      */
-    public Simbolo getIdentificadorFunctionProcedure(Simbolo simbolo){
-        return  this.tabela.get(simbolo.getIdentificador());
+    public Simbolo getFunctionProcedure(Simbolo simbolo){
+        return  this.tabela.get(simbolo.getIdentificador()+simbolo.getParametros());
     }
 
 

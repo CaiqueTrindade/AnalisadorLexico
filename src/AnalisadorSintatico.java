@@ -19,6 +19,7 @@ public class AnalisadorSintatico {
     private  TabelaSimbolos functionProcedure = new TabelaSimbolos(); //Tabela para funçõres e procedimentos
     private int ordem = 1;
     private Simbolo escopo_atual;
+    private ArrayList<Simbolo> parametros = new ArrayList();
 
     /**
      * Construtor da classe do AnalisadorSintatico.
@@ -604,39 +605,51 @@ public class AnalisadorSintatico {
 //<Para3>  ::= '[' ']' | <>
 //<F2> ::= '{' <Corpo>
 
-
-
     //<Procedimento> ::= 'procedure' Id '(' <Parametro>
-    public void Procedimento(){
-        ordem = 1;
-        if(token != null && token.getLexema().equals("procedure")){
+ public void Procedimento() {
+
+         parametros.clear();
+         if (token != null && token.getLexema().equals("procedure")) {
             nextToken();
-            if(token != null && token.getTipo() == 3){
-                String func = token.getLexema();
-                if(!buscar(token.getLexema())){
-                   inserir(token.getLexema());
-                }
-                else{
-                    addErroSemantico(new ErroSemantico("Identificador já foi declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
-
-                }
+            if (token != null && token.getTipo() == 3) {
+                String identificador = token.getLexema();
                 nextToken();
-
+                if (token != null && token.getLexema().equals("(")) {
+                    nextToken();
+                    Parametro();
+                    escopo_atual = new Simbolo(identificador, Simbolo.PROCEDURE, "", parametros);
+                    if (!(functionProcedure.buscarFunctioneProcedure(escopo_atual) && functionProcedure.getFunctionProcedure(escopo_atual).getCategoria() == Simbolo.PROCEDURE)){
+                        functionProcedure.inserirFunctionProcedure(escopo_atual);
+                    }
+                    else  addErroSemantico(new ErroSemantico("Procedimento já foi declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
+                }
             }
         }
     }
+
     //<Parametro> ::=  <Tipo> Id <Para2> <Para1>
-    public void Parametro(String name){
+    public Simbolo Parametro(){
         String tipo = Tipo();
+
         if(token != null && token.getTipo() == 3){
-            tabela.setFuncProc(name, "identificador", token.getLexema());
-            tabela.setFuncProc(name, "tipo_identificador", tipo);
-            tabela.setFuncProc(name, "ordem", Integer.toString(ordem));
-            ordem = ordem + 1;
             nextToken();
-            Para2();
+
+            if(constVar.buscarGeneral(token.getLexema()) && constVar.getIdentificadorGeneral(token.getLexema()).getCategoria() == Simbolo.CONSTANTE) {
+                int retorno = Para2();
+                if (retorno == 0) parametros.add(new Simbolo(token.getLexema(),Simbolo.CONST_VETOR,tipo));
+                else if (retorno == 1) parametros.add(new Simbolo(token.getLexema(),Simbolo.CONST_MATRIZ,tipo));
+                else if (retorno == 2) parametros.add(new Simbolo(token.getLexema(),Simbolo.CONSTANTE,tipo));
+            }
+            else{
+                int retorno = Para2();
+                if (retorno == 0) parametros.add(new Simbolo(token.getLexema(),Simbolo.VAR_VETOR,tipo));
+                else if (retorno == 1) parametros.add(new Simbolo(token.getLexema(),Simbolo.VAR_MATRIZ,tipo));
+                else if (retorno == 2) parametros.add(new Simbolo(token.getLexema(),Simbolo.VARIAVEL,tipo));
+            }
             Para1();
+
         }
+
     }
 
 
@@ -650,25 +663,30 @@ public class AnalisadorSintatico {
         }
     }
 
-    public void Para2(){
+    // 1 indica que é matriz 0 indica que é vetor e 2 indica que não é nem vetor nem matriz
+    public int Para2(){
         if(token != null && token.getLexema().equals("[")){
             nextToken();
             if(token != null && token.getLexema().equals("]")){
                 nextToken();
-                Para3();
+                if (Para3()) return 1;
             }
+            return 0;
 
         }
+        return 2;
 
     }
 
-    public void Para3(){
+    public boolean Para3(){
         if(token != null && token.getLexema().equals("[")){
             nextToken();
             if(token != null && token.getLexema().equals("]")){
                 nextToken();
             }
+            return true;
         }
+        return false;
     }
 
     public void F2(){
