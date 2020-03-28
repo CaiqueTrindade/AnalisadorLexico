@@ -298,6 +298,21 @@ public class AnalisadorSintatico {
         if (token != null && token.getLexema().equals("(")) {
             nextToken();
             ArrayList<Simbolo> lParametros = IdentificadorExtra();
+            String aux = id;
+            for (Simbolo s: lParametros)
+                aux = aux + "#" + s.getTipo();
+
+            if (functionProcedure.getIdentificadorGeneral(aux) != null) {
+                Simbolo simbolo = functionProcedure.getIdentificadorGeneral(aux);
+                if (simbolo.getCategoria() == Simbolo.FUNCTION)
+                    tipo = simbolo.getTipo_retorno();
+                else
+                    addErroSemantico(new ErroSemantico("Tipos incompatíveis", id + " é uma procedure e não possui retorno", token.getnLinha()));
+            }
+            else {
+                addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado ou parâmetros estão incorretos", token.getnLinha()));
+                return null;
+            }
 
             if (token != null && token.getLexema().equals(")")){
                 nextToken();
@@ -1712,6 +1727,7 @@ public class AnalisadorSintatico {
                     else erro = true;
                     break;
                 case 4:
+                    escopo_atual = new Simbolo("start", Simbolo.START);
                     Corpo();
                     estagio_atual ++;
                     break;
