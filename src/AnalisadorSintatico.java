@@ -491,48 +491,49 @@ public class AnalisadorSintatico {
     public void TipoStruct(){
         campos.clear();
         String tipo = Tipo();
-        String identificador = IdStruct();
-        if(constVar.buscarGeneral(identificador) && constVar.getIdentificadorGeneral(identificador).getCategoria() == Simbolo.CONSTANTE){
-           if (!campos.isEmpty()) {
-               Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.CONSTANTE, constVar.getIdentificadorGeneral(identificador).getTipo());
-               if (!campos.contains(simbolo_aux)){
-                   campos.add(simbolo_aux);
-               }
-               else addErroSemantico(new ErroSemantico("Constante já utilizada", token.getLexema()+ " já foi declarado", token.getnLinha()));
-
-           }
-        }
-        else{
-            if (!campos.isEmpty()) {
-                Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.VARIAVEL, constVar.getIdentificadorGeneral(identificador).getTipo());
-                if (!campos.contains(simbolo_aux)){
-                    campos.add(simbolo_aux);
-                }
-                else addErroSemantico(new ErroSemantico("Identificador já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
-
-            }
-
-        }
+        IdStruct(tipo);
 
 
     }
     //<IdStruct> ::= Id <Struct2>
-    public String IdStruct(){
+    public void IdStruct(String tipo){
         String identificador = "";
         if(token != null && token.getTipo() == 3){
            identificador = token.getLexema();
+
+            if(constVar.buscarGeneral(identificador) && constVar.getIdentificadorGeneral(identificador).getCategoria() == Simbolo.CONSTANTE){
+                if (!campos.isEmpty()) {
+                    Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.CONSTANTE, tipo);
+                    if (!campos.contains(simbolo_aux)){
+                        campos.add(simbolo_aux);
+                    }
+                    else addErroSemantico(new ErroSemantico("Constante já utilizada", token.getLexema()+ " já foi declarado", token.getnLinha()));
+
+                }
+            }
+            else{
+                if (!campos.isEmpty()) {
+                    Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.VARIAVEL, constVar.getIdentificadorGeneral(identificador).getTipo());
+                    if (!campos.contains(simbolo_aux)){
+                        campos.add(simbolo_aux);
+                    }
+                    else addErroSemantico(new ErroSemantico("Identificador já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
+
+                }
+
+            }
             nextToken();
-            Struct2();
+            Struct2(tipo);
         }
-        return identificador;
+
 
     }
 
     //<Struct2> ::= ',' <IdStruct> | ';' <Struct3>
-    public void Struct2(){
+    public void Struct2(String tipo){
         if(token != null && token.getLexema().equals(",")){
             nextToken();
-            IdStruct();
+            IdStruct(tipo);
         } else if(token != null && token.getLexema().equals(";")){
             nextToken();
             Struct3();
