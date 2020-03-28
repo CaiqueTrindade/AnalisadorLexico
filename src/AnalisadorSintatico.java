@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
@@ -20,6 +21,8 @@ public class AnalisadorSintatico {
     private int ordem = 1;
     private Simbolo escopo_atual;
     private ArrayList<Simbolo> parametros = new ArrayList();
+    private ArrayList<Simbolo> campos = new ArrayList();
+
 
     /**
      * Construtor da classe do AnalisadorSintatico.
@@ -431,36 +434,51 @@ public class AnalisadorSintatico {
     }
     //<Struct> ::= 'typedef' 'struct' Id <Extends> <TipoStruct> <Struct> | <>
     public void struct(){
+
+        Simbolo simbolo = null;
         if(token != null && token.getLexema().equals("typedef")){
             nextToken();
             if ( token != null && token.getLexema().equals("struct")){
                 nextToken();
                 if (token != null && token.getTipo() == 3){ //Id
+                    String identificador = token.getLexema();
+
+                    if(!struct.buscarGeneral(identificador)){
+                        simbolo = new Simbolo(identificador, Simbolo.STRUCT, identificador);
+                        struct.inserirGeneral(simbolo);
+                    }
+                    else  addErroSemantico(new ErroSemantico("Identificador de Struct já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
                     nextToken();
-                    Extend();
+                    Extend(identificador);
                     TipoStruct();
-                    struct();
+                    Iterator it = campos.iterator();
+                    while (it.hasNext()) {
+                        if (simbolo != null)
+                            simbolo.addSimbolo((Simbolo) it.next());
+                        else
+                            System.out.println("Erro");
+                    }
+
                 }
             }
         }
 
   }
     //<Extends> ::= 'extends' Id '{' | '{'
-    public void Extend(){
+    public void Extend(String identificador){
         if(token != null && token.getLexema().equals("extends")){
             nextToken();
             if (token != null && token.getTipo() == 3){
+                String identificador_aux = token.getLexema();
+                if(identificador.equals(identificador_aux)){
+                    addErroSemantico(new ErroSemantico("Extends não permitido", token.getLexema()+ " tem o mesmo nome da estrutura", token.getnLinha()));
+
+                }
+                else if(!struct.buscarGeneral(identificador))
+                    addErroSemantico(new ErroSemantico("Identificador de Struct não declarado", token.getLexema()+ " não pode estender", token.getnLinha()));
                 nextToken();
                 if (token != null && token.getLexema().equals("{")){
                     nextToken();
-                } else if(token != null){
-                    addErroSintatico(new ErroSintatico("Extends", token.getLexema() +" não esperado", token.getnLinha()));
-                    sincronizar(null, "Extends", ";");
-
-                    if(token != null && token.getLexema().equals(";")){
-                        nextToken();
-                        Struct3();
-                    }
                 }
             }
         } else if(token != null && token.getLexema().equals("{")){
@@ -471,15 +489,42 @@ public class AnalisadorSintatico {
     }
     //<TipoStruct> ::= <Tipo> <IdStruct>
     public void TipoStruct(){
-        Tipo();
-        IdStruct();
+        campos.clear();
+        String tipo = Tipo();
+        String identificador = IdStruct();
+        if(constVar.buscarGeneral(identificador) && constVar.getIdentificadorGeneral(identificador).getCategoria() == Simbolo.CONSTANTE){
+           if (!campos.isEmpty()) {
+               Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.CONSTANTE, constVar.getIdentificadorGeneral(identificador).getTipo());
+               if (!campos.contains(simbolo_aux)){
+                   campos.add(simbolo_aux);
+               }
+               else addErroSemantico(new ErroSemantico("Constante já utilizada", token.getLexema()+ " já foi declarado", token.getnLinha()));
+
+           }
+        }
+        else{
+            if (!campos.isEmpty()) {
+                Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.VARIAVEL, constVar.getIdentificadorGeneral(identificador).getTipo());
+                if (!campos.contains(simbolo_aux)){
+                    campos.add(simbolo_aux);
+                }
+                else addErroSemantico(new ErroSemantico("Identificador já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
+
+            }
+
+        }
+
+
     }
     //<IdStruct> ::= Id <Struct2>
-    public void IdStruct(){
+    public String IdStruct(){
+        String identificador = "";
         if(token != null && token.getTipo() == 3){
+           identificador = token.getLexema();
             nextToken();
             Struct2();
         }
+        return identificador;
 
     }
 
@@ -621,14 +666,14 @@ public class AnalisadorSintatico {
                     if (!(functionProcedure.buscarFunctioneProcedure(escopo_atual) && functionProcedure.getFunctionProcedure(escopo_atual).getCategoria() == Simbolo.PROCEDURE)){
                         functionProcedure.inserirFunctionProcedure(escopo_atual);
                     }
-                    else  addErroSemantico(new ErroSemantico("Procedimento já foi declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
+                    else  addErroSemantico(new ErroSemantico("Identificador de procedimento já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
                 }
             }
         }
     }
 
     //<Parametro> ::=  <Tipo> Id <Para2> <Para1>
-    public Simbolo Parametro(){
+    public void Parametro(){
         String tipo = Tipo();
 
         if(token != null && token.getTipo() == 3){
@@ -1117,9 +1162,9 @@ public class AnalisadorSintatico {
         }
         else if (token != null && conjunto_P_S.primeiro("Var4").contains(token.getLexema())) {
 
-            if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+            if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", token.getnLinha()));
             else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.VAR_VETOR, tipo));
-            else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
+            else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", token.getnLinha()));
             else constVar.inserirGeneral(new Simbolo(id, Simbolo.VAR_VETOR, tipo));
             Var4(tipo);
         }
