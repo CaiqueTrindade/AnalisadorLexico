@@ -1319,22 +1319,7 @@ public class AnalisadorSintatico {
             else if (token != null && token.getLexema().equals("[")) {
                 Vetor3(tipo, id, linha);
             }
-            else if (token != null) {
-                addErroSintatico(new ErroSintatico("Var2", token.getLexema() +" não esperado", token.getnLinha() ));
-                sincronizar("Var2#GeraFuncaoeProcedure#Start","Var2", null);
-                if (token != null){
-                    if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
-                        Var2(tipo);
-                    }
-                    else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                        GeraFuncaoeProcedure();
-                    }
-                    else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                        Start(0);
-                    }
-                }
-            }
-        }
+         }
     }
 
     //<IdVar> ::= Id <Var2>
@@ -1345,25 +1330,7 @@ public class AnalisadorSintatico {
             nextToken();
             Var2(tipo, id, linha);
         }
-        else if (token != null){
-            addErroSintatico(new ErroSintatico("IdVar", "Esperava um identificador mas encontrou "+token.getLexema(),  token.getnLinha()));
-            sincronizar("Var2#GeraFuncaoeProcedure#Start","IdVar", null);
-            if (token != null){
-                if (conjunto_P_S.primeiro("Var2").contains(token.getLexema())){
-                    Var2(tipo);
-                }
-                else if (conjunto_P_S.primeiro("GeraFuncaoeProcedure").contains(token.getLexema())){
-                    GeraFuncaoeProcedure();
-                }
-                else if (conjunto_P_S.primeiro("Start").contains(token.getLexema())){
-                    Start(0);
-                }
-            }
-        }
 
-        if (token == null){
-            addErroSintatico(new ErroSintatico("IdVar", "EOF inesperado", linhaErroEOF));
-        }
     }
 
     //<TipoVar> ::= <Tipo> <IdVar>
