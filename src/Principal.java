@@ -66,7 +66,7 @@ public class Principal {
 
                             if(as.errosIsVazio())
                                 System.out.print("O arquivo "+ input.getName() +" não possui erros sintáticos! ");
-                            System.out.println("Análise sintática feita com sucesso!");
+                            System.out.println("Análise semântica feita com sucesso!");
 
                             System.out.println("Leitura do arquivo " + input.getName() + " finalizada!\n\n");
                         } catch (FileNotFoundException e) {
