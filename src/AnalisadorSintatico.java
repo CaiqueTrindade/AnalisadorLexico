@@ -427,7 +427,11 @@ public class AnalisadorSintatico {
             nextToken();
         }
         else if (token != null && pertence(0, "Identificador") || conjunto_P_S.primeiro("Escopo").contains(token.getLexema())){
-            Identificador();
+            Simbolo sb = Identificador();
+            if (!sb.getTipo().equals("int")){
+                addErroSemantico(new ErroSemantico("Parâmetro incompatível: tipo", " parametro incompatível: "+ sb.getTipo(), token.getnLinha()));
+            }
+
         }
 
 
@@ -779,7 +783,17 @@ public class AnalisadorSintatico {
             nextToken();
             AuxPrint();
         }else if(token != null && pertence(0, "Identificador")){
-            Identificador();
+            Simbolo sb = Identificador();
+            if(sb != null) {
+                if (!(functionProcedure.buscarFunctioneProcedure(sb) ||
+                        functionProcedure.getFunctionProcedure(escopo_atual).getIdentificador() == sb.getIdentificador() ||
+                        constVar.buscarGeneral(sb.getIdentificador()))) {
+                    addErroSemantico(new ErroSemantico("Identificador de procedimento já declarado", sb.getIdentificador() + " já foi declarado", token.getnLinha()));
+
+                }
+                addErroSemantico(new ErroSemantico("Identificador de procedimento já declarado", sb.getIdentificador() + " já foi declarado", token.getnLinha()));
+
+            }
             AuxPrint();
         }
     }
