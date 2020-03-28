@@ -1162,7 +1162,7 @@ public class AnalisadorSintatico {
 
 
     //<Matriz> ::= '[' <ValorVetor> ']' <Var4> | <Var4>
-    public void Matriz(String tipo, String id, String linha){
+    public void Matriz(String tipo, String id, int linha){
 
         if (token != null && token.getLexema().equals("[")){
             nextToken();
@@ -1190,7 +1190,7 @@ public class AnalisadorSintatico {
 
 
     //<Vetor3> ::= '[' <ValorVetor> ']' <Matriz>
-    public void Vetor3(String tipo, String id, String linha){
+    public void Vetor3(String tipo, String id, int linha){
 
         if (token != null && token.getLexema().equals("[")){
             nextToken();
