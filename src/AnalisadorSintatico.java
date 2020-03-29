@@ -816,14 +816,14 @@ public class AnalisadorSintatico {
             AuxPrint();
         }else if(token != null && pertence(0, "Identificador")){
             Simbolo sb = Identificador();
+
             if(sb != null) {
-                if (!(functionProcedure.buscarFunctioneProcedure(sb) ||
-                        functionProcedure.getFunctionProcedure(escopo_atual).getIdentificador() == sb.getIdentificador() ||
+                if (!(functionProcedure.buscarFunctioneProcedure(sb) &&
+                        escopo_atual.getSimbolo(sb.getIdentificador()) != null &&
                         constVar.buscarGeneral(sb.getIdentificador()))) {
                     addErroSemantico(new ErroSemantico("Identificador de procedimento já declarado", sb.getIdentificador() + " já foi declarado", token.getnLinha()));
 
                 }
-                addErroSemantico(new ErroSemantico("Identificador de procedimento já declarado", sb.getIdentificador() + " já foi declarado", token.getnLinha()));
 
             }
             AuxPrint();
