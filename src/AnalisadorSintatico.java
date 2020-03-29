@@ -22,6 +22,7 @@ public class AnalisadorSintatico {
     private Simbolo escopo_atual;
     private ArrayList<Simbolo> parametros = new ArrayList();
     private ArrayList<Simbolo> campos = new ArrayList<>();
+    private HashMap<String,String> identificadorFuncao;
 
 
 
@@ -30,7 +31,7 @@ public class AnalisadorSintatico {
      * @param tokens recebe uma lista com todos os tokens gerados pela análise léxica
      */
     public AnalisadorSintatico(List<Token> tokens) {
-
+        this.identificadorFuncao = new HashMap<>();
         this.tokens = tokens;
         this.errosSintaticos = new ArrayList<>();
         this.errosSemanticos = new ArrayList<>();
@@ -305,7 +306,7 @@ public class AnalisadorSintatico {
             String aux = id;
             for (Simbolo s: lParametros) aux = aux + "#" + s.getTipo();
 
-            System.out.println("]amoooooooooooooooooooooooo "+ functionProcedure.getIdentificadorGeneral(aux));
+            System.out.println("Amoooooooooooooooooooooooo "+ functionProcedure.getIdentificadorGeneral(aux));
 
             if (functionProcedure.getIdentificadorGeneral(aux) != null) {
                 Simbolo simbolo = functionProcedure.getIdentificadorGeneral(aux);
@@ -765,7 +766,7 @@ public class AnalisadorSintatico {
             Simbolo simbolo_aux = new Simbolo(identificador, flag, retorno_fun, parametros);
             if (!(functionProcedure.buscarFunctioneProcedure(simbolo_aux) && functionProcedure.getFunctionProcedure(simbolo_aux).getCategoria() == flag)){
                 functionProcedure.inserirFunctionProcedure(simbolo_aux);
-
+                if (!identificadorFuncao.containsKey(identificador)) identificadorFuncao.put(identificador,identificador);
             }
             else  addErroSemantico(new ErroSemantico("Identificador já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
             escopo_atual = simbolo_aux;
@@ -1140,7 +1141,7 @@ public class AnalisadorSintatico {
 
                 } else {
 
-                    addErroSemantico(new ErroSemantico("Identificador não declarado", id_entrada + " não declarado", token.getnLinha()));
+                    addErroSemantico(new ErroSemantico("Identificador não declarado ", id_entrada + " não declarado", token.getnLinha()));
                     return null;
                 }
             }else{
