@@ -199,7 +199,7 @@ Lista de Tokens
 58 ; Delimitador ;;
 59 read Palavra Reservada;
 59 ( Delimitador (;
-59 entrada Identificador;
+59 tamanho_vetor Identificador;
 59 ) Delimitador );
 59 ; Delimitador ;;
 61 if Palavra Reservada;

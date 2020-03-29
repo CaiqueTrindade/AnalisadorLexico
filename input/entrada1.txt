@@ -56,7 +56,7 @@ start () {
 
 	while (true) {
 		print("Digite 0 para cadastrar uma nova pessoa ou 1 para imprimir a lista de pessoas cadastradas:");
-		read(entrada);
+		read(tamanho_vetor);
 
 		if (entrada == 0) then {
 			print("Digite o nome, endereco e telefone da pessoa que deseja cadastrar:");
