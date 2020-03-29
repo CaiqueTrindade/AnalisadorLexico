@@ -1,1 +1,2 @@
-29 Identificador de procedimento já declarado : tamanho_vetor já foi declarado;
+29 Identificador não declarado : tamanho_vetor não declarado declarado;
+31 Identificador não declarado : nome não declarado;

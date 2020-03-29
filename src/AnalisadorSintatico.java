@@ -430,7 +430,10 @@ public class AnalisadorSintatico {
             Simbolo simbolo = (escopo_atual.getSimbolo(id) != null)?escopo_atual.getSimbolo(id):constVar.getIdentificadorGeneral(id);
             if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
 
-            tipo = Identificador2(simbolo).getTipo();
+            Simbolo t = Identificador2(simbolo);
+            if(t != null){
+                tipo = t.getTipo();
+            }
         }
 
         return tipo;
@@ -816,12 +819,11 @@ public class AnalisadorSintatico {
             AuxPrint();
         }else if(token != null && pertence(0, "Identificador")){
             Simbolo sb = Identificador();
-
             if(sb != null) {
                 if (!(functionProcedure.buscarFunctioneProcedure(sb) &&
                         escopo_atual.getSimbolo(sb.getIdentificador()) != null &&
                         constVar.buscarGeneral(sb.getIdentificador()))) {
-                    addErroSemantico(new ErroSemantico("Identificador de procedimento já declarado", sb.getIdentificador() + " já foi declarado", token.getnLinha()));
+                    addErroSemantico(new ErroSemantico("Identificador não declarado", sb.getIdentificador() + " não declarado declarado", token.getnLinha()));
 
                 }
 
@@ -1398,7 +1400,10 @@ public class AnalisadorSintatico {
             if (escopo_atual != null && escopo_atual.getSimbolo(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
             else if (escopo_atual != null) escopo_atual.addSimbolo(new Simbolo(id, Simbolo.CONSTANTE, tipo));
             else if (constVar.getIdentificadorGeneral(id) != null) addErroSemantico(new ErroSemantico("Identificador já foi declarado", id + " já foi declarado", linha));
-            else constVar.inserirGeneral(new Simbolo(id, Simbolo.CONSTANTE, tipo));
+            else {
+                System.out.println(id);
+                constVar.inserirGeneral(new Simbolo(id, Simbolo.CONSTANTE, tipo));
+            }
 
             String valor_tipo = Valor();
 

@@ -28,6 +28,7 @@ start () {
 	while (true) {
 		print("Digite :", tamanho_vetor);
 		read(entrada);
+		read(pessoa.nome, pessoa.endereco, pessoa.telefone);
 
 	}
 }
