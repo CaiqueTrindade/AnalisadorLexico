@@ -429,8 +429,9 @@ public class AnalisadorSintatico {
 
             Simbolo simbolo = (escopo_atual.getSimbolo(id) != null)?escopo_atual.getSimbolo(id):constVar.getIdentificadorGeneral(id);
             if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
-
             tipo = Identificador2(simbolo).getTipo();
+
+
         }
 
         return tipo;
@@ -471,6 +472,7 @@ public class AnalisadorSintatico {
 
                         simbolo = new Simbolo(identificador, Simbolo.STRUCT, identificador);
                         struct.inserirGeneral(simbolo);
+
                     }
                     else  addErroSemantico(new ErroSemantico("Identificador de Struct já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
 
