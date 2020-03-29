@@ -57,14 +57,14 @@ start () {
 	while (true) {
 		print("Digite 0 para cadastrar uma nova pessoa ou 1 para imprimir a lista de pessoas cadastradas:");
 		read(entrada);
-		read(pessoa.nome, pessoa.endereco, pessoa.telefone);
+		print(pessoa.nome, pessoa.endereco, pessoa.telefone);
 
 		if (entrada == 0) then {
 			print("Digite o nome, endereco e telefone da pessoa que deseja cadastrar:");
 			read(pessoa.nome, pessoa.endereco, pessoa.telefone);
 			retorno = cadastrarPessoa(pessoa);
 			if(retorno == true) then {
-				print("Nova pessoa cadastrada com sucesso.");
+				print(vetor_funcionarios[1]);
 			}
 			else {
 				print("A lista esta cheia.");

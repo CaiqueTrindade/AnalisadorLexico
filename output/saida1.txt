@@ -1,4 +1,4 @@
 9 Identificador de Struct não declarado : pesso não pode estender;
 42 Identificador não declarado : vetor_pessoas não declarado declarado;
 47 Identificador não declarado : vetor_funcionarios não declarado declarado;
-60 Identificador não declarado : nome não declarado;
+60 Identificador não declarado : pessoa não declarado declarado;

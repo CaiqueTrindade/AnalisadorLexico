@@ -202,7 +202,7 @@ Lista de Tokens
 59 entrada Identificador;
 59 ) Delimitador );
 59 ; Delimitador ;;
-60 read Palavra Reservada;
+60 print Palavra Reservada;
 60 ( Delimitador (;
 60 pessoa Identificador;
 60 . Delimitador .;
@@ -262,7 +262,10 @@ Lista de Tokens
 66 { Delimitador {;
 67 print Palavra Reservada;
 67 ( Delimitador (;
-67 "Nova pessoa cadastrada com sucesso." Cadeia de Caracteres;
+67 vetor_funcionarios Identificador;
+67 [ Delimitador [;
+67 1 Número Inteiro;
+67 ] Delimitador ];
 67 ) Delimitador );
 67 ; Delimitador ;;
 68 } Delimitador };

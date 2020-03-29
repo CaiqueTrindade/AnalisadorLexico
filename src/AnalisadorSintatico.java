@@ -822,14 +822,8 @@ public class AnalisadorSintatico {
             AuxPrint();
         }else if(token != null && pertence(0, "Identificador")){
             Simbolo sb = Identificador();
-            if(sb != null) {
-                if (!(functionProcedure.buscarFunctioneProcedure(sb) &&
-                        escopo_atual.getSimbolo(sb.getIdentificador()) != null &&
-                        constVar.buscarGeneral(sb.getIdentificador()))) {
-                    addErroSemantico(new ErroSemantico("Identificador não declarado", sb.getIdentificador() + " não declarado declarado", token.getnLinha()));
-
-                }
-
+            if(sb == null) {
+                addErroSemantico(new ErroSemantico("Identificador não declarado", sb.getIdentificador() + " não declarado declarado", token.getnLinha()));
             }
             AuxPrint();
         }
