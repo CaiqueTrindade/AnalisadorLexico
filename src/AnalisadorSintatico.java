@@ -305,6 +305,7 @@ public class AnalisadorSintatico {
             String aux = id;
             for (Simbolo s: lParametros) aux = aux + "#" + s.getTipo();
 
+           
             if (functionProcedure.getIdentificadorGeneral(aux) != null) {
                 Simbolo simbolo = functionProcedure.getIdentificadorGeneral(aux);
                 if (simbolo.getCategoria() == Simbolo.FUNCTION) tipo = simbolo.getTipo_retorno();
@@ -1735,7 +1736,8 @@ public class AnalisadorSintatico {
                 if (escopo_atual.getCategoria() == Simbolo.FUNCTION)
                     if (!escopo_atual.getTipo_retorno().equals(tipo))
                         addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis no retorno da função (esperava um valor do tipo " + escopo_atual.getTipo_retorno() + " mas encontrou do tipo "+ tipo +").", token.getnLinha()));
-                else
+
+                else if (escopo_atual.getCategoria() == Simbolo.PROCEDURE)
                     addErroSemantico(new ErroSemantico("Retorno inesperado", "Retorno em procedimento inesperado", token.getnLinha()));
 
                 if (token != null && token.getLexema().equals(";"))
