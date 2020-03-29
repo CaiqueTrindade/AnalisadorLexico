@@ -1716,10 +1716,9 @@ public class AnalisadorSintatico {
                 String aux = id;
                 if (lParametros != null) for (Simbolo s: lParametros) aux = aux + "#" + s.getTipo();
 
-                if (functionProcedure.getIdentificadorGeneral(aux) == null) {
-                    if (identificarFuncao.containsKey(id) == null) addErroSemantico(new ErroSemantico("Parâmetros incompatíveis", "Parâmetros incompatíveis", token.getnLinha()));
-                    else addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
-                }
+                if (lParametros.isEmpty() && functionProcedure.getIdentificadorGeneral(aux) == null) {
+                    if (identificadorFuncao.containsKey(id)) addErroSemantico(new ErroSemantico("Parâmetros incompatíveis", "Parâmetros incompatíveis", token.getnLinha()));
+                } else if (!identificadorFuncao.containsKey(aux)) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
 
                 if (token != null && token.getLexema().equals(")"))
                     nextToken();

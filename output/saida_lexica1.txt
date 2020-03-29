@@ -60,6 +60,8 @@ Lista de Tokens
 20 boolean Palavra Reservada;
 20 cadastrarPessoas Identificador;
 20 ( Delimitador (;
+20 pessoa Identificador;
+20 pessoa Identificador;
 20 ) Delimitador );
 20 { Delimitador {;
 21 var Palavra Reservada;
