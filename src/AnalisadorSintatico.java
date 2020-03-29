@@ -325,8 +325,9 @@ public class AnalisadorSintatico {
 
         }
         else if (token != null) {
-
+           ;
             Simbolo simbolo = (escopo_atual.getSimbolo(id) != null)?escopo_atual.getSimbolo(id):constVar.getIdentificadorGeneral(id);
+
             if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
 
             tipo = Identificador2(simbolo).getTipo(); // Permite vazio
@@ -654,6 +655,8 @@ public class AnalisadorSintatico {
     public void Funcao(){
         int erro = 0;
         parametros.removeAll(parametros);
+
+
         if(token != null && token.getLexema().equals("function")){
             nextToken();
             String tipo = Tipo();
@@ -662,6 +665,7 @@ public class AnalisadorSintatico {
             String tipo_retorno = null;
 
             if(token != null && token.getTipo() == 3){
+
                 if(functionProcedure.buscarGeneral(token.getLexema())){
                     addErroSemantico(new ErroSemantico("Identificador já foi declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
                     erro = 1;
@@ -677,19 +681,20 @@ public class AnalisadorSintatico {
                 }
                 nextToken();
                 if(token != null && token.getLexema().equals("(")){
+
                     nextToken();
-                    Parametro();
-                }
-                if(erro == 0 && parametros != null){
-                    Simbolo sb = new Simbolo(id, cat, tipo_retorno, parametros);
-                    if (!(functionProcedure.buscarFunctioneProcedure(sb) && functionProcedure.getFunctionProcedure(sb).getCategoria() == Simbolo.FUNCTION)){
-                        functionProcedure.inserirFunctionProcedure(sb);
-                        escopo_atual = sb;
-                    }
-                    else  addErroSemantico(new ErroSemantico("Identificador de procedimento já declarado", id + " já foi declarado", token.getnLinha()));
+                    Parametro(id,Simbolo.FUNCTION, tipo_retorno);
+
                 }
 
-
+//                if(erro == 0 && parametros != null){
+//                    Simbolo sb = new Simbolo(id, cat, tipo_retorno, parametros);
+//                    if (!(functionProcedure.buscarFunctioneProcedure(sb) && functionProcedure.getFunctionProcedure(sb).getCategoria() == Simbolo.FUNCTION)){
+//                        functionProcedure.inserirFunctionProcedure(sb);
+//                        escopo_atual = sb;
+//                    }
+//                    else  addErroSemantico(new ErroSemantico("Identificador de procedimento já declarado", id + " já foi declarado", token.getnLinha()));
+//                }
 
             }
         }
@@ -714,43 +719,52 @@ public class AnalisadorSintatico {
                 nextToken();
                 if (token != null && token.getLexema().equals("(")) {
                     nextToken();
-                    Parametro();
-                    simbolo_aux = new Simbolo(identificador, Simbolo.PROCEDURE, "", parametros);
-                    if (!(functionProcedure.buscarFunctioneProcedure(simbolo_aux) && functionProcedure.getFunctionProcedure(simbolo_aux).getCategoria() == Simbolo.PROCEDURE)){
-                        functionProcedure.inserirFunctionProcedure(simbolo_aux);
-                        escopo_atual = simbolo_aux;
-                    }
-                    else  addErroSemantico(new ErroSemantico("Identificador de procedimento já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
+                    Parametro(identificador, Simbolo.PROCEDURE,"");
+
                 }
             }
         }
     }
 
     //<Parametro> ::=  <Tipo> Id <Para2> <Para1>
-    public void Parametro(){
+    public void Parametro(String identificador, int flag, String retorno_fun){
         String tipo = Tipo();
 
         if(token != null && token.getTipo() == 3){
+            String lexema = token.getLexema();
+
             nextToken();
             int retorno = Para2();
-            if (retorno == 0) parametros.add(new Simbolo(token.getLexema(),Simbolo.VAR_VETOR,tipo));
-            else if (retorno == 1) parametros.add(new Simbolo(token.getLexema(),Simbolo.VAR_MATRIZ,tipo));
-            else if (retorno == 2) parametros.add(new Simbolo(token.getLexema(),Simbolo.VARIAVEL,tipo));
+            if (retorno == 0) parametros.add(new Simbolo(lexema,Simbolo.VAR_VETOR,tipo));
+            else if (retorno == 1) parametros.add(new Simbolo(lexema,Simbolo.VAR_MATRIZ,tipo));
+            else if (tipo.equals("int") || tipo.equals("boolean") || tipo.equals("string") || tipo.equals("real")){
+                     parametros.add(new Simbolo(lexema,Simbolo.VARIAVEL,tipo));
             }
-            Para1();
+            else if (struct.buscarGeneral(lexema))  parametros.add(new Simbolo(lexema,Simbolo.STRUCT,tipo));
+            else addErroSemantico(new ErroSemantico("Identificador de struct não declarado", token.getLexema()+ " não foi declarado", token.getnLinha()));
+        }
+
+        Para1(identificador,flag,retorno_fun);
 
     }
 
-
-
-
-    public void Para1(){
+    public void Para1(String identificador, int flag, String retorno_fun){
         if(token != null && token.getLexema().equals(",")){
             nextToken();
-            Parametro();
+            Parametro(identificador, flag, retorno_fun);
         }else if(token != null && token.getLexema().equals(")")){
+            Simbolo simbolo_aux = new Simbolo(identificador, flag, retorno_fun, parametros);
+            if (!(functionProcedure.buscarFunctioneProcedure(simbolo_aux) && functionProcedure.getFunctionProcedure(simbolo_aux).getCategoria() == flag)){
+                functionProcedure.inserirFunctionProcedure(simbolo_aux);
+            }
+            else  addErroSemantico(new ErroSemantico("Identificador já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
+            escopo_atual = simbolo_aux;
             nextToken();
+            System.out.println("Testeeeeeeeeeeeeeeeeeeeeeeeee   ");
             F2();
+
+
+
         }
     }
 
@@ -1597,7 +1611,9 @@ public class AnalisadorSintatico {
 
     // <Corpo>::= <Var> <Corpo2> '}' | '}'
     private void Corpo() {
+
         Var();
+
         Corpo2();
         if (token != null && token.getLexema().equals("}")) {
             nextToken();
@@ -1609,14 +1625,18 @@ public class AnalisadorSintatico {
     private void Corpo2() {
         if (token != null && pertence(0, "Comandos")) {
             Comandos();
+
             Corpo2();
         }
     }
 
     // <Comandos> ::= <Condicional>| <Laco> | <Read> | <Print> | <ComandosReturn> | <IdentificadorComandos>
     private void Comandos() {
-        if (pertence(0, "Condicional"))
+        if (pertence(0, "Condicional")) {
+
             Condicional();
+
+        }
         else if (pertence(0, "Laco"))
             Laco();
         else if (pertence(0, "Read"))
