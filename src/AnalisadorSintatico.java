@@ -330,7 +330,7 @@ public class AnalisadorSintatico {
             if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
 
             Simbolo s = Identificador2(simbolo);
-            tipo = s.getTipo(); // Permite vazio
+            tipo = (s != null)?s.getTipo():null;
             tipo2 = ExpressaoAritmetica2();
 
         }
@@ -420,7 +420,8 @@ public class AnalisadorSintatico {
 
                 if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
 
-                tipo = Identificador2(simbolo).getTipo();
+                Simbolo s = Identificador2(simbolo);
+                tipo = (s != null)?s.getTipo():null;
             }
         }
         else  if (token != null && token.getTipo() == 3){
@@ -430,7 +431,8 @@ public class AnalisadorSintatico {
             Simbolo simbolo = (escopo_atual.getSimbolo(id) != null)?escopo_atual.getSimbolo(id):constVar.getIdentificadorGeneral(id);
             if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
 
-            tipo = Identificador2(simbolo).getTipo();
+            Simbolo s = Identificador2(simbolo);
+            tipo = (s != null)?s.getTipo():null;
         }
 
         return tipo;
