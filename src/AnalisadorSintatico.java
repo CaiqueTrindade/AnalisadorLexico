@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
@@ -304,9 +303,8 @@ public class AnalisadorSintatico {
 
             ArrayList<Simbolo> lParametros = IdentificadorExtra();
             String aux = id;
-            for (Simbolo s: lParametros) aux = aux + "#" + s.getTipo();
+            if (lParametros != null) for (Simbolo s: lParametros) aux = aux + "#" + s.getTipo();
 
-            System.out.println("Amoooooooooooooooooooooooo "+ functionProcedure.getIdentificadorGeneral(aux));
 
             if (functionProcedure.getIdentificadorGeneral(aux) != null) {
                 Simbolo simbolo = functionProcedure.getIdentificadorGeneral(aux);
@@ -1669,17 +1667,32 @@ public class AnalisadorSintatico {
 
     // <IdentificadorComandos> ::= <IdentificadorSemFuncao> <IdentificadorComandos2> ';'
     private void IdentificadorComandos() {
+        String tipo = null;
+        if (token != null && pertence(0, "Escopo")) {
+            tipo = IdentificadorSemFuncao();
+            IdentificadorComandos2(tipo);
+        }
+        else if (token != null && token.getTipo() == 3) {
+            String id = token.getLexema();
+            nextToken();
 
-        String tipo = IdentificadorSemFuncao();
-
-        IdentificadorComandos2(tipo);
+            if (token != null && token.getLexema().equals("("))
+                IdentificadorComandos3(id);
+            else {
+                Simbolo s = (escopo_atual.getSimbolo(id) != null)?escopo_atual.getSimbolo(id):constVar.getIdentificadorGeneral(id);
+                if (s != null) {
+                    Simbolo s2 = Identificador2(s);
+                    if (s2 != null) tipo = s2.getTipo();
+                    IdentificadorComandos2(tipo);
+                }
+            }
+        }
 
         if (token != null && token.getLexema().equals(";"))
             nextToken();
-
     }
 
-    // <IdentificadorComandos2>::= '=' <IdentificadorComandos2_1> | '(' <ListaParametros> ')'
+    // <IdentificadorComandos2>::= '=' <IdentificadorComandos2_1>
     private void IdentificadorComandos2(String tipo) {
         if (token != null) {
             if (token.getLexema().equals("=")) {
@@ -1690,16 +1703,28 @@ public class AnalisadorSintatico {
                 if (tipo != null && tipo2 != null && !tipo.equals(tipo2)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na atribuição (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo2 +").", token.getnLinha()));
 
             }
-            else if (token.getLexema().equals("(")) {
+        }
+    }
+
+    // <IdentificadorComandos3>::= '(' <ListaParametros> ')'
+    private void IdentificadorComandos3(String id) {
+        if (token != null) {
+            if (token.getLexema().equals("(")) {
                 nextToken();
-                IdentificadorExtra();
+
+                ArrayList<Simbolo> lParametros = IdentificadorExtra();
+
+                String aux = id;
+                if (lParametros != null) for (Simbolo s: lParametros) aux = aux + "#" + s.getTipo();
+
+                if (lParametros == null && functionProcedure.getIdentificadorGeneral(aux) == null) {
+                    if (identificadorFuncao.containsKey(id)) addErroSemantico(new ErroSemantico("Parâmetros incompatíveis", "Parâmetros incompatíveis", token.getnLinha()));
+                } else if (!identificadorFuncao.containsKey(aux)) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
+
                 if (token != null && token.getLexema().equals(")"))
                     nextToken();
-
             }
-
         }
-
     }
 
     // <IdentificadorComandos2_1> ::= <ExpressaoAritmetica> | String | Boolean

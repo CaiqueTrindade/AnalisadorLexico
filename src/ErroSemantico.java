@@ -1,22 +1,15 @@
 
-//    Padrão de Saída: LINHA MENSAGEM
-//
-//        Significado: Mensagem
-//
-//        Atribuição a constantes: Atribuição Indevida na constante {lexema}
-//        Identificador não declarado: {lexema} não declarado
-//        Identificador já foi declarado: {lexema} já declarado
-//        Tipos incompatíveis: Tipos Incompatíveis: {atribuição || expressão || retorno || ... }
-//        Parâmetros Incompatíveis: Parâmetro Incompatível : {tipo || quantidade}
-
-
+/**
+ * Classe que representa um erro proveniente da análise semântica realizada pela classe AnalisadorLexico.
+ * @author Caique Trindade, Felipe Damasceno e Solenir Figuerêdo
+ */
 
 public class ErroSemantico {
 
 
-    private String significado;
-    private String mensagem;
-    private int nLinha;
+    private String significado; //Significado princial do erro
+    private String mensagem; //Mensagem principal do erro, contendo o lexema do erro
+    private int nLinha; //Indica a linha onde ocorreu o erro
 
 
 
