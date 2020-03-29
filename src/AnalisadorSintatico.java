@@ -1105,49 +1105,51 @@ public class AnalisadorSintatico {
         if (token != null && token.getLexema().equals("(")) {
             nextToken();
             ArrayList<Simbolo> lParametros = IdentificadorExtra();
-            String id = id_entrada;
-            for (Simbolo s: lParametros) {
-                id = id + "#";
-                id = id + s.getTipo();
-            }
-            if (functionProcedure.buscarGeneral(id)) {
-                Simbolo entrada = functionProcedure.getIdentificadorGeneral(id);
+            if(lParametros != null) {
+                String id = id_entrada;
+                for (Simbolo s : lParametros) {
+                    id = id + "#";
+                    id = id + s.getTipo();
+                }
+                if (functionProcedure.buscarGeneral(id)) {
+                    Simbolo entrada = functionProcedure.getIdentificadorGeneral(id);
 
-                if (entrada.getCategoria() == 1 || entrada.getCategoria() == 2) {
+                    if (entrada.getCategoria() == 1 || entrada.getCategoria() == 2) {
 
-                    String[] tipos = entrada.getParametros().split("#");
-                    if (lParametros.size() != tipos.length) {
-                        addErroSemantico(new ErroSemantico("Parâmetros incompatíveis", "Parâmetros incompatíveis: quantidade", token.getnLinha()));
-                        erro = erro + 1;
-                    }
-                    int i = 0;
-
-                    for (Simbolo s : lParametros) {
-                        if (s.getTipo() != tipos[i]) {
-                            addErroSemantico(new ErroSemantico("Parâmetros incompatíveis", "Parâmetros incompatíveis: tipo", token.getnLinha()));
+                        String[] tipos = entrada.getParametros().split("#");
+                        if (lParametros.size() != tipos.length) {
+                            addErroSemantico(new ErroSemantico("Parâmetros incompatíveis", "Parâmetros incompatíveis: quantidade", token.getnLinha()));
                             erro = erro + 1;
                         }
-                        i = i + 1;
-                    }
+                        int i = 0;
 
-                    // checar se os parametros estao corretos com a entrada
-                    if (token != null && token.getLexema().equals(")")) {
-                        nextToken();
-                        return entrada;
-                    }
-                    if (erro > 0) {
+                        for (Simbolo s : lParametros) {
+                            if (s.getTipo() != tipos[i]) {
+                                addErroSemantico(new ErroSemantico("Parâmetros incompatíveis", "Parâmetros incompatíveis: tipo", token.getnLinha()));
+                                erro = erro + 1;
+                            }
+                            i = i + 1;
+                        }
+
+                        // checar se os parametros estao corretos com a entrada
+                        if (token != null && token.getLexema().equals(")")) {
+                            nextToken();
+                            return entrada;
+                        }
+                        if (erro > 0) {
+                            return null;
+                        }
+
+                    } else {
+
+                        addErroSemantico(new ErroSemantico("Identificador não declarado ", id_entrada + " não declarado", token.getnLinha()));
                         return null;
                     }
-
                 } else {
 
-                    addErroSemantico(new ErroSemantico("Identificador não declarado ", id_entrada + " não declarado", token.getnLinha()));
+                    addErroSemantico(new ErroSemantico("Identificador não declarado", id_entrada + " não declarado", token.getnLinha()));
                     return null;
                 }
-            }else{
-
-                addErroSemantico(new ErroSemantico("Identificador não declarado", id_entrada + " não declarado", token.getnLinha()));
-                return null;
             }
 
         }
