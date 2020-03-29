@@ -306,7 +306,6 @@ public class AnalisadorSintatico {
             String aux = id;
             for (Simbolo s: lParametros) aux = aux + "#" + s.getTipo();
 
-            System.out.println("Amoooooooooooooooooooooooo "+ functionProcedure.getIdentificadorGeneral(aux));
 
             if (functionProcedure.getIdentificadorGeneral(aux) != null) {
                 Simbolo simbolo = functionProcedure.getIdentificadorGeneral(aux);
