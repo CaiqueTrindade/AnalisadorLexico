@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
@@ -19,10 +18,10 @@ public class AnalisadorSintatico {
     private TabelaSimbolos struct = new TabelaSimbolos(); //Tabela para Structs
     private  TabelaSimbolos functionProcedure = new TabelaSimbolos(); //Tabela para funçõres e procedimentos
     private int ordem = 1;
-    private Simbolo escopo_atual; //Armazena o escopo atual de funções e procedimentos
-    private ArrayList<Simbolo> parametros = new ArrayList(); //Armazena os parametros de funções e procedimentos
-    private ArrayList<Simbolo> campos = new ArrayList<>(); //Armazena os campos de uma struct
-    private HashMap<String,String> identificadorFuncao; //Armazena apenas o nome de funções e procedimentos
+    private Simbolo escopo_atual;
+    private ArrayList<Simbolo> parametros = new ArrayList();
+    private ArrayList<Simbolo> campos = new ArrayList<>();
+    private HashMap<String,String> identificadorFuncao;
 
 
 
@@ -304,7 +303,7 @@ public class AnalisadorSintatico {
 
             ArrayList<Simbolo> lParametros = IdentificadorExtra();
             String aux = id;
-            for (Simbolo s: lParametros) aux = aux + "#" + s.getTipo();
+            if (lParametros != null) for (Simbolo s: lParametros) aux = aux + "#" + s.getTipo();
 
 
             if (functionProcedure.getIdentificadorGeneral(aux) != null) {
@@ -1716,7 +1715,7 @@ public class AnalisadorSintatico {
                 String aux = id;
                 if (lParametros != null) for (Simbolo s: lParametros) aux = aux + "#" + s.getTipo();
 
-                if (lParametros.isEmpty() && functionProcedure.getIdentificadorGeneral(aux) == null) {
+                if (lParametros == null && functionProcedure.getIdentificadorGeneral(aux) == null) {
                     if (identificadorFuncao.containsKey(id)) addErroSemantico(new ErroSemantico("Parâmetros incompatíveis", "Parâmetros incompatíveis", token.getnLinha()));
                 } else if (!identificadorFuncao.containsKey(aux)) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
 
