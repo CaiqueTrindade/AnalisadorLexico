@@ -1,1 +1,3 @@
-64 Identificador não declarado : cadastrarPessoas não declarado ou parâmetros estão incorretos;
+64 Tipos incompatíveis : Tipos incompatíveis na atribuição (esperava um valor do tipo int mas encontrou do tipo boolean).;
+65 Tipos incompatíveis : Tipos incompatíveis na expressão lógica e relacional (esperava um valor do tipo int mas encontrou do tipo boolean).;
+74 Identificador não declarado : imprimirPessoas não declarado;

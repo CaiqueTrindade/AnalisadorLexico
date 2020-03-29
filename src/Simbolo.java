@@ -68,14 +68,17 @@ public class Simbolo {
      * @param parametros ArrayList de símbolos dos parâmetros da função/procedimento
      */
     public Simbolo(String identificador, int categoria, String tipo_retorno, ArrayList<Simbolo> parametros) {
+        this.parametros = "";
         this.identificador = identificador;
         this.categoria = categoria;
         if (categoria == 1 || categoria == 2) {
             this.tipo_retorno = (categoria == 1)?tipo_retorno:"void";
-            if (parametros != null) {
+            if (!parametros.isEmpty()) {
                 Iterator it = parametros.iterator();
                 while (it.hasNext()) addParametro((Simbolo) it.next());
             }
+
+
         }
     }
 
@@ -150,7 +153,7 @@ public class Simbolo {
     public boolean addParametro(Simbolo simbolo) {
         if (categoria == 1 || categoria == 2) {
             if (addSimbolo(simbolo)) {
-                parametros = (parametros == null) ? simbolo.getTipo() : parametros + "#" + simbolo.getTipo();
+                parametros = parametros + "#" + simbolo.getTipo();
                 return true;
             }
         }
