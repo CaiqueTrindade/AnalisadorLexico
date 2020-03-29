@@ -1659,9 +1659,9 @@ public class AnalisadorSintatico {
     // <IdentificadorComandos> ::= <IdentificadorSemFuncao> <IdentificadorComandos2> ';'
     private void IdentificadorComandos() {
 
-        IdentificadorSemFuncao();
+        String tipo = IdentificadorSemFuncao();
 
-        IdentificadorComandos2();
+        IdentificadorComandos2(tipo);
 
         if (token != null && token.getLexema().equals(";"))
             nextToken();
@@ -1669,12 +1669,14 @@ public class AnalisadorSintatico {
     }
 
     // <IdentificadorComandos2>::= '=' <IdentificadorComandos2_1> | '(' <ListaParametros> ')'
-    private void IdentificadorComandos2() {
+    private void IdentificadorComandos2(String tipo) {
         if (token != null) {
             if (token.getLexema().equals("=")) {
                 nextToken();
 
-                IdentificadorComandos2_1();
+                String tipo2 = IdentificadorComandos2_1();
+
+                if (tipo != null && tipo2 != null && !tipo.equals(tipo2)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na atribuição (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo2 +").", token.getnLinha()));
 
             }
             else if (token.getLexema().equals("(")) {
@@ -1690,18 +1692,17 @@ public class AnalisadorSintatico {
     }
 
     // <IdentificadorComandos2_1> ::= <ExpressaoAritmetica> | String | Boolean
-    private void IdentificadorComandos2_1() {
+    private String IdentificadorComandos2_1() {
+        String tipo = null;
         if (token != null) {
-            if (pertence(0, "ExpressaoAritmetica")) {
-
-                ExpressaoAritmetica();
-
-            }
-            else if (token.getTipo() == 11 || token.getLexema().matches("^(true|false)$"))
+            if (pertence(0, "ExpressaoAritmetica"))
+                tipo = ExpressaoAritmetica();
+            else if (token.getTipo() == 11 || token.getLexema().matches("^(true|false)$")) {
+                tipo = (token.getTipo() == 11)?"string":"boolean";
                 nextToken();
-
+            }
         }
-
+        return tipo;
     }
 
     // <ComandosReturn> ::= 'return' <CodigosRetornos>

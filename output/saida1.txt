@@ -1,4 +1,5 @@
 9 Identificador de Struct não declarado : pesso não pode estender;
 42 Identificador não declarado : vetor_pessoas não declarado declarado;
 47 Identificador não declarado : vetor_funcionarios não declarado declarado;
-60 Identificador não declarado : nome não declarado;
+57 Tipos incompatíveis : Tipos incompatíveis na atribuição (esperava um valor do tipo int mas encontrou do tipo real).;
+62 Identificador não declarado : nome não declarado;
