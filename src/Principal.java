@@ -53,10 +53,6 @@ public class Principal {
                             // Solicita que o AnalisadorLexico faça a escrita do arquivo de saída com os tokens e os erros encontrados
                             al.escreverEmArquivo();
 
-                            if(al.errosIsVazio())
-                                System.out.print("O arquivo "+ input.getName() +" não possui erros léxicos! ");
-                            System.out.println("Análise léxica feita com sucesso!");
-
                             // Passa a lista de tokens provenientes da análise léxica para o analisador sintático
                             as = new AnalisadorSintatico(al.getTokens());
                             // Solicita que o AnalisadorSintatico faça a análise
@@ -65,7 +61,7 @@ public class Principal {
                             as.escreverEmArquivo(input.getName());
 
                             if(as.errosIsVazio())
-                                System.out.print("O arquivo "+ input.getName() +" não possui erros sintáticos! ");
+                                System.out.print("O arquivo "+ input.getName() +" não possui erros semânticos! ");
                             System.out.println("Análise semântica feita com sucesso!");
 
                             System.out.println("Leitura do arquivo " + input.getName() + " finalizada!\n\n");

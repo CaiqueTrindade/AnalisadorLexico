@@ -11,7 +11,7 @@ import java.util.Map;
  * @author Caique Trindade, Felipe Damasceno e Solenir Figuerêdo
  */
 public class Simbolo {
-
+    ArrayList<Simbolo> simbolo = new ArrayList<>();
     private String identificador;                   // Identificador (nome) do símbolo
 
     private int categoria;                          // Categoria do símbolo (conferir as constantes abaixo)
@@ -110,6 +110,7 @@ public class Simbolo {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -129,11 +130,15 @@ public class Simbolo {
     }
 
     public ArrayList<Simbolo> getSimbolos_local() {
-        ArrayList<Simbolo> simbolo = new ArrayList<>();
+
         for (Map.Entry<String, Simbolo> entrada : simbolos_local.entrySet()) {
                simbolo.add(entrada.getValue());
         }
         return simbolo;
+    }
+
+    public int tamanhoMap(){
+        return simbolos_local.size();
     }
 
     /**

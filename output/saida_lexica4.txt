@@ -286,4 +286,3 @@ Lista de Tokens
 79 } Delimitador };
 80 } Delimitador };
 81 } Delimitador };
-83 // teste de comentário Delimitador de Comentário;

@@ -1,1 +1,1 @@
-Análise Sintática realizada com Sucesso!
+Análise Semântica realizada com Sucesso!

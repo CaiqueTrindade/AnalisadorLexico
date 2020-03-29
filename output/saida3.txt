@@ -1,4 +1,0 @@
-2 Var4 Esperava , ou ; mas encontrou um 5 não esperado;
-7 Corpo Esperava um } mas encontrou int;
-7 Start Tokens inesperado após a declaração do Start.;
-7 Inicio Esperava EOF mas encontrou int;

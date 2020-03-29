@@ -1,4 +1,0 @@
-3 Valor ; não esperado;
-6 Start Esperava start mas encontrou struct;
-10 Start Tokens inesperado após a declaração do Start.;
-10 Inicio Esperava EOF mas encontrou typedef;
