@@ -60,7 +60,7 @@ start () {
 
 		if (entrada == 0) then {
 			print("Digite o nome, endereco e telefone da pessoa que deseja cadastrar:");
-			read(pessoa.nome, pessoa.endereco, pessoa.telefone);
+			read(pessoa.nome, pessoa.endereco, pessoa.telefone, tamanho_vetor);
 			retorno = cadastrarPessoas(pessoa);
 			if(retorno == true) then {
 				print("Nova pessoa cadastrada com sucesso.");

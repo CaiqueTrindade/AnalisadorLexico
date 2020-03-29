@@ -1,1 +1,2 @@
+30 Retorno inesperado : Retorno em procedimento inesperado;
 64 Identificador não declarado : cadastrarPessoas não declarado ou parâmetros estão incorretos;

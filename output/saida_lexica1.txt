@@ -228,6 +228,8 @@ Lista de Tokens
 63 pessoa Identificador;
 63 . Delimitador .;
 63 telefone Identificador;
+63 , Delimitador ,;
+63 tamanho_vetor Identificador;
 63 ) Delimitador );
 63 ; Delimitador ;;
 64 retorno Identificador;
