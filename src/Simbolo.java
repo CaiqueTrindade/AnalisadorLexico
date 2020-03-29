@@ -11,7 +11,7 @@ import java.util.Map;
  * @author Caique Trindade, Felipe Damasceno e Solenir Figuerêdo
  */
 public class Simbolo {
-    ArrayList<Simbolo> simbolo = new ArrayList<>();
+    ArrayList<Simbolo> simbolo = new ArrayList<>(); //Armazena uma lista de simbolos
     private String identificador;                   // Identificador (nome) do símbolo
 
     private int categoria;                          // Categoria do símbolo (conferir as constantes abaixo)

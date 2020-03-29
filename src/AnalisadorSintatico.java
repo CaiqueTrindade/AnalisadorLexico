@@ -19,10 +19,10 @@ public class AnalisadorSintatico {
     private TabelaSimbolos struct = new TabelaSimbolos(); //Tabela para Structs
     private  TabelaSimbolos functionProcedure = new TabelaSimbolos(); //Tabela para funçõres e procedimentos
     private int ordem = 1;
-    private Simbolo escopo_atual;
-    private ArrayList<Simbolo> parametros = new ArrayList();
-    private ArrayList<Simbolo> campos = new ArrayList<>();
-    private HashMap<String,String> identificadorFuncao;
+    private Simbolo escopo_atual; //Armazena o escopo atual de funções e procedimentos
+    private ArrayList<Simbolo> parametros = new ArrayList(); //Armazena os parametros de funções e procedimentos
+    private ArrayList<Simbolo> campos = new ArrayList<>(); //Armazena os campos de uma struct
+    private HashMap<String,String> identificadorFuncao; //Armazena apenas o nome de funções e procedimentos
 
 
 
