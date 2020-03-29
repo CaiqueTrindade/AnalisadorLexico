@@ -305,7 +305,7 @@ public class AnalisadorSintatico {
             String aux = id;
             for (Simbolo s: lParametros) aux = aux + "#" + s.getTipo();
 
-            System.out.println("]amoooooooooooooooooooooooo "+ functionProcedure.getIdentificadorGeneral(aux));
+            System.out.println("Amoooooooooooooooooooooooo "+ functionProcedure.getIdentificadorGeneral(aux));
 
             if (functionProcedure.getIdentificadorGeneral(aux) != null) {
                 Simbolo simbolo = functionProcedure.getIdentificadorGeneral(aux);
@@ -1140,7 +1140,7 @@ public class AnalisadorSintatico {
 
                 } else {
 
-                    addErroSemantico(new ErroSemantico("Identificador não declarado", id_entrada + " não declarado", token.getnLinha()));
+                    addErroSemantico(new ErroSemantico("Identificador não declarado ", id_entrada + " não declarado", token.getnLinha()));
                     return null;
                 }
             }else{
