@@ -54,6 +54,8 @@ start () {
 		pessoa pessoa;
 	}
 
+    entrada = 5.5;
+
 	while (true) {
 		print("Digite 0 para cadastrar uma nova pessoa ou 1 para imprimir a lista de pessoas cadastradas:");
 		read(entrada);
