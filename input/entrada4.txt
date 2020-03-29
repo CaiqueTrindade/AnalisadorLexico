@@ -80,4 +80,3 @@ start () {
 	}
 }
 
-// teste de comentário

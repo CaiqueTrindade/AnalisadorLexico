@@ -697,7 +697,7 @@ public class AnalisadorSintatico {
 
     //<Procedimento> ::= 'procedure' Id '(' <Parametro>
  public void Procedimento() {
-
+         Simbolo simbolo_aux;
          parametros.removeAll(parametros);
          if (token != null && token.getLexema().equals("procedure")) {
             nextToken();
@@ -707,9 +707,10 @@ public class AnalisadorSintatico {
                 if (token != null && token.getLexema().equals("(")) {
                     nextToken();
                     Parametro();
-                    escopo_atual = new Simbolo(identificador, Simbolo.PROCEDURE, "", parametros);
-                    if (!(functionProcedure.buscarFunctioneProcedure(escopo_atual) && functionProcedure.getFunctionProcedure(escopo_atual).getCategoria() == Simbolo.PROCEDURE)){
-                        functionProcedure.inserirFunctionProcedure(escopo_atual);
+                    simbolo_aux = new Simbolo(identificador, Simbolo.PROCEDURE, "", parametros);
+                    if (!(functionProcedure.buscarFunctioneProcedure(simbolo_aux) && functionProcedure.getFunctionProcedure(simbolo_aux).getCategoria() == Simbolo.PROCEDURE)){
+                        functionProcedure.inserirFunctionProcedure(simbolo_aux);
+                        escopo_atual = simbolo_aux;
                     }
                     else  addErroSemantico(new ErroSemantico("Identificador de procedimento já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
                 }
