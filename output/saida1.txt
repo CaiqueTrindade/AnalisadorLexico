@@ -1,1 +1,12 @@
-29 Identificador de procedimento já declarado : tamanho_vetor já foi declarado;
+9 Identificador de Struct não declarado : pesso não pode estender;
+24 Tipos incompatíveis : Tipos incompatíveis na expressão aritmética (esperava um valor do tipo int mas encontrou do tipo null).;
+25 Tipos incompatíveis : Tipos incompatíveis na expressão aritmética (esperava um valor do tipo pessoa mas encontrou do tipo null).;
+26 Tipos incompatíveis : Tipos incompatíveis na expressão aritmética (esperava um valor do tipo int mas encontrou do tipo null).;
+30 Tipos incompatíveis : Tipos incompatíveis na expressão aritmética (esperava um valor do tipo boolean mas encontrou do tipo null).;
+40 Tipos incompatíveis : Tipos incompatíveis na expressão aritmética (esperava um valor do tipo string mas encontrou do tipo null).;
+41 Tipos incompatíveis : Tipos incompatíveis na expressão aritmética (esperava um valor do tipo int mas encontrou do tipo null).;
+42 Identificador de procedimento já declarado : vetor_pessoas já foi declarado;
+43 Tipos incompatíveis : Tipos incompatíveis na expressão aritmética (esperava um valor do tipo int mas encontrou do tipo null).;
+47 Identificador de procedimento já declarado : vetor_funcionarios já foi declarado;
+61 Tipos incompatíveis : Tipos incompatíveis na expressão aritmética (esperava um valor do tipo int mas encontrou do tipo null).;
+63 Identificador não declarado : nome não declarado;
