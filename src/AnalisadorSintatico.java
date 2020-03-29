@@ -325,7 +325,7 @@ public class AnalisadorSintatico {
 
         }
         else if (token != null) {
-           ;
+
             Simbolo simbolo = (escopo_atual.getSimbolo(id) != null)?escopo_atual.getSimbolo(id):constVar.getIdentificadorGeneral(id);
 
             if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
@@ -351,6 +351,7 @@ public class AnalisadorSintatico {
 
     // <ExpressaoAritmetica> ::= <T> <E2> | <IdentificadorAritmetico> | '++' <IdentificadorSemFuncao> <T2> <E2> | '--' <IdentificadorSemFuncao> <T2> <E2>
     public String ExpressaoAritmetica (){
+
         String tipo = null;
         String tipo2 = null;
         String tipo3 = null;
@@ -380,7 +381,6 @@ public class AnalisadorSintatico {
             else if (tipo2 != null && tipo == null && tipo3 == null) tipo = tipo2;
             else if (tipo3 != null && tipo == null && tipo2 == null) tipo = tipo3;
         }
-
         return tipo;
     }
 
@@ -873,13 +873,16 @@ public class AnalisadorSintatico {
             if(token != null && token.getLexema().equals("(")){
                 nextToken();
                 ExpressaoLogicaRelacional();
+
                 if(token != null && token.getLexema().equals(")")){
                     nextToken();
                     if(token != null && token.getLexema().equals("then")){
                         nextToken();
                         if(token != null && token.getLexema().equals("{")){
                             nextToken();
+
                             Corpo2();
+
                             if(token != null && token.getLexema().equals("}")){
                                 nextToken();
                                 CondEnd();
@@ -1645,14 +1648,20 @@ public class AnalisadorSintatico {
             Print();
         else if (pertence(0, "ComandosReturn"))
             ComandosReturn();
-        else if (pertence(0, "IdentificadorComandos"))
+        else if (pertence(0, "IdentificadorComandos")) {
+
             IdentificadorComandos();
+
+        }
     }
 
     // <IdentificadorComandos> ::= <IdentificadorSemFuncao> <IdentificadorComandos2> ';'
     private void IdentificadorComandos() {
+
         IdentificadorSemFuncao();
+
         IdentificadorComandos2();
+
         if (token != null && token.getLexema().equals(";"))
             nextToken();
 
@@ -1663,7 +1672,9 @@ public class AnalisadorSintatico {
         if (token != null) {
             if (token.getLexema().equals("=")) {
                 nextToken();
+
                 IdentificadorComandos2_1();
+
             }
             else if (token.getLexema().equals("(")) {
                 nextToken();
@@ -1680,8 +1691,11 @@ public class AnalisadorSintatico {
     // <IdentificadorComandos2_1> ::= <ExpressaoAritmetica> | String | Boolean
     private void IdentificadorComandos2_1() {
         if (token != null) {
-            if (pertence(0, "ExpressaoAritmetica"))
+            if (pertence(0, "ExpressaoAritmetica")) {
+
                 ExpressaoAritmetica();
+
+            }
             else if (token.getTipo() == 11 || token.getLexema().matches("^(true|false)$"))
                 nextToken();
 
