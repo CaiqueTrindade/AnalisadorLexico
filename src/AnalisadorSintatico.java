@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.io.*;
 import java.util.*;
-
 /**
  * Classe responsável por realizar a análise sintática.
  * @author Caique Trindade, Felipe Damasceno e Solenir Figuerêdo
@@ -244,7 +243,7 @@ public class AnalisadorSintatico {
                 tipo = ExpressaoAritmetica();
             }
         }
-       return tipo;
+        return tipo;
     }
 
     //<E2> ::= '+' <ExpressaoAritmetica>
@@ -330,7 +329,7 @@ public class AnalisadorSintatico {
             if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
 
             Simbolo s = Identificador2(simbolo);
-            tipo = s.getTipo(); // Permite vazio
+            tipo = (s != null)?s.getTipo():null;
             tipo2 = ExpressaoAritmetica2();
 
         }
@@ -420,7 +419,8 @@ public class AnalisadorSintatico {
 
                 if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
 
-                tipo = Identificador2(simbolo).getTipo();
+                Simbolo s = Identificador2(simbolo);
+                tipo = (s != null)?s.getTipo():null;
             }
         }
         else  if (token != null && token.getTipo() == 3){
@@ -429,9 +429,9 @@ public class AnalisadorSintatico {
 
             Simbolo simbolo = (escopo_atual.getSimbolo(id) != null)?escopo_atual.getSimbolo(id):constVar.getIdentificadorGeneral(id);
             if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
-            tipo = Identificador2(simbolo).getTipo();
 
-
+            Simbolo s = Identificador2(simbolo);
+            tipo = (s != null)?s.getTipo():null;
         }
 
         return tipo;
@@ -472,7 +472,6 @@ public class AnalisadorSintatico {
 
                         simbolo = new Simbolo(identificador, Simbolo.STRUCT, identificador);
                         struct.inserirGeneral(simbolo);
-
                     }
                     else  addErroSemantico(new ErroSemantico("Identificador de Struct já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
 
@@ -480,7 +479,7 @@ public class AnalisadorSintatico {
                     Extend(identificador);
                     TipoStruct();
                     for (Simbolo campo : campos) {
-                       if (simbolo != null)
+                        if (simbolo != null)
                             simbolo.addSimbolo(campo);
                         else
                             System.out.println("Erro");
@@ -491,7 +490,7 @@ public class AnalisadorSintatico {
             }
         }
 
-  }
+    }
     //<Extends> ::= 'extends' Id '{' | '{'
     public void Extend(String identificador){
 
@@ -541,21 +540,21 @@ public class AnalisadorSintatico {
     public void IdStruct(String tipo){
         String identificador = "";
         if(token != null && token.getTipo() == 3){
-           identificador = token.getLexema();
+            identificador = token.getLexema();
 
             if(struct.buscarGeneral(tipo)){
-                    Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.STRUCT, tipo);
-                    if (!campos.contains(simbolo_aux)){
-                        campos.add(simbolo_aux);
-                    }
-                    else addErroSemantico(new ErroSemantico("Identificador Struct já  declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
+                Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.STRUCT, tipo);
+                if (!campos.contains(simbolo_aux)){
+                    campos.add(simbolo_aux);
+                }
+                else addErroSemantico(new ErroSemantico("Identificador Struct já  declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
             }
             else if(token != null && tipo.equals("int") || tipo.equals("boolean") || tipo.equals("string") || tipo.equals("real")){
                 Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.VARIAVEL, tipo);
-                  if (!campos.contains(simbolo_aux)){
-                      campos.add(simbolo_aux);
-                  }
-                  else addErroSemantico(new ErroSemantico("Identificador já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
+                if (!campos.contains(simbolo_aux)){
+                    campos.add(simbolo_aux);
+                }
+                else addErroSemantico(new ErroSemantico("Identificador já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
             }
             else addErroSemantico(new ErroSemantico("Identificador Struct não declarado", token.getLexema()+ " não foi declarado", token.getnLinha()));
 
@@ -712,10 +711,10 @@ public class AnalisadorSintatico {
 //<F2> ::= '{' <Corpo>
 
     //<Procedimento> ::= 'procedure' Id '(' <Parametro>
- public void Procedimento() {
-         Simbolo simbolo_aux;
-         parametros.removeAll(parametros);
-         if (token != null && token.getLexema().equals("procedure")) {
+    public void Procedimento() {
+        Simbolo simbolo_aux;
+        parametros.removeAll(parametros);
+        if (token != null && token.getLexema().equals("procedure")) {
             nextToken();
             if (token != null && token.getTipo() == 3) {
                 String identificador = token.getLexema();
@@ -741,7 +740,7 @@ public class AnalisadorSintatico {
             if (retorno == 0) parametros.add(new Simbolo(lexema,Simbolo.VAR_VETOR,tipo));
             else if (retorno == 1) parametros.add(new Simbolo(lexema,Simbolo.VAR_MATRIZ,tipo));
             else if (tipo.equals("int") || tipo.equals("boolean") || tipo.equals("string") || tipo.equals("real")){
-                     parametros.add(new Simbolo(lexema,Simbolo.VARIAVEL,tipo));
+                parametros.add(new Simbolo(lexema,Simbolo.VARIAVEL,tipo));
             }
             else if (struct.buscarGeneral(lexema))  parametros.add(new Simbolo(lexema,Simbolo.STRUCT,tipo));
             else addErroSemantico(new ErroSemantico("Identificador de struct não declarado", token.getLexema()+ " não foi declarado", token.getnLinha()));
@@ -818,14 +817,14 @@ public class AnalisadorSintatico {
             AuxPrint();
         }else if(token != null && pertence(0, "Identificador")){
             Simbolo sb = Identificador();
+
             if(sb != null) {
-                if (!(functionProcedure.buscarFunctioneProcedure(sb) ||
-                        functionProcedure.getFunctionProcedure(escopo_atual).getIdentificador() == sb.getIdentificador() ||
+                if (!(functionProcedure.buscarFunctioneProcedure(sb) &&
+                        escopo_atual.getSimbolo(sb.getIdentificador()) != null &&
                         constVar.buscarGeneral(sb.getIdentificador()))) {
                     addErroSemantico(new ErroSemantico("Identificador de procedimento já declarado", sb.getIdentificador() + " já foi declarado", token.getnLinha()));
 
                 }
-                addErroSemantico(new ErroSemantico("Identificador de procedimento já declarado", sb.getIdentificador() + " já foi declarado", token.getnLinha()));
 
             }
             AuxPrint();
@@ -1044,7 +1043,7 @@ public class AnalisadorSintatico {
             nextToken();
             simbolos = ListaParametros(simbolos);
         }
-       return simbolos;
+        return simbolos;
     }
 
     // <ListaParametros2> ::= <Identificador> | Numero | String
@@ -1324,7 +1323,7 @@ public class AnalisadorSintatico {
             else if (token != null && token.getLexema().equals("[")) {
                 Vetor3(tipo, id, linha);
             }
-         }
+        }
     }
 
     //<IdVar> ::= Id <Var2>
@@ -1449,7 +1448,7 @@ public class AnalisadorSintatico {
                 ExpressaoLR3();
             }
         }
-  }
+    }
 
 
 
@@ -1784,3 +1783,4 @@ public class AnalisadorSintatico {
     }
 
 }
+

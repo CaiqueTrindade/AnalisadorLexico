@@ -1,0 +1,33 @@
+const {
+	int tamanho_vetor 50;
+}
+
+typedef struct pessoa {
+	string nome, endereco, telefone;
+}
+
+typedef struct funcionario extends pessoa {
+	string departamento;
+	real salario;
+}
+
+var {
+	pessoa vetor_pessoas[tamanho_vetor];
+	funcionario vetor_funcionarios[50];
+	int pessoas_cadastradas = 0, funcionarios_cadastrados = 0;
+}
+
+
+
+start () {
+	var {
+		int entrada, retorno;
+		pessoa pessoa;
+	}
+
+	while (true) {
+		print("Digite :", tamanho_vetor);
+		read(entrada);
+
+	}
+}
