@@ -23,7 +23,7 @@ public class AnalisadorSintatico {
     private ArrayList<Simbolo> parametros = new ArrayList();
     private ArrayList<Simbolo> campos = new ArrayList<>();
 
-    private int controle = 1;
+
 
     /**
      * Construtor da classe do AnalisadorSintatico.
@@ -89,9 +89,11 @@ public class AnalisadorSintatico {
         if (!errosSemanticos.isEmpty()){
             if (errosSemanticos.get(errosSemanticos.size()-1).getnLinha() != erro.getnLinha())
                 errosSemanticos.add(erro);
+
         }
         else
             errosSemanticos.add(erro);
+        System.out.println("Tamanho "+ errosSemanticos.size());
     }
 
     /**
@@ -501,13 +503,11 @@ public class AnalisadorSintatico {
                     addErroSemantico(new ErroSemantico("Extends não permitido", token.getLexema()+ " tem o mesmo nome da estrutura", token.getnLinha()));
 
                 }
-
                 else if(!struct.buscarGeneral(identificador_aux)) {
                     addErroSemantico(new ErroSemantico("Identificador de Struct não declarado", token.getLexema() + " não pode estender", token.getnLinha()));
 
                 }
                 else{
-
                     Simbolo simbolo_aux = struct.getIdentificadorGeneral(identificador_aux);
                     campos.addAll(simbolo_aux.getSimbolos_local());
 
@@ -546,14 +546,16 @@ public class AnalisadorSintatico {
                     }
                     else addErroSemantico(new ErroSemantico("Identificador Struct já  declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
             }
-            else {
-                  Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.VARIAVEL, tipo);
+            else if(token != null && tipo.equals("int") || tipo.equals("boolean") || tipo.equals("string") || tipo.equals("real")){
+                Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.VARIAVEL, tipo);
                   if (!campos.contains(simbolo_aux)){
                       campos.add(simbolo_aux);
                   }
                   else addErroSemantico(new ErroSemantico("Identificador já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
             }
-         }
+            else addErroSemantico(new ErroSemantico("Identificador Struct não declarado", token.getLexema()+ " não foi declarado", token.getnLinha()));
+
+        }
 
         nextToken();
         Struct2(tipo);
@@ -730,24 +732,16 @@ public class AnalisadorSintatico {
 
         if(token != null && token.getTipo() == 3){
             nextToken();
-
-            if(constVar.buscarGeneral(token.getLexema()) && constVar.getIdentificadorGeneral(token.getLexema()).getCategoria() == Simbolo.CONSTANTE) {
-                int retorno = Para2();
-                if (retorno == 0) parametros.add(new Simbolo(token.getLexema(),Simbolo.CONST_VETOR,tipo));
-                else if (retorno == 1) parametros.add(new Simbolo(token.getLexema(),Simbolo.CONST_MATRIZ,tipo));
-                else if (retorno == 2) parametros.add(new Simbolo(token.getLexema(),Simbolo.CONSTANTE,tipo));
-            }
-            else{
-                int retorno = Para2();
-                if (retorno == 0) parametros.add(new Simbolo(token.getLexema(),Simbolo.VAR_VETOR,tipo));
-                else if (retorno == 1) parametros.add(new Simbolo(token.getLexema(),Simbolo.VAR_MATRIZ,tipo));
-                else if (retorno == 2) parametros.add(new Simbolo(token.getLexema(),Simbolo.VARIAVEL,tipo));
+            int retorno = Para2();
+            if (retorno == 0) parametros.add(new Simbolo(token.getLexema(),Simbolo.VAR_VETOR,tipo));
+            else if (retorno == 1) parametros.add(new Simbolo(token.getLexema(),Simbolo.VAR_MATRIZ,tipo));
+            else if (retorno == 2) parametros.add(new Simbolo(token.getLexema(),Simbolo.VARIAVEL,tipo));
             }
             Para1();
 
-        }
-
     }
+
+
 
 
     public void Para1(){
@@ -1747,6 +1741,7 @@ public class AnalisadorSintatico {
             }
         }
         else{
+
             arquivoEscrita.write("Análise Semântica realizada com Sucesso!");
         }
 
