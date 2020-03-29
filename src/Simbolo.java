@@ -56,7 +56,7 @@ public class Simbolo {
     public Simbolo(String identificador, int categoria, String tipo) {
         this.identificador = identificador;
         this.categoria = categoria;
-        if (categoria > 3) this.tipo = tipo;
+        if (categoria >= 3) this.tipo = tipo;
     }
 
     /**

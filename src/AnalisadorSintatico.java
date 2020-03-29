@@ -93,7 +93,7 @@ public class AnalisadorSintatico {
         }
         else
             errosSemanticos.add(erro);
-        System.out.println("Tamanho "+ errosSemanticos.size());
+
     }
 
     /**
@@ -290,7 +290,6 @@ public class AnalisadorSintatico {
         }
 
         if (tipo != null && tipo2 != null && !tipo.equals(tipo2)) addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis na expressão aritmética (esperava um valor do tipo " + tipo + " mas encontrou do tipo "+ tipo2 +").", token.getnLinha()));
-
         return tipo;
     }
 
@@ -330,8 +329,10 @@ public class AnalisadorSintatico {
 
             if (simbolo == null) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
 
-            tipo = Identificador2(simbolo).getTipo(); // Permite vazio
+            Simbolo s = Identificador2(simbolo);
+            tipo = s.getTipo(); // Permite vazio
             tipo2 = ExpressaoAritmetica2();
+
         }
 
         if (tipo != null && tipo2 != null && tipo3 != null && !tipo.equals(tipo2) || !tipo.equals(tipo3)) {
@@ -760,11 +761,7 @@ public class AnalisadorSintatico {
             else  addErroSemantico(new ErroSemantico("Identificador já declarado", token.getLexema()+ " já foi declarado", token.getnLinha()));
             escopo_atual = simbolo_aux;
             nextToken();
-            System.out.println("Testeeeeeeeeeeeeeeeeeeeeeeeee   ");
             F2();
-
-
-
         }
     }
 
