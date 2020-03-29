@@ -548,7 +548,7 @@ public class AnalisadorSintatico {
            identificador = token.getLexema();
 
             if(struct.buscarGeneral(tipo)){
-                    Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.STRUCT, tipo);
+                    Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.VARIAVEL, tipo);
                     if (!campos.contains(simbolo_aux)){
                         campos.add(simbolo_aux);
                     }
@@ -747,7 +747,7 @@ public class AnalisadorSintatico {
             else if (tipo.equals("int") || tipo.equals("boolean") || tipo.equals("string") || tipo.equals("real")){
                      parametros.add(new Simbolo(lexema,Simbolo.VARIAVEL,tipo));
             }
-            else if (struct.buscarGeneral(lexema))  parametros.add(new Simbolo(lexema,Simbolo.STRUCT,tipo));
+            else if (struct.buscarGeneral(lexema))  parametros.add(new Simbolo(lexema,Simbolo.VARIAVEL,tipo));
             else addErroSemantico(new ErroSemantico("Identificador de struct não declarado", token.getLexema()+ " não foi declarado", token.getnLinha()));
         }
 
@@ -1725,17 +1725,23 @@ public class AnalisadorSintatico {
     // <CodigosRetornos>::= ';' | <ExpressaoAritmetica> ';'
     private void CodigosRetornos() {
         if (token != null) {
-            if (token.getLexema().equals(";"))
+            if (token.getLexema().equals(";")) {
                 nextToken();
+                if (escopo_atual.getCategoria() == Simbolo.FUNCTION) addErroSemantico(new ErroSemantico("Retorno inválido", "Retorno inválido na função, algo deve ser retornado", token.getnLinha()));
+            }
             else if (pertence(0, "ExpressaoAritmetica")) {
-                ExpressaoAritmetica();
+                String tipo = ExpressaoAritmetica();
+
+                if (escopo_atual.getCategoria() == Simbolo.FUNCTION)
+                    if (!escopo_atual.getTipo_retorno().equals(tipo))
+                        addErroSemantico(new ErroSemantico("Tipos incompatíveis", "Tipos incompatíveis no retorno da função (esperava um valor do tipo " + escopo_atual.getTipo_retorno() + " mas encontrou do tipo "+ tipo +").", token.getnLinha()));
+                else
+                    addErroSemantico(new ErroSemantico("Retorno inesperado", "Retorno em procedimento inesperado", token.getnLinha()));
+
                 if (token != null && token.getLexema().equals(";"))
                     nextToken();
-
             }
-
         }
-
     }
 
     // <Start> ::= 'start' '(' ')' '{' <Corpo> '}'
