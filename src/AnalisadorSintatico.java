@@ -548,7 +548,7 @@ public class AnalisadorSintatico {
            identificador = token.getLexema();
 
             if(struct.buscarGeneral(tipo)){
-                    Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.STRUCT, tipo);
+                    Simbolo simbolo_aux = new Simbolo(identificador, Simbolo.VARIAVEL, tipo);
                     if (!campos.contains(simbolo_aux)){
                         campos.add(simbolo_aux);
                     }
@@ -747,7 +747,7 @@ public class AnalisadorSintatico {
             else if (tipo.equals("int") || tipo.equals("boolean") || tipo.equals("string") || tipo.equals("real")){
                      parametros.add(new Simbolo(lexema,Simbolo.VARIAVEL,tipo));
             }
-            else if (struct.buscarGeneral(lexema))  parametros.add(new Simbolo(lexema,Simbolo.STRUCT,tipo));
+            else if (struct.buscarGeneral(lexema))  parametros.add(new Simbolo(lexema,Simbolo.VARIAVEL,tipo));
             else addErroSemantico(new ErroSemantico("Identificador de struct não declarado", token.getLexema()+ " não foi declarado", token.getnLinha()));
         }
 
