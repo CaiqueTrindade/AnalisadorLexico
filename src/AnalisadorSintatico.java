@@ -822,9 +822,6 @@ public class AnalisadorSintatico {
             AuxPrint();
         }else if(token != null && pertence(0, "Identificador")){
             Simbolo sb = Identificador();
-            if(sb == null) {
-                addErroSemantico(new ErroSemantico("Identificador não declarado", sb.getIdentificador() + " não declarado declarado", token.getnLinha()));
-            }
             AuxPrint();
         }
     }
@@ -993,18 +990,21 @@ public class AnalisadorSintatico {
     public Simbolo Identificador2(Simbolo entrada){
 
         if (token != null && token.getLexema().equals(".")){
+
             nextToken();
             if (token!= null && token.getTipo() == 3){
-                if(entrada.getCategoria() == 3) {
+
+                if(entrada.getCategoria() == Simbolo.VARIAVEL) {
                     String id = token.getLexema();
+
                     nextToken();
                     Simbolo var = struct.getIdentificadorGeneral(entrada.getIdentificador());
                     var = var.getSimbolo(id);
                     if (var == null) {
-
                         addErroSemantico(new ErroSemantico("Identificador não declarado", var.getIdentificador() + " não declarado", token.getnLinha()));
 
                     }
+
                     var = Vetor(var);
                     if (var != null) {
                         return var;
@@ -1012,6 +1012,9 @@ public class AnalisadorSintatico {
                         return null;
                     }
 
+
+                }else{
+                    addErroSemantico(new ErroSemantico("Identificador não declarado", entrada.getIdentificador() + " não declarado", token.getnLinha()));
 
                 }
 
@@ -1085,7 +1088,9 @@ public class AnalisadorSintatico {
     // <Identificador3> ::= <Identificador2> | '(' <IdentificadorExtra> ')'
     public Simbolo Identificador3(Simbolo entrada){
         if (token != null) { //Permite vazio
+
             entrada = Identificador2(entrada);
+
         }
         return entrada;
     }
@@ -1131,10 +1136,12 @@ public class AnalisadorSintatico {
                     }
 
                 } else {
+
                     addErroSemantico(new ErroSemantico("Identificador não declarado", id_entrada + " não declarado", token.getnLinha()));
                     return null;
                 }
             }else{
+
                 addErroSemantico(new ErroSemantico("Identificador não declarado", id_entrada + " não declarado", token.getnLinha()));
                 return null;
             }
@@ -1155,8 +1162,10 @@ public class AnalisadorSintatico {
                 if (escopo.equals("local") || escopo == null){
                     Simbolo s = escopo_atual;
                     Simbolo str = s.getSimbolo(id);
+
                     if (str != null){
                         s = Identificador2(str);
+
                         return s;
                     }else{
                         addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
@@ -1169,6 +1178,7 @@ public class AnalisadorSintatico {
                         return s;
 
                     }else{
+
                         addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
 
                         return null;
@@ -1191,6 +1201,7 @@ public class AnalisadorSintatico {
             } else if(f.getSimbolo(id) != null) {
                 Simbolo str = f.getSimbolo(id);
                 Simbolo s = Identificador3(str);
+
                 return s;
 
             }else{

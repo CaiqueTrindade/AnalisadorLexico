@@ -6,47 +6,6 @@ typedef struct pessoa {
 	string nome, endereco, telefone;
 }
 
-typedef struct funcionario extends pesso {
-	string departamento;
-	real salario;
-}
-
-var {
-	pessoa vetor_pessoas[tamanho_vetor];
-	funcionario vetor_funcionarios[50];
-	int pessoas_cadastradas = 0, funcionarios_cadastrados = 0;
-}
-
-function boolean cadastrarPessoas(pessoa pessoa) {
-	var {
-	    boolean retorno = false;
-	}
-	if (global.pessoas_cadastradas < tamanho_vetor) then {
-		global.vetor_pessoas[global.pessoas_cadastradas] = pessoa;
-		global.pessoas_cadastradas = global.pessoas_cadastradas + 1;
-		retorno = true;
-	}
-	else {
-		return retorno;
-	}
-}
-
-procedure imprimirPessoas(string vetor) {
-
-	var {
-		int i = 0;
-	}
-
-	if (vetor == "vetor_pessoas") then {
-		while( i < global.pessoas_cadastradas) {
-			print(vetor_pessoas[i]);
-			i = i + 1;
-		}
-	}
-	else {
-		print(vetor_funcionarios);
-	}
-}
 
 start () {
 	var {
@@ -54,31 +13,9 @@ start () {
 		pessoa pessoa;
 	}
 
-    entrada = 5.5;
 
-	while (true) {
-		print("Digite 0 para cadastrar uma nova pessoa ou 1 para imprimir a lista de pessoas cadastradas:");
-		read(entrada);
-		print(pessoa.nome, pessoa.endereco, pessoa.telefone);
+	print(pessoa.nome, pessoa.endereco, pessoa.telefone);
 
-		if (entrada == 0) then {
-			print("Digite o nome, endereco e telefone da pessoa que deseja cadastrar:");
-			read(pessoa.nome, pessoa.endereco, pessoa.telefone);
-			retorno = cadastrarPessoa(pessoa);
-			if(retorno == true) then {
-				print(vetor_funcionarios[1]);
-			}
-			else {
-				print("A lista esta cheia.");
-			}
-		}
-		else {
-			if (entrada == 1) then {
-				imprimirPessoas();
-			}
-			else {
-				print("Entrada invalida, tente novamente.");
-			}
-		}
-	}
+
+
 }
