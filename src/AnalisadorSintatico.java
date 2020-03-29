@@ -1717,16 +1717,17 @@ public class AnalisadorSintatico {
                 String aux = id;
                 if (lParametros != null) for (Simbolo s: lParametros) aux = aux + "#" + s.getTipo();
 
-                if (lParametros == null && functionProcedure.getIdentificadorGeneral(aux) == null) {
+                if (functionProcedure.getIdentificadorGeneral(aux) == null) {
                     if (identificadorFuncao.containsKey(id)) addErroSemantico(new ErroSemantico("Parâmetros incompatíveis", "Parâmetros incompatíveis", token.getnLinha()));
-                } else if (!identificadorFuncao.containsKey(aux)) addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
+                    else addErroSemantico(new ErroSemantico("Identificador não declarado", id + " não declarado", token.getnLinha()));
+                }
 
                 if (token != null && token.getLexema().equals(")"))
                     nextToken();
             }
         }
     }
-
+    
     // <IdentificadorComandos2_1> ::= <ExpressaoAritmetica> | String | Boolean
     private String IdentificadorComandos2_1() {
         String tipo = null;
